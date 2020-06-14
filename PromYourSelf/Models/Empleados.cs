@@ -14,7 +14,10 @@ namespace Entidades
         public int EmpleadoID { get; set; }
         public Negocios Negocio{ get; set; }
         public string Foto{ get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio")]
+        [StringLength(10, ErrorMessage = "Cantidad máxima de caracteres 10.")]
         public string Nombre{ get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio")]
         public string Apellido{ get; set; }
         public TipoGenero Genero{ get; set; }
         public bool Estado { get; set; }

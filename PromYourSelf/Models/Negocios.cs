@@ -13,10 +13,25 @@ namespace Entidades
         public int NegocioID { get; set; }
         public Usuarios Usuario{ get; set; }
         public Horarios Horarios{ get; set; }
+        [Required(ErrorMessage ="Este esCampo obligatorio")]
+        [StringLength(15,
+            ErrorMessage = "El descripcion debe ser menor a 255 caracteres.")]
+        [Display(Name = "Nombre Comercial")]
         public string NombreComercial { get; set; }
+        [Required(ErrorMessage = "Este es Campo obligatorio")]
+        [StringLength(255,
+            ErrorMessage = "La descripcion no debe de tener mas de 255 caracteres.")]
         public string Direccion { get; set; }
+        [Required(ErrorMessage = "Este es Campo obligatorio")]
+        [Display(Name = "Teléfono")]
+        [StringLength(20, ErrorMessage = "Máximo 20 caracteres.")]
+        [DataType(DataType.PhoneNumber)]
         public string Telefono1 { get; set; }
+        [Display(Name = "Teléfono")]
+        [StringLength(20, ErrorMessage = "Máximo 20 caracteres.")]
+        [DataType(DataType.PhoneNumber)]
         public string Telefono2 { get; set; }
+        [Required(ErrorMessage = "Este es Campo obligatorio")]
         public Ciudad Ciudad { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }

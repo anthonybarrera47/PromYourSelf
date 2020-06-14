@@ -12,7 +12,9 @@ namespace Entidades
         [Key]
         public int ID { get; set; }
         public Ventas Venta { get; set; }
+        [Required(ErrorMessage = "Este campo es requerido")]
         public int ProductoID { get; set; }
+        [Required(ErrorMessage = "Este campo es requerido")]
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
 

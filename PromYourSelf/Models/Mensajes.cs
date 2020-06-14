@@ -12,7 +12,10 @@ namespace Entidades
         [Key]
         public int MensajeID { get; set; }
         public Usuarios Cliente{ get; set; }
-        public Negocios Negocios{ get; set; }
+        public Negocios Negocios { get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio")]
+        [StringLength(255,
+            ErrorMessage = "El Contenido debe ser menor a 255 caracteres.")]
         public string Contenido { get; set; }
         public TipoContenido Tipo { get; set; }
         //TODO: IMAGEN PA LA PROXIMAAAAA
