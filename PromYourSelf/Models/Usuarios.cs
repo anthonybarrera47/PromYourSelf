@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace Models
 {
     public class Usuarios : CamposEstandar
     {
@@ -32,16 +32,6 @@ namespace Entidades
         public TiposUsuario TipoUsuario { get; set; }
         public bool Estado { get; set; }
 
-        public enum TipoGenero
-        {
-            Masculino = 0,
-            Femenino = 1,
-            Otros = 2
-        }
-        public enum TiposUsuario
-        {
-            Cliente = 0,
-            Administrador = 1
-        }
+      
     }
 }

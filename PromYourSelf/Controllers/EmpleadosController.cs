@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Entidades;
+using Models;
+using BLL;
 
 namespace PromYourSelf.Controllers
 {
     public class EmpleadosController : Controller
     {
-        private readonly Contexto _context;
-
+        private readonly RepositorioBase<Empleados> db;
         public EmpleadosController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Empleados>(context);
         }
 
         // GET: Empleados
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Empleados.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Empleados/Details/5
@@ -32,8 +32,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _context.Empleados
-                .FirstOrDefaultAsync(m => m.EmpleadoID == id);
+            var empleados = await db.SearchAsync(id);
+
             if (empleados == null)
             {
                 return NotFound();
@@ -53,15 +53,14 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmpleadoID,Foto,Nombre,Apellido,Genero,Estado")] Empleados empleados)
+        public async Task<IActionResult> Create(Empleados Empleado)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(empleados);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(Empleado);
                 return RedirectToAction(nameof(Index));
             }
-            return View(empleados);
+            return View(Empleado);
         }
 
         // GET: Empleados/Edit/5
@@ -72,7 +71,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _context.Empleados.FindAsync(id);
+            var empleados = await db.SearchAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -85,7 +84,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmpleadoID,Foto,Nombre,Apellido,Genero,Estado,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Empleados empleados)
+        public async Task<IActionResult> Edit(int id, Empleados empleados)
         {
             if (id != empleados.EmpleadoID)
             {
@@ -96,8 +95,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(empleados);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(empleados);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +121,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _context.Empleados
-                .FirstOrDefaultAsync(m => m.EmpleadoID == id);
+            var empleados = await db.SearchAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -138,15 +135,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var empleados = await _context.Empleados.FindAsync(id);
-            _context.Empleados.Remove(empleados);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmpleadosExists(int id)
         {
-            return _context.Empleados.Any(e => e.EmpleadoID == id);
+            return db.Exists(id);
         }
     }
 }

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Entidades.Usuarios;
+using static Models.Usuarios;
 
-namespace Entidades
+namespace Models
 {
     public class Empleados : CamposEstandar
     {
