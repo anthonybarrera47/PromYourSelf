@@ -77,6 +77,21 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <!--INICIO DE SUBMENU EMPLEADOS-->
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsNegocios" aria-expanded="true" aria-controls="collapseNegocios">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Negocios</span>
+                </a>
+                <div id="collapsNegocios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @*<h6 class="collapse-header">Custom Components:</h6>*@
+                        <a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>
+                        <a class="collapse-item" asp-controller="negocios" asp-action="create">Nuevo Negocios</a>
+                    </div>
+                </div>
+            </li>
+            <!--FIN DE SUBMENU EMPLEADOS-->
+            <!--INICIO DE SUBMENU EMPLEADOS-->
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="true" aria-controls="collapseEmpleados">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Empleados</span>
