@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,17 @@ namespace PromYourSelf.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly Contexto _context;
+        private readonly RepositorioBase<Usuarios> db;
 
         public UsuariosController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Usuarios>(context);
         }
 
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Usuarios/Details/5
@@ -32,8 +33,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.UsuarioID == id);
+            var usuarios = await db.SearchAsync(id);
+
             if (usuarios == null)
             {
                 return NotFound();
@@ -53,12 +54,11 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioID,UserName,Password,Nombres,Apellidos,Foto,Genero,Email,Confirmado,TipoUsuario,Estado,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Usuarios usuarios)
+        public async Task<IActionResult> Create (Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuarios);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(usuarios);
                 return RedirectToAction(nameof(Index));
             }
             return View(usuarios);
@@ -72,7 +72,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios.FindAsync(id);
+            var usuarios = await db.SearchAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioID,UserName,Password,Nombres,Apellidos,Foto,Genero,Email,Confirmado,TipoUsuario,Estado,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, Usuarios usuarios)
         {
             if (id != usuarios.UsuarioID)
             {
@@ -96,8 +96,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(usuarios);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(usuarios);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +122,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios
-                .FirstOrDefaultAsync(m => m.UsuarioID == id);
+            var usuarios = await db.SearchAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -138,15 +136,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuarios = await _context.Usuarios.FindAsync(id);
-            _context.Usuarios.Remove(usuarios);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool UsuariosExists(int id)
         {
-            return _context.Usuarios.Any(e => e.UsuarioID == id);
+            return db.Exists(id);
         }
     }
 }

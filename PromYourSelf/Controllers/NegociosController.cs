@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,16 @@ namespace PromYourSelf.Controllers
 {
     public class NegociosController : Controller
     {
-        private readonly Contexto _context;
-
+        private readonly RepositorioBase<Negocios> db;
         public NegociosController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Negocios>(context);
         }
 
         // GET: Negocios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Negocios.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Negocios/Details/5
@@ -32,8 +32,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var negocios = await _context.Negocios
-                .FirstOrDefaultAsync(m => m.NegocioID == id);
+            var negocios = await db.SearchAsync(id);
+
             if (negocios == null)
             {
                 return NotFound();
@@ -53,12 +53,11 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NegocioID,NombreComercial,Direccion,Telefono1,Telefono2,Latitud,Longitud,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Negocios negocios)
+        public async Task<IActionResult> Create(Negocios negocios)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(negocios);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(negocios);
                 return RedirectToAction(nameof(Index));
             }
             return View(negocios);
@@ -72,7 +71,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var negocios = await _context.Negocios.FindAsync(id);
+            var negocios = await db.SearchAsync(id);
             if (negocios == null)
             {
                 return NotFound();
@@ -85,7 +84,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NegocioID,NombreComercial,Direccion,Telefono1,Telefono2,Latitud,Longitud,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Negocios negocios)
+        public async Task<IActionResult> Edit(int id, Negocios negocios)
         {
             if (id != negocios.NegocioID)
             {
@@ -96,8 +95,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(negocios);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(negocios);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +121,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var negocios = await _context.Negocios
-                .FirstOrDefaultAsync(m => m.NegocioID == id);
+            var negocios = await db.SearchAsync(id);
             if (negocios == null)
             {
                 return NotFound();
@@ -138,15 +135,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var negocios = await _context.Negocios.FindAsync(id);
-            _context.Negocios.Remove(negocios);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool NegociosExists(int id)
         {
-            return _context.Negocios.Any(e => e.NegocioID == id);
+            return db.Exists(id);
         }
     }
 }

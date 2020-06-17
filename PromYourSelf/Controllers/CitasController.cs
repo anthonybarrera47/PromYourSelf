@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,16 @@ namespace PromYourSelf.Controllers
 {
     public class CitasController : Controller
     {
-        private readonly Contexto _context;
-
+        private readonly RepositorioBase<Citas> db;
         public CitasController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Citas>(context);
         }
 
         // GET: Citas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Citas.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Citas/Details/5
@@ -32,8 +32,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await _context.Citas
-                .FirstOrDefaultAsync(m => m.CitaID == id);
+            var citas = await db.SearchAsync(id);
+
             if (citas == null)
             {
                 return NotFound();
@@ -53,12 +53,11 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CitaID,FechaInicio,FechaFin,CodigoComprobacion,Estado,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Citas citas)
+        public async Task<IActionResult> Create(Citas citas)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(citas);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(citas);
                 return RedirectToAction(nameof(Index));
             }
             return View(citas);
@@ -72,7 +71,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await _context.Citas.FindAsync(id);
+            var citas = await db.SearchAsync(id);
             if (citas == null)
             {
                 return NotFound();
@@ -85,7 +84,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CitaID,FechaInicio,FechaFin,CodigoComprobacion,Estado,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Citas citas)
+        public async Task<IActionResult> Edit(int id, Citas citas)
         {
             if (id != citas.CitaID)
             {
@@ -96,8 +95,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(citas);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(citas);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +121,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await _context.Citas
-                .FirstOrDefaultAsync(m => m.CitaID == id);
+            var citas = await db.SearchAsync(id);
             if (citas == null)
             {
                 return NotFound();
@@ -138,15 +135,15 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var citas = await _context.Citas.FindAsync(id);
-            _context.Citas.Remove(citas);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CitasExists(int id)
         {
-            return _context.Citas.Any(e => e.CitaID == id);
+            return db.Exists(id);
         }
+
+     
     }
 }

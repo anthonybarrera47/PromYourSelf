@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,17 @@ namespace PromYourSelf.Controllers
 {
     public class HorariosController : Controller
     {
-        private readonly Contexto _context;
+        private readonly RepositorioBase<Horarios> db;
 
         public HorariosController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Horarios>(context);
         }
 
         // GET: Horarios
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Horarios.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Horarios/Details/5
@@ -32,8 +33,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await _context.Horarios
-                .FirstOrDefaultAsync(m => m.HorarioID == id);
+            var horarios = await db.SearchAsync(id);
+
             if (horarios == null)
             {
                 return NotFound();
@@ -53,12 +54,11 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HorarioID,Lunes,Martes,Miercoles,Jueves,viernes,Sabado,Domingo")] Horarios horarios)
+        public async Task<IActionResult> Create(Horarios horarios)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(horarios);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(horarios);
                 return RedirectToAction(nameof(Index));
             }
             return View(horarios);
@@ -72,7 +72,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await _context.Horarios.FindAsync(id);
+            var horarios = await db.SearchAsync(id);
             if (horarios == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HorarioID,Lunes,Martes,Miercoles,Jueves,viernes,Sabado,Domingo")] Horarios horarios)
+        public async Task<IActionResult> Edit(int id, Horarios horarios)
         {
             if (id != horarios.HorarioID)
             {
@@ -96,8 +96,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(horarios);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(horarios);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +122,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await _context.Horarios
-                .FirstOrDefaultAsync(m => m.HorarioID == id);
+            var horarios = await db.SearchAsync(id);
             if (horarios == null)
             {
                 return NotFound();
@@ -138,15 +136,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var horarios = await _context.Horarios.FindAsync(id);
-            _context.Horarios.Remove(horarios);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool HorariosExists(int id)
         {
-            return _context.Horarios.Any(e => e.HorarioID == id);
+            return db.Exists(id);
         }
     }
 }

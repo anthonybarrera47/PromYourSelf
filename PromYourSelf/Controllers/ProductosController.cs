@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,17 @@ namespace PromYourSelf.Controllers
 {
     public class ProductosController : Controller
     {
-        private readonly Contexto _context;
+        private readonly RepositorioBase<Productos> db;
 
         public ProductosController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Productos>(context);
         }
 
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Productos.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Productos/Details/5
@@ -32,8 +33,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var productos = await _context.Productos
-                .FirstOrDefaultAsync(m => m.ProductoID == id);
+            var productos = await db.SearchAsync(id);
+
             if (productos == null)
             {
                 return NotFound();
@@ -55,11 +56,9 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Productos productos)
         {
-			Object p = productos;
             if (ModelState.IsValid)
             {
-                _context.Add(productos);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(productos);
                 return RedirectToAction(nameof(Index));
             }
             return View(productos);
@@ -73,7 +72,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var productos = await _context.Productos.FindAsync(id);
+            var productos = await db.SearchAsync(id);
             if (productos == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductoID,Nombre,Descripcion,Unidad,Stock,Precio,PrecioOferta,TipoProductos,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Productos productos)
+        public async Task<IActionResult> Edit(int id, Productos productos)
         {
             if (id != productos.ProductoID)
             {
@@ -97,8 +96,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(productos);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(productos);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +122,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var productos = await _context.Productos
-                .FirstOrDefaultAsync(m => m.ProductoID == id);
+            var productos = await db.SearchAsync(id);
             if (productos == null)
             {
                 return NotFound();
@@ -139,15 +136,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productos = await _context.Productos.FindAsync(id);
-            _context.Productos.Remove(productos);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductosExists(int id)
         {
-            return _context.Productos.Any(e => e.ProductoID == id);
+            return db.Exists(id);
         }
     }
 }

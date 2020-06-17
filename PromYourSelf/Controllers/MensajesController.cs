@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,17 @@ namespace PromYourSelf.Controllers
 {
     public class MensajesController : Controller
     {
-        private readonly Contexto _context;
+        private readonly RepositorioBase<Mensajes> db;
 
         public MensajesController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Mensajes>(context);
         }
 
         // GET: Mensajes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Mensaje.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Mensajes/Details/5
@@ -32,8 +33,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var mensajes = await _context.Mensaje
-                .FirstOrDefaultAsync(m => m.MensajeID == id);
+            var mensajes = await db.SearchAsync(id);
+
             if (mensajes == null)
             {
                 return NotFound();
@@ -53,12 +54,11 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MensajeID,Contenido,Tipo,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Mensajes mensajes)
+        public async Task<IActionResult> Create(Mensajes mensajes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mensajes);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(mensajes);
                 return RedirectToAction(nameof(Index));
             }
             return View(mensajes);
@@ -72,7 +72,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var mensajes = await _context.Mensaje.FindAsync(id);
+            var mensajes = await db.SearchAsync(id);
             if (mensajes == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MensajeID,Contenido,Tipo,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Mensajes mensajes)
+        public async Task<IActionResult> Edit(int id, Mensajes mensajes)
         {
             if (id != mensajes.MensajeID)
             {
@@ -96,8 +96,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(mensajes);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(mensajes);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,14 +122,13 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var mensajes = await _context.Mensaje
-                .FirstOrDefaultAsync(m => m.MensajeID == id);
+            var mensajes = await db.SearchAsync(id);
             if (mensajes == null)
             {
                 return NotFound();
             }
 
-            return View(mensajes);
+            return View(mensajes); ;
         }
 
         // POST: Mensajes/Delete/5
@@ -138,15 +136,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mensajes = await _context.Mensaje.FindAsync(id);
-            _context.Mensaje.Remove(mensajes);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool MensajesExists(int id)
         {
-            return _context.Mensaje.Any(e => e.MensajeID == id);
+            return db.Exists(id);
         }
     }
 }

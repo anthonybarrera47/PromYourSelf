@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,16 @@ namespace PromYourSelf.Controllers
 {
     public class VentasController : Controller
     {
-        private readonly Contexto _context;
-
+        private readonly RepositorioBase<Ventas> db;
         public VentasController(Contexto context)
         {
-            _context = context;
+            db = new RepositorioBase<Ventas>(context);
         }
 
         // GET: Ventas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ventas.ToListAsync());
+            return View(await db.GetListAsync(x => true));
         }
 
         // GET: Ventas/Details/5
@@ -32,8 +32,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var ventas = await _context.Ventas
-                .FirstOrDefaultAsync(m => m.VentaID == id);
+            var ventas = await db.SearchAsync(id);
+
             if (ventas == null)
             {
                 return NotFound();
@@ -53,12 +53,11 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VentaID,Fecha,Monto,CitaID,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Ventas ventas)
+        public async Task<IActionResult> Create(Ventas ventas)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ventas);
-                await _context.SaveChangesAsync();
+                await db.SaveAsync(ventas);
                 return RedirectToAction(nameof(Index));
             }
             return View(ventas);
@@ -72,7 +71,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var ventas = await _context.Ventas.FindAsync(id);
+            var ventas = await db.SearchAsync(id);
             if (ventas == null)
             {
                 return NotFound();
@@ -85,7 +84,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VentaID,Fecha,Monto,CitaID,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Ventas ventas)
+        public async Task<IActionResult> Edit(int id, Ventas ventas)
         {
             if (id != ventas.VentaID)
             {
@@ -96,8 +95,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    _context.Update(ventas);
-                    await _context.SaveChangesAsync();
+                    await db.ModifiedAsync(ventas);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,8 +121,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var ventas = await _context.Ventas
-                .FirstOrDefaultAsync(m => m.VentaID == id);
+            var ventas = await db.SearchAsync(id);
             if (ventas == null)
             {
                 return NotFound();
@@ -138,15 +135,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ventas = await _context.Ventas.FindAsync(id);
-            _context.Ventas.Remove(ventas);
-            await _context.SaveChangesAsync();
+            await db.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool VentasExists(int id)
         {
-            return _context.Ventas.Any(e => e.VentaID == id);
+            return db.Exists(id);
         }
     }
 }
