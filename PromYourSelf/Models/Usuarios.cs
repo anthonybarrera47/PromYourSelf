@@ -11,7 +11,7 @@ namespace Models
     public class Usuarios : CamposEstandar
     {
         [Key]
-        public int UsuarioID { get; set; }
+        public new int UsuarioID { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]

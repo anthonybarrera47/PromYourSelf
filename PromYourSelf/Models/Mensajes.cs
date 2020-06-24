@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Models
         [Key]
         public int MensajeID { get; set; }
         public Usuarios Cliente{ get; set; }
-        public Negocios Negocios { get; set; }
+        public int NegocioID { get; set; }
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [StringLength(255,
             ErrorMessage = "El Contenido debe ser menor a 255 caracteres.")]

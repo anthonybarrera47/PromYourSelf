@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,30 +13,22 @@ namespace Models
         [Key]
         public int CitaID { get; set; }
         public Usuarios Cliente { get; set; }
-        public Negocios Negocio{ get; set; }
-
+        public int NegocioID { get; set; }
         [Display(Name = "Fecha Inicio")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime FechaInicio { get; set; }
         [Display(Name = "Fecha Fin")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime FechaFin { get; set; }
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [StringLength(15,
-            ErrorMessage = "Maximo 65 caracteres.")]
-        [Display(Name = "Codigo Comprobacion")]
+            ErrorMessage = "Máximo 65 caracteres.")]
+        [Display(Name = "Codigo Comprobación")]
         public string CodigoComprobacion { get; set; }
-        public EstadoCita Estado { get; set; }
-        public virtual List<CitasDetalle> Details { get; set; }
-
-        public enum EstadoCita
-        {
-			Solicitado = 0,
-            EnProceso = 1,
-            Finalizado = 2
-        }
-
+        public EstadoCita Estado { get; set; } 
+        public virtual ICollection<CitasDetalle> Details { get; set; }
+       
     }
 }

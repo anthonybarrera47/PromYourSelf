@@ -10,9 +10,9 @@ namespace Models
     public class FotosProductos
     {
         [Key]
-        public int FotoId { get; set; }
+        public int FotoID { get; set; }
         public Productos Productos{ get; set; }
-        public string Foto { get; set; }
+        public byte[] Foto { get; set; }
 
     }
 }

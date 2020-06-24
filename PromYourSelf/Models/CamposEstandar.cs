@@ -9,15 +9,13 @@ namespace Models
 {
     public abstract class CamposEstandar
     {
+        public int UsuarioID { get; set; }
+        public int EsNulo { get; set; }
         public int CreadoPor { get; set; }
-        [Display(Name = "Fecha Creacion")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime FechaCreacion { get; set; }
         public int ModificadoPor { get; set; }
-        [Display(Name = "Fecha Modificacion")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime FechaModificacion { get; set; }
     }
 }

@@ -1,53 +1,116 @@
 ﻿@model Models.Empleados
+
 @{
-    ViewData["Title"] = "Create";
+    string Titulo = "Crear Empleado";
+    ViewData["Title"] = Titulo;
 }
 
-<h1>Create</h1>
-
-<h4>Empleados</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form class="form" asp-action="Create" method="post" id="registrationForm" enctype="multipart/form-data">
+    <div class="card shadow mb-4">
+        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">Creando empleado</h1></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <!--left col-->
+                    <div class="text-center">
+                        <img src="~/img/avatar.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                        <h6>Upload a different photo...</h6>
+                        <input asp-for="Foto" type="file" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
+                    </div>
+                    <hr><br>
+
+                    <div class="card shadow">
+                        <div class="card-header">Website <i class="fa fa-link fa-1x"></i></div>
+                        <div class="card-body"><a href="http://bootnipets.com">bootnipets.com</a></div>
+                    </div>
+                    <br>
+
+                    <ul class="list-group">
+                        <li class="list-group-item text-muted list-group-item-warning">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+                    </ul>
+
+                    <br>
+
+                    <div class="card shadow">
+                        <div class="card-header">Social Media</div>
+                        <div class="card-body">
+                            <i class="fab fa-facebook-f">&nbsp; Empleado Nuevo</i><br />
+                            <i class="fab fa-github">&nbsp;Empleado Nuevo</i><br />
+                            <i class="fab fa-twitter">&nbsp;Empleado Nuevo</i><br />
+                            <i class="fab fa-linkedin-in">&nbsp;Empleado Nuevo</i>
+                        </div>
+                    </div>
+
+                </div><!--/col-3-->
+                <div class="col-9">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item active"><a class="nav-link" data-toggle="tab" href="#home">Datos</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="nav" href="#messages">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="nav" href="#settings">Menu 2</a></li>
+                    </ul>
+
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="home">
+                            <hr>
+
+
+                            <div class="form-row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="Nombre">Nombre</label>
+                                        <input asp-for="Nombre" type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" title="Ingrese su nombres.">
+                                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="Apellido">Apellido</label>
+                                        <input asp-for="Apellido" type="text" class="form-control" name="Apellido" id="Apellido" placeholder="Apellido" title="Ingrese su Apellido">
+                                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="Genero">G&eacute;nero</label>
+                                        <select asp-for="Genero" name="Genero" class="form-control" title="Seleccion un género.">
+                                            <option value="0">Masculino</option>
+                                            <option value="1">Femenino</option>
+                                            <option value="2">Otros</option>
+                                        </select>
+                                        <span asp-validation-for="Genero" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div><!--/tab-pane-->
+                    </div><!--/tab-pane-->
+                </div><!--/tab-content-->
+            </div><!--/col-9-->
+        </div>
+
+        <div class="card-footer">
             <div class="form-group">
-                <label asp-for="Foto" class="control-label"></label>
-                <input asp-for="Foto" class="form-control" />
-                <span asp-validation-for="Foto" class="text-danger"></span>
+                <div class="col-12">
+                    <button class="btn btn-lg btn-success pull-right" value="Create" type="submit"><i class="fas fa-save"></i> Guardar</button>
+                    <button class="btn btn-lg btn-info" type="reset"><i class="fas fa-redo-alt"></i> Limpiar</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Genero" class="control-label"></label>
-                <select asp-for="Genero" class="form-control">
-                    <option value="0">Masculino</option>
-                    <option value="1">Femenino</option>
-                    <option value="2">Otros</option>
-                </select>
-                <span asp-validation-for="Genero" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+    <div>
+        <a class="btn btn-lg btn-warning" asp-action="Index">Back to List</a>
+    </div>
+</form>

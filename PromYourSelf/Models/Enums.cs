@@ -16,4 +16,15 @@ namespace Models
         Cliente = 0,
         Administrador = 1
     }
+    public enum EstadoCita
+    {
+        Solicitado = 0,
+        EnProceso = 1,
+        Finalizado = 2
+    }
+    public enum TipoProducto
+    {
+        Producto = 0,
+        Servicio = 1
+    }
 }

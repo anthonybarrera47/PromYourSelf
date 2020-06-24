@@ -11,10 +11,9 @@ namespace Models
     {
         [Key]
         public int NegocioID { get; set; }
-        public Usuarios Usuario{ get; set; }
-        public Horarios Horarios{ get; set; }
-        [Required(ErrorMessage ="Este esCampo obligatorio")]
-        [StringLength(15,
+        public new int UsuarioID { get; set; }
+        [Required(ErrorMessage = "Este esCampo obligatorio")]
+        [StringLength(255,
             ErrorMessage = "El descripcion debe ser menor a 255 caracteres.")]
         [Display(Name = "Nombre Comercial")]
         public string NombreComercial { get; set; }
@@ -32,7 +31,7 @@ namespace Models
         [DataType(DataType.PhoneNumber)]
         public string Telefono2 { get; set; }
         [Required(ErrorMessage = "Este es Campo obligatorio")]
-        public Ciudad Ciudad { get; set; }
+        public int CiudadID { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }
 

@@ -11,7 +11,7 @@ namespace Models
     {
         [Key]
         public int ProductoID { get; set; }
-        public Negocios Negocios{ get; set; }
+        public int NegocioID { get; set; }
 
         [Required(ErrorMessage ="Este campo es requerido")]
         public string Nombre { get; set; }
@@ -33,10 +33,5 @@ namespace Models
         public virtual List<Etiquetas> Etiquetas { get; set; }
         public virtual List<FotosProductos> Fotos { get; set; }
 
-        public enum TipoProducto
-        {
-            Producto = 0,
-            Servicio =1 
-        }
     }
 }
