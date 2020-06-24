@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using BLL;
+using PromYourSelf.Utils;
 
 namespace PromYourSelf.Controllers
 {
@@ -55,6 +56,8 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Empleados Empleado)
         {
+			string strbase64 = await FileUtil.imageToBase64(Empleado.FotoFile);
+			Empleado.Foto = strbase64;
             if (ModelState.IsValid)
             {
                 await db.SaveAsync(Empleado);

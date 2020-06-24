@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Models
         [Key]
         public int EmpleadoID { get; set; }
         public int NegocioID { get; set; }
-        public byte[] Foto { get; set; }
+        public string Foto { get; set; }
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [StringLength(50, ErrorMessage = "Cantidad máxima de caracteres 50.")]
         public string Nombre { get; set; }
@@ -23,8 +24,10 @@ namespace Models
         public TipoGenero Genero { get; set; }
         public bool Estado { get; set; }
         public virtual List<Productos> Productos { get; set; }
+		[NotMapped]
+		public IFormFile FotoFile { get; set; }
 
-        public Empleados(int empleadoID, byte[] foto, string nombre, string apellido, TipoGenero genero, bool estado)
+        public Empleados(int empleadoID, string foto, string nombre, string apellido, TipoGenero genero, bool estado)
         {
             EmpleadoID = empleadoID;
             Foto = foto ?? throw new ArgumentNullException(nameof(foto));
@@ -38,7 +41,7 @@ namespace Models
         public Empleados()
         {
             EmpleadoID = 0;
-            Foto = null;
+            Foto = string.Empty;
             Nombre = string.Empty;
             Apellido = string.Empty;
             Genero = TipoGenero.Masculino;

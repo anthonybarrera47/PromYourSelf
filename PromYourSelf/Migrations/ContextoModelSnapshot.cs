@@ -15,7 +15,7 @@ namespace PromYourSelf.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -286,7 +286,7 @@ namespace PromYourSelf.Migrations
 
                     b.Property<DateTime>("FechaModificacion");
 
-                    b.Property<byte[]>("Foto");
+                    b.Property<string>("Foto");
 
                     b.Property<int>("Genero");
 
@@ -464,8 +464,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = 0,
-                            FechaCreacion = new DateTime(2020, 6, 23, 20, 8, 36, 581, DateTimeKind.Local).AddTicks(5490),
-                            FechaModificacion = new DateTime(2020, 6, 23, 20, 8, 36, 582, DateTimeKind.Local).AddTicks(3598),
+                            FechaCreacion = new DateTime(2020, 6, 23, 20, 39, 21, 798, DateTimeKind.Local).AddTicks(3846),
+                            FechaModificacion = new DateTime(2020, 6, 23, 20, 39, 21, 798, DateTimeKind.Local).AddTicks(9455),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,
