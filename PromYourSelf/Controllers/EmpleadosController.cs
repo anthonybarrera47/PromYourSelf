@@ -93,7 +93,8 @@ namespace PromYourSelf.Controllers
             {
                 return NotFound();
             }
-
+            string strbase64 = await FileUtil.imageToBase64(empleados.FotoFile);
+            empleados.Foto = strbase64;
             if (ModelState.IsValid)
             {
                 try

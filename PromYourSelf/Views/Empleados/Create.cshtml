@@ -2,7 +2,7 @@
 
 
 @{
-    string Titulo = "Crear Empleado"; 
+    string Titulo = "Crear Empleado";
     ViewData["Title"] = Titulo;
 }
 
@@ -16,9 +16,10 @@
                 <div class="col-3">
                     <!--left col-->
                     <div class="text-center">
-                        <img src="~/img/avatar.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                        <img src="~/img/avatar.png"  id="FotoResources" class="avatar img-circle img-thumbnail" alt="avatar">
+
                         <h6>Upload a different photo...</h6>
-                        <input asp-for="FotoFile"  type="file" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
+                        <input asp-for="FotoFile" type="file" onchange="showMyImage(this)" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
                     </div>
                     <hr><br>
 
@@ -115,3 +116,35 @@
         <a class="btn btn-lg btn-warning" asp-action="Index">Back to List</a>
     </div>
 </form>
+@section Scripts
+    {
+    <script type="text/javascript">
+
+            function showMyImage(fileInput) {
+                debugger;
+                var files = fileInput.files;
+                console.log(files);
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    console.log(file.name);
+                    var imageType = /image.*/;
+                    if (!file.type.match(imageType)) {
+                        continue;
+                    }
+                    var img = document.getElementById("FotoResources");
+                    img.file = file;
+                    var reader = new FileReader();
+                    reader.onload = (function (aImg) {
+                        return function (e) {
+                            aImg.src = e.target.result;
+                        };
+                    })(img);
+                    reader.readAsDataURL(file);
+                    thumbnil.style.display = 'block';
+                    //$("#banner_name").text(file.name);
+
+                }
+            }
+    </script>
+
+}
