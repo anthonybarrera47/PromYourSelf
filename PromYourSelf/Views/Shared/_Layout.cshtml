@@ -437,8 +437,12 @@
                     </ul>
 
                 </nav>
+                <breadcrumb asp-homepage-title="Inicio"
+                            asp-homepage-url="@Url.Action("Index","Home")"
+                            asp-bootstrap-version="V4"
+                            asp-homepage-glyphicon="glyphicon glyphicon-home">
+                </breadcrumb>
                 <!-- End of Topbar -->
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <partial name="_CookieConsentPartial" />

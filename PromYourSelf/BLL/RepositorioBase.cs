@@ -59,7 +59,7 @@ namespace BLL
             List<T> Lista = new List<T>();
             try
             {
-                Lista = await db.Set<T>().Where(expression).ToListAsync();
+                Lista = await db.Set<T>().Where(expression).ToListAsync() ?? new List<T>();
             }
             catch (Exception)
             { throw; }

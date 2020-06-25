@@ -8,24 +8,42 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using BLL;
 using PromYourSelf.Utils;
+using DNTBreadCrumb.Core;
+using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Routing;
 
 namespace PromYourSelf.Controllers
 {
+    [BreadCrumb(Title = "Empleado", Url = "/Empleados/Index", Order = 0)]
     public class EmpleadosController : Controller
     {
         private readonly RepositorioBase<Empleados> db;
+        public static List<Empleados> Lista;
         public EmpleadosController(Contexto context)
         {
             db = new RepositorioBase<Empleados>(context);
         }
 
         // GET: Empleados
-        public async Task<IActionResult> Index()
+        [BreadCrumb(Title = "Listado de Empelado", Order = 1)]
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre",int PageSize = 1)
         {
-            return View(await db.GetListAsync(x => true));
+            if (!string.IsNullOrWhiteSpace(filter))
+                Lista = await db.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+            else
+                Lista = await db.GetListAsync(x => true);
+
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Nombre");
+            model.RouteValue = new RouteValueDictionary {
+                            { "filter", filter}
+            };
+            model.Action = "Index";
+
+            return View(model);
         }
 
         // GET: Empleados/Details/5
+        [BreadCrumb(Title = "Detalle del Empleado", Order = 2)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +62,7 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Empleados/Create
+        [BreadCrumb(Title = "Crear Empleado", Order = 3)]
         public IActionResult Create()
         {
             return View();
@@ -67,6 +86,7 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Empleados/Edit/5
+        [BreadCrumb(Title = "Editar Empleado", Order = 4)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -118,6 +138,7 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Empleados/Delete/5
+        [BreadCrumb(Title = "Eliminar Empelado", Order = 5)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
