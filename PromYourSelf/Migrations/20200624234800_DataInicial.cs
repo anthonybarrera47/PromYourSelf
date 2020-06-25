@@ -81,7 +81,7 @@ namespace PromYourSelf.Migrations
                     ModificadoPor = table.Column<int>(nullable: false),
                     FechaModificacion = table.Column<DateTime>(nullable: false),
                     NegocioID = table.Column<int>(nullable: false),
-                    Foto = table.Column<byte[]>(nullable: true),
+                    Foto = table.Column<string>(nullable: true),
                     Nombre = table.Column<string>(maxLength: 50, nullable: false),
                     Apellido = table.Column<string>(nullable: false),
                     Genero = table.Column<int>(nullable: false),
@@ -486,7 +486,7 @@ namespace PromYourSelf.Migrations
             migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", 0, new DateTime(2020, 6, 23, 20, 8, 36, 581, DateTimeKind.Local).AddTicks(5490), new DateTime(2020, 6, 23, 20, 8, 36, 582, DateTimeKind.Local).AddTicks(3598), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", 0, new DateTime(2020, 6, 24, 19, 47, 59, 987, DateTimeKind.Local).AddTicks(4486), new DateTime(2020, 6, 24, 19, 47, 59, 988, DateTimeKind.Local).AddTicks(2923), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

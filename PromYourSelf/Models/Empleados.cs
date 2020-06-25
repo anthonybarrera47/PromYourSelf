@@ -24,8 +24,8 @@ namespace Models
         public TipoGenero Genero { get; set; }
         public bool Estado { get; set; }
         public virtual List<Productos> Productos { get; set; }
-		[NotMapped]
-		public IFormFile FotoFile { get; set; }
+        [NotMapped]
+        public IFormFile FotoFile { get; set; }
 
         public Empleados(int empleadoID, string foto, string nombre, string apellido, TipoGenero genero, bool estado)
         {

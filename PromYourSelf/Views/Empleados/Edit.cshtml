@@ -9,8 +9,10 @@
 <form asp-action="Edit" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="NegocioID" />
+
     <div class="card shadow mb-4">
-        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">Creando empleado</h1></div>
+
+        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
         <div class="card-body">
             <div class="row">
                 <div class="col-3">
@@ -24,7 +26,6 @@
                         {
                             <img src="~/img/avatar.png" id="FotoResources" class="avatar img-circle img-thumbnail" alt="avatar">
                         }
-
                         <h6>Upload a different photo...</h6>
                         <input asp-for="FotoFile" onchange="showMyImage(this)" type="file" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
                     </div>
@@ -68,8 +69,15 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="home">
                             <hr>
-
-
+                            <div class="form-row" hidden>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="EmpleadoID">Empleado id</label>
+                                        <input asp-for="EmpleadoID" type="text" class="form-control" />
+                                        <span asp-validation-for="EmpleadoID" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -130,7 +138,7 @@
     <script type="text/javascript">
 
         function showMyImage(fileInput) {
-            debugger;
+           
             var files = fileInput.files;
             console.log(files);
             for (var i = 0; i < files.length; i++) {
@@ -156,4 +164,95 @@
         }
     </script>
 }
+
+
+@*@model Models.Empleados
+
+    @{
+        ViewData["Title"] = "Edit";
+    }
+
+    <h1>Edit</h1>
+
+    <h4>Empleados</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="EmpleadoID" class="control-label"></label>
+                    <input asp-for="EmpleadoID" class="form-control" />
+                    <span asp-validation-for="EmpleadoID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NegocioID" class="control-label"></label>
+                    <input asp-for="NegocioID" class="form-control" />
+                    <span asp-validation-for="NegocioID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Foto" class="control-label"></label>
+                    <input asp-for="Foto" class="form-control" />
+                    <span asp-validation-for="Foto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <input asp-for="Apellido" class="form-control" />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Genero" class="control-label"></label>
+                    <input asp-for="Genero" class="form-control" />
+                    <span asp-validation-for="Genero" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UsuarioID" class="control-label"></label>
+                    <input asp-for="UsuarioID" class="form-control" />
+                    <span asp-validation-for="UsuarioID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EsNulo" class="control-label"></label>
+                    <input asp-for="EsNulo" class="form-control" />
+                    <span asp-validation-for="EsNulo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreadoPor" class="control-label"></label>
+                    <input asp-for="CreadoPor" class="form-control" />
+                    <span asp-validation-for="CreadoPor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FechaCreacion" class="control-label"></label>
+                    <input asp-for="FechaCreacion" class="form-control" />
+                    <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ModificadoPor" class="control-label"></label>
+                    <input asp-for="ModificadoPor" class="form-control" />
+                    <span asp-validation-for="ModificadoPor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FechaModificacion" class="control-label"></label>
+                    <input asp-for="FechaModificacion" class="form-control" />
+                    <span asp-validation-for="FechaModificacion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
 
