@@ -26,7 +26,6 @@ namespace Models
         [Column("Email", TypeName = "varchar(50)")]
         [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Email inválido.")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Este campo es requerido")]
         public bool Confirmado { get; set; }
         [Display(Name = "Tipo Usuario")]
         public TiposUsuario TipoUsuario { get; set; }

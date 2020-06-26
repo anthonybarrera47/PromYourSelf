@@ -1,65 +1,155 @@
-﻿@model IEnumerable<Models.Negocios>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<Models.Negocios>
 
 @{
-    ViewData["Title"] = "Index";
+    string Titulo = "Listado  de Negocios";
+    ViewData["Title"] = Titulo;
+    int PageSize = 1;
+    var start = this.Model.StartPageIndex;
+    var stop = this.Model.StopPageIndex;
 }
 
-<h1>Index</h1>
+<h1>Negocios</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreComercial)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitud)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitud)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreComercial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitud)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitud)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.NegocioID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.NegocioID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.NegocioID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    <form method="get" asp-action="Index">
+        <div class="form-row justify-content-between">
+            <div class="form-inline">
+                <input name="filter" class="form-control" placeholder="Filtro"
+                       value="@Model.RouteValue["Filter"]" />
+                <button type="submit" class="btn  btn-primary">
+                    <i class="fas fa-search" aria-hidden="true">Buscar</i>
+                </button>
+            </div>
+            <div class="form-group">
+                <select asp-for="@PageSize" class="form-control">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+</div>
+<br />
+<div class="card shadow">
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.SortableHeaderFor(model => model.NombreComercial)
+                        </th>
+                        <th>
+                            @Html.SortableHeaderFor(model => model.Direccion)
+                        </th>
+                        <th>
+                            @Html.SortableHeaderFor(model => model.Telefono1)
+                        </th>
+                        <th>
+                            @Html.SortableHeaderFor(model => model.Telefono2)
+                        </th>
+                        <th>
+                            @Html.SortableHeaderFor(model => model.Latitud)
+                        </th>
+                        <th>
+                            @Html.SortableHeaderFor(model => model.Longitud)
+                        </th>
+                        <th>Acci&oacute;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NombreComercial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Direccion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Telefono1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Telefono2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Latitud)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Longitud)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.NegocioID"><i class="fas fa-edit">&nbsp; Editar</i></a> |
+                                <a asp-action="Details" asp-route-id="@item.NegocioID"><i class="fas fa-info-circle">&nbsp;Detalles</i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.NegocioID"><i class="fas fa-trash-alt">&nbsp;Eliminar</i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (this.Model.PageCount > 1)
+            {
+                <ul class="pagination pagination-lg justify-content-start">
+
+                    @if (start > 1)
+                    {
+                        <li class="page-item">
+                            <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(1))" aria-label="First" class="page-link">
+                                <span aria-hidden="true">First</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (this.Model.PageIndex > 1)
+                    {
+                        <li class="page-item">
+                            <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageIndex - 1))" aria-label="Previous" class="page-link">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = start; i <= stop; i++)
+                    {
+                        <li class="page-item @((Model.PageIndex == i) ? "active" : null)">
+                            @if (i == 1)
+                            {
+                                @Html.ActionLink("First", Model.Action, Model.GetRouteValueForPage(i), new { @class = "page-link" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink(i.ToString(), Model.Action, Model.GetRouteValueForPage(i), new { @class = "page-link" })
+                            }
+
+                        </li>
+                    }
+
+                    @if (this.Model.PageIndex < this.Model.PageCount)
+                    {
+                        <li class="page-item">
+                            <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageIndex + 1))" aria-label="Next" class="page-link">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (stop < this.Model.PageCount)
+                    {
+                        <li class="page-item">
+                            <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageCount))" aria-label="Last" class="page-link">
+                                <span aria-hidden="true">Last</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            }
+
+        </div>
+</div>
+</div>
