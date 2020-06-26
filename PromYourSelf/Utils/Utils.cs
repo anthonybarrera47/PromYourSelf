@@ -11,7 +11,7 @@ namespace PromYourSelf.Utils
 {
     public static class Utils
     {
-        public static async Task<string> imageToBase64(IFormFile foto)
+        public static async Task<string> ImageToBase64(IFormFile foto)
         {
             if (foto != null)
             {

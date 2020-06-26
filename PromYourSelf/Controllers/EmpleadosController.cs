@@ -75,7 +75,7 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Empleados Empleado)
         {
-            string strbase64 = await Utils.Utils.imageToBase64(Empleado.FotoFile);
+            string strbase64 = await Utils.Utils.ImageToBase64(Empleado.FotoFile);
             Empleado.Foto = strbase64;
             if (ModelState.IsValid)
             {
@@ -113,7 +113,7 @@ namespace PromYourSelf.Controllers
             {
                 return NotFound();
             }
-            string strbase64 = await Utils.Utils.imageToBase64(empleados.FotoFile);
+            string strbase64 = await Utils.Utils.ImageToBase64(empleados.FotoFile);
             empleados.Foto = strbase64;
             if (ModelState.IsValid)
             {
