@@ -53,7 +53,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Prom YourSelf <sup>3</sup></div>
             </a>
 
             <!-- Divider -->
@@ -76,25 +76,42 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <!--INICIO DE SUBMENU EMPLEADOS-->
+            <!--INICIO DE SUBMENU USUARIOS-->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
+                    <i class="fas fa-fw fa-user-plus"></i>
+                    <span>Usuarios</span>
+                </a>
+                <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @*<h6 class="collapse-header">Custom Components:</h6>*@
+                        <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
+                        <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
+                    </div>
+                </div>
+            </li>
+            <!--FIN DE SUBMENU USUARIOS-->
+
+            <!--INICIO DE SUBMENU NEGOCIOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsNegocios" aria-expanded="true" aria-controls="collapseNegocios">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-business-time"></i>
                     <span>Negocios</span>
                 </a>
                 <div id="collapsNegocios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Custom Components:</h6>*@
                         <a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>
-                        <a class="collapse-item" asp-controller="negocios" asp-action="create">Nuevo Negocios</a>
+                        <a class="collapse-item" asp-controller="negocios" asp-action="create">Nuevo Negocio</a>
                     </div>
                 </div>
             </li>
-            <!--FIN DE SUBMENU EMPLEADOS-->
+            <!--FIN DE SUBMENU NEGOCIOS-->
+
             <!--INICIO DE SUBMENU EMPLEADOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="true" aria-controls="collapseEmpleados">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-person-booth"></i>
                     <span>Empleados</span>
                 </a>
                 <div id="collapseEmpleados" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -106,10 +123,11 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU EMPLEADOS-->
+
             <!--INICIO DE SUBMENU PRODUCTOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos" aria-expanded="true" aria-controls="collapseproductos">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-book"></i>
                     <span>Productos</span>
                 </a>
                 <div id="collapseproductos" class="collapse" aria-labelledby="collapseproductos" data-parent="#collapseproductos">
@@ -121,10 +139,11 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU PRODUCTOS-->
+
             <!--INICIO DE SUBMENU citaS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecitas" aria-expanded="true" aria-controls="collapsecitas">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-list-alt"></i>
                     <span>citas</span>
                 </a>
                 <div id="collapsecitas" class="collapse" aria-labelledby="collapsecitas" data-parent="#collapsecitas">
@@ -136,10 +155,11 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU citaS-->
+
             <!--INICIO DE SUBMENU ventas-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseventas" aria-expanded="true" aria-controls="collapseventas">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-th"></i>
                     <span>ventas</span>
                 </a>
                 <div id="collapseventas" class="collapse" aria-labelledby="collapseventas" data-parent="#collapseventas">
@@ -151,10 +171,11 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU ventas-->
+
             <!--INICIO DE SUBMENU mensajes-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsemensajes" aria-expanded="true" aria-controls="collapsemensajes">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-envelope"></i>
                     <span>mensajes</span>
                 </a>
                 <div id="collapsemensajes" class="collapse" aria-labelledby="collapsemensajes" data-parent="#collapsemensajes">
