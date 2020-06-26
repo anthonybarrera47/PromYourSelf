@@ -26,7 +26,7 @@ namespace PromYourSelf.Controllers
 
         // GET: Empleados
         [BreadCrumb(Title = "Listado de Empelado", Order = 1)]
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre",int PageSize = 1)
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre",int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
                 Lista = await db.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
@@ -75,7 +75,7 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Empleados Empleado)
         {
-            string strbase64 = await FileUtil.imageToBase64(Empleado.FotoFile);
+            string strbase64 = await Utils.Utils.imageToBase64(Empleado.FotoFile);
             Empleado.Foto = strbase64;
             if (ModelState.IsValid)
             {
@@ -113,7 +113,7 @@ namespace PromYourSelf.Controllers
             {
                 return NotFound();
             }
-            string strbase64 = await FileUtil.imageToBase64(empleados.FotoFile);
+            string strbase64 = await Utils.Utils.imageToBase64(empleados.FotoFile);
             empleados.Foto = strbase64;
             if (ModelState.IsValid)
             {

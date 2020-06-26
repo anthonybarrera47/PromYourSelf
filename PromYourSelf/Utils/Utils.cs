@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Drawing;
-
+using System.Reflection;
 
 namespace PromYourSelf.Utils
 {
-    public static class FileUtil
+    public static class Utils
     {
         public static async Task<string> imageToBase64(IFormFile foto)
         {
@@ -30,6 +30,10 @@ namespace PromYourSelf.Utils
             else
                 return string.Empty;
 
+        }
+        public static PropertyInfo[] GetProperties(object obj)
+        {
+            return obj.GetType().GetProperties();
         }
     }
 
