@@ -5,24 +5,37 @@ using System.Threading.Tasks;
 using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
     public class MensajesController : Controller
     {
         private readonly RepositorioBase<Mensajes> db;
-
+        public static List<Mensajes> Lista;
         public MensajesController(Contexto context)
         {
             db = new RepositorioBase<Mensajes>(context);
         }
 
         // GET: Mensajes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Contenido", int PageSize = 5)
         {
-            return View(await db.GetListAsync(x => true));
+            if (!string.IsNullOrWhiteSpace(filter))
+                Lista = await db.GetListAsync(x => x.Contenido.ToUpper().Contains(filter.ToUpper()));
+            else
+                Lista = await db.GetListAsync(x => true);
+
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Contenido");
+            model.RouteValue = new RouteValueDictionary {
+                            { "filter", filter}
+            };
+            model.Action = "Index";
+
+            return View(model);
         }
 
         // GET: Mensajes/Details/5

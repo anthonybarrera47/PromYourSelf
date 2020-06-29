@@ -5,23 +5,37 @@ using System.Threading.Tasks;
 using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
     public class VentasController : Controller
     {
         private readonly RepositorioBase<Ventas> db;
+        public static List<Ventas> Lista;
         public VentasController(Contexto context)
         {
             db = new RepositorioBase<Ventas>(context);
         }
 
         // GET: Ventas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FechaCreacion", int PageSize = 5)
         {
-            return View(await db.GetListAsync(x => true));
+            if (!string.IsNullOrWhiteSpace(filter))
+                Lista = await db.GetListAsync(x => x.FechaCreacion.ToString().Contains(filter.ToUpper()));
+            else
+                Lista = await db.GetListAsync(x => true);
+
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "FechaCreacion");
+            model.RouteValue = new RouteValueDictionary {
+                            { "filter", filter}
+            };
+            model.Action = "Index";
+
+            return View(model);
         }
 
         // GET: Ventas/Details/5
