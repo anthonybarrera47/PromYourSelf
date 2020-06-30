@@ -27,7 +27,7 @@ namespace BLL
             {
                 entity = await db.Set<T>().FindAsync(id);
 
-                if (entity.GetType() == typeof(CamposEstandar))
+                if (entity.GetType().BaseType == typeof(CamposEstandar))
                 {
                     if ((entity as CamposEstandar).EsNulo)
                         entity = null;
