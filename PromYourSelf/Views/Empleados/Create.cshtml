@@ -1,7 +1,6 @@
 ﻿@model Models.Empleados
 
 
-
 @{
     string Titulo = "Crear Empleado";
     ViewData["Title"] = Titulo;
@@ -51,19 +50,16 @@
                     </div>
 
                 </div><!--/col-3-->
-                <div class="col-9">
+                <div class="col-9" id="tabs">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item active"><a class="nav-link" data-toggle="tab" href="#home">Datos</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="nav" href="#messages">Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="nav" href="#settings">Menu 2</a></li>
+                        <li class="nav-item "><a class="nav-link active" data-toggle="tab" href="#Datos">Datos</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Fotos">Productos</a></li>
                     </ul>
 
 
                     <div class="tab-content">
-                        <div class="tab-pane active" id="home">
+                        <div class="tab-pane fade show active" id="Datos" role="tabpanel" aria-labelledby="Datos-tab">
                             <hr>
-
-
                             <div class="form-row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -97,10 +93,39 @@
                             </div>
                             <hr>
                         </div><!--/tab-pane-->
+                        <div class="tab-pane fade" id="Fotos" role="tabpanel" aria-labelledby="Datos-tab">
+                            @if (Model != null)
+                            {
+                                @foreach (var item in Model.Productos)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <figure class="card card-product">
+                                                <div class="img-wrap">
+                                                    <img src="data:image/jpeg;base64,@item.Fotos.FirstOrDefault()">
+                                                    <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                                                </div>
+                                                <figcaption class="info-wrap">
+                                                    <h6 class="title text-dots"><a href="#">Good item name</a></h6>
+                                                    <div class="action-wrap">
+                                                        <a href="#" class="btn btn-primary btn-sm float-right"> Order </a>
+                                                        <div class="price-wrap h5">
+                                                            <span class="price-new">$1280</span>
+                                                            <del class="price-old">$1980</del>
+                                                        </div> <!-- price-wrap.// -->
+                                                    </div> <!-- action-wrap -->
+                                                </figcaption>
+                                            </figure> <!-- card // -->
+                                        </div> <!-- col // -->
+                                    </div>
+                                }
+                            }
+                        </div>
                     </div><!--/tab-pane-->
                 </div><!--/tab-content-->
             </div><!--/col-9-->
         </div>
+
 
         <div class="card-footer">
             <div class="form-group">
@@ -118,7 +143,7 @@
     </div>
 </form>
 @section Scripts
-    {
+                {
     <script type="text/javascript">
 
         function showMyImage(fileInput) {
@@ -145,6 +170,7 @@
 
             }
         }
+
     </script>
 
 }

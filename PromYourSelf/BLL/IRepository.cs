@@ -13,7 +13,7 @@ namespace BLL
         Task<bool> ModifiedAsync(T entity);
         Task<bool> DeleteAsync(int? id);
         Task<T> SearchAsync(int? id);
-        Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression);
+        Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression,bool GetNullFields = false);
         bool Exists(int id);
     }
 }

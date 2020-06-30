@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace BLL
 {
@@ -25,6 +26,13 @@ namespace BLL
             try
             {
                 entity = await db.Set<T>().FindAsync(id);
+
+                if (entity.GetType() == typeof(CamposEstandar))
+                {
+                    if ((entity as CamposEstandar).EsNulo)
+                        entity = null;
+                }
+
             }
             catch (Exception)
             { throw; }
@@ -43,9 +51,11 @@ namespace BLL
             bool paso = false;
             try
             {
-                T entity = await db.Set<T>().FindAsync(id); 
+                T entity = await db.Set<T>().FindAsync(id);
 
-                db.Set<T>().Remove(entity);
+                if (entity.GetType().BaseType == typeof(CamposEstandar))
+                    (entity as CamposEstandar).EsNulo = true;
+
                 paso = await db.SaveChangesAsync() > 0;
             }
             catch (Exception)
@@ -54,12 +64,19 @@ namespace BLL
             { db.Dispose(); }
             return paso;
         }
-        public virtual async Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression)
+        public virtual async Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression, bool GetNullFields = false)
         {
             List<T> Lista = new List<T>();
             try
             {
                 Lista = await db.Set<T>().Where(expression).ToListAsync() ?? new List<T>();
+
+                if (GetNullFields == true)
+                {
+                    if (Lista.GetType().BaseType == typeof(List<CamposEstandar>))
+                        (Lista as List<CamposEstandar>).ForEach(x=>x.EsNulo=false);
+                }
+
             }
             catch (Exception)
             { throw; }
@@ -99,7 +116,7 @@ namespace BLL
 
         public bool Exists(int id)
         {
-            return db.FindAsync<T>(id) !=null;
+            return db.FindAsync<T>(id) != null;
         }
     }
 }

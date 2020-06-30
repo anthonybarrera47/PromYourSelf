@@ -77,6 +77,8 @@ namespace PromYourSelf.Controllers
         {
             string strbase64 = await Utils.Utils.ImageToBase64(Empleado.FotoFile);
             Empleado.Foto = strbase64;
+
+         
             if (ModelState.IsValid)
             {
                 await db.SaveAsync(Empleado);

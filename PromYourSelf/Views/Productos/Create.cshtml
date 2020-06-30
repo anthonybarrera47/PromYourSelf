@@ -1,67 +1,98 @@
 ﻿@model Models.Productos
 
 @{
-    ViewData["Title"] = "Create";
+    string Titulo = "Crear Productos";
+    ViewData["Title"] = "Titulo";
 }
 
-<h1>Create</h1>
+<form asp-action="Create" method="post" id="registrationForm" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow mb-4">
+        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
 
-<h4>Productos</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+        <div class="card-body">
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item "><a class="nav-link active" data-toggle="tab" href="#home">Datos</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Fotos">Fotos</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="home">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Nombre" class="control-label"></label>
+                                <input asp-for="Nombre" class="form-control" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Descripcion" class="control-label"></label>
+                                <input asp-for="Descripcion" class="form-control" />
+                                <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Unidad" class="control-label"></label>
+                                <input asp-for="Unidad" class="form-control" />
+                                <span asp-validation-for="Unidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Stock" class="control-label"></label>
+                                <input asp-for="Stock" class="form-control" />
+                                <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Precio" class="control-label"></label>
+                                <input asp-for="Precio" class="form-control" />
+                                <span asp-validation-for="Precio" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="PrecioOferta" class="control-label"></label>
+                                <input asp-for="PrecioOferta" class="form-control" />
+                                <span asp-validation-for="PrecioOferta" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <label asp-for="TipoProductos" class="control-label"></label>
+                            <select asp-for="TipoProductos" class="form-control">
+                                <option value="1">Servicio</option>
+                                <option value="0">Producto</option>
+                            </select>
+                            <span asp-validation-for="TipoProductos" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane" id="Fotos"></div>
             </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Unidad" class="control-label"></label>
-                <input asp-for="Unidad" class="form-control" />
-                <span asp-validation-for="Unidad" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Stock" class="control-label"></label>
-                <input asp-for="Stock" class="form-control" />
-                <span asp-validation-for="Stock" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
-                <span asp-validation-for="Precio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PrecioOferta" class="control-label"></label>
-                <input asp-for="PrecioOferta" class="form-control" />
-                <span asp-validation-for="PrecioOferta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TipoProductos" class="control-label"></label>
-                <select asp-for="TipoProductos" class="form-control">
-                    <option value="1">Servicio</option>
-<option value="0">Producto</option>
-</select>
-                <span asp-validation-for="TipoProductos" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreadoPor" class="control-label"></label>
-                <input asp-for="CreadoPor" class="form-control" />
-                <span asp-validation-for="CreadoPor" class="text-danger"></span>
-            </div>
-       
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+
+    <div class="card-footer">
+        <div class="form-group">
+            <div class="col-12">
+                <button class="btn btn-lg btn-success pull-right" value="Edit" type="submit"><i class="fas fa-save"></i> Guardar</button>
+                <button class="btn btn-lg btn-info" type="reset"><i class="fas fa-redo-alt"></i> Limpiar</button>
+            </div>
+        </div>
+    </div>
+
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>

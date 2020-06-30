@@ -10,7 +10,7 @@ namespace Models
     public abstract class CamposEstandar
     {
         public int UsuarioID { get; set; }
-        public int EsNulo { get; set; }
+        public bool EsNulo { get; set; }
         public int CreadoPor { get; set; }
         [DataType(DataType.Date)]
         public DateTime FechaCreacion { get; set; }
