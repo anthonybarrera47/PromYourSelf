@@ -1,9 +1,9 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<object>
+﻿@model ReflectionIT.Mvc.Paging.IPagingList
 
 @{
+    
     var start = this.Model.StartPageIndex;
     var stop = this.Model.StopPageIndex;
-}
 }
 
 @if (this.Model.PageCount > 1)

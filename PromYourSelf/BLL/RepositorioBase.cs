@@ -36,8 +36,6 @@ namespace BLL
             }
             catch (Exception)
             { throw; }
-            finally
-            { db.Dispose(); }
             return entity;
         }
 
@@ -60,8 +58,6 @@ namespace BLL
             }
             catch (Exception)
             { throw; }
-            finally
-            { db.Dispose(); }
             return paso;
         }
         public virtual async Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression, bool GetNullFields = false)
@@ -71,17 +67,16 @@ namespace BLL
             {
                 Lista = await db.Set<T>().Where(expression).ToListAsync() ?? new List<T>();
 
-                if (GetNullFields == true)
+                if (GetNullFields == false)
                 {
-                    if (Lista.GetType().BaseType == typeof(List<CamposEstandar>))
-                        (Lista as List<CamposEstandar>).ForEach(x=>x.EsNulo=false);
+                    if (typeof(T).BaseType == typeof(CamposEstandar))
+                        Lista.RemoveAll(x => (x as CamposEstandar).EsNulo == true);
+
                 }
 
             }
             catch (Exception)
             { throw; }
-            finally
-            { db.Dispose(); }
             return Lista;
         }
         public virtual async Task<bool> SaveAsync(T entity)
@@ -94,8 +89,6 @@ namespace BLL
             }
             catch (Exception)
             { throw; }
-            finally
-            { db.Dispose(); }
             return paso;
         }
 
@@ -109,8 +102,6 @@ namespace BLL
             }
             catch (Exception)
             { throw; }
-            finally
-            { db.Dispose(); }
             return paso;
         }
 

@@ -1,0 +1,7 @@
+﻿@model PromYourSelf.ViewModels.Actions
+
+<td>
+    <a asp-action="@Model.EditAction" asp-route-id="@Model.Key"><i class="fas fa-edit">&nbsp; Editar</i></a> |
+    <a asp-action="@Model.DetailsAction" asp-route-id="@Model.Key"><i class="fas fa-info-circle">&nbsp;Detalles</i></a> |
+    <a asp-action="@Model.DeleteAction" asp-route-id="@Model.Key"><i class="fas fa-trash-alt">&nbsp;Eliminar</i></a>
+</td>
