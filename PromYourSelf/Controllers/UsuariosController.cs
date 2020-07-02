@@ -15,23 +15,22 @@ namespace PromYourSelf.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly RepositorioBase<Usuarios> db;
+        private readonly Contexto db;
+        private readonly IRepoWrapper _Repo;
         public static List<Usuarios> Lista;
-        private readonly IRepositoryUsuarios _RepoUsuario;
-
-        public UsuariosController(Contexto context, IRepositoryUsuarios RepoUsuario)
+        public UsuariosController(Contexto context, IRepoWrapper RepoUsuario)
         {
-            db = new RepositorioBase<Usuarios>(context);
-            _RepoUsuario = RepoUsuario;
+            db = context;
+            _Repo = RepoUsuario;
         }
 
         // GET: Usuarios
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "UserName", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await db.GetListAsync(x => x.UserName.ToUpper().Contains(filter.ToUpper()));
+                Lista = await _Repo.Usuarios.GetListAsync(x => x.UserName.ToUpper().Contains(filter.ToUpper()));
             else
-                Lista = await db.GetListAsync(x => true);
+                Lista = await _Repo.Usuarios.GetListAsync(x => true);
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "UserName");
             model.RouteValue = new RouteValueDictionary {
@@ -50,7 +49,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await db.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.SearchAsync(id);
 
             if (usuarios == null)
             {
@@ -75,7 +74,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                await db.SaveAsync(usuarios);
+                await _Repo.Usuarios.SaveAsync(usuarios);
                 return RedirectToAction(nameof(Index));
             }
             return View(usuarios);
@@ -89,7 +88,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await db.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.SearchAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -113,7 +112,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await db.ModifiedAsync(usuarios);
+                    await _Repo.Usuarios.ModifiedAsync(usuarios);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -139,7 +138,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await db.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.SearchAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -153,13 +152,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await db.DeleteAsync(id);
+            await _Repo.Usuarios.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool UsuariosExists(int id)
         {
-            return db.Exists(id);
+            return _Repo.Usuarios.Exists(id);
         }
     }
 }

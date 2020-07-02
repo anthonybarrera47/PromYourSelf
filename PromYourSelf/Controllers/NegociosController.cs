@@ -15,22 +15,22 @@ namespace PromYourSelf.Controllers
 {
     public class NegociosController : Controller
     {
-        private readonly RepositorioBase<Negocios> db;
+        private readonly Contexto db;
+        private readonly IRepoWrapper _Repo;
         public static List<Negocios> Lista;
-        private readonly IRepositoryNegocios _RepoNegocio;
-        public NegociosController(Contexto context, IRepositoryNegocios RepoNegocio)
+        public NegociosController(Contexto context, IRepoWrapper RepoNegocio)
         {
-            db = new RepositorioBase<Negocios>(context);
-            _RepoNegocio = RepoNegocio;
+            db = context;
+            _Repo = RepoNegocio;
         }
 
         // GET: Negocios
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await db.GetListAsync(x => x.NombreComercial.ToUpper().Contains(filter.ToUpper()));
+                Lista = await _Repo.Negocios.GetListAsync(x => x.NombreComercial.ToUpper().Contains(filter.ToUpper()));
             else
-                Lista = await db.GetListAsync(x => true);
+                Lista = await _Repo.Negocios.GetListAsync(x => true);
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "NombreComercial");
             model.RouteValue = new RouteValueDictionary {
@@ -49,7 +49,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var negocios = await db.SearchAsync(id);
+            var negocios = await _Repo.Negocios.SearchAsync(id);
 
             if (negocios == null)
             {
@@ -74,7 +74,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                await db.SaveAsync(negocios);
+                await _Repo.Negocios.SaveAsync(negocios);
                 return RedirectToAction(nameof(Index));
             }
             return View(negocios);
@@ -88,7 +88,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var negocios = await db.SearchAsync(id);
+            var negocios = await _Repo.Negocios.SearchAsync(id);
             if (negocios == null)
             {
                 return NotFound();
@@ -112,7 +112,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await db.ModifiedAsync(negocios);
+                    await _Repo.Negocios.ModifiedAsync(negocios);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -138,7 +138,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var negocios = await db.SearchAsync(id);
+            var negocios = await _Repo.Negocios.SearchAsync(id);
             if (negocios == null)
             {
                 return NotFound();
@@ -152,13 +152,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await db.DeleteAsync(id);
+            await _Repo.Negocios.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool NegociosExists(int id)
         {
-            return db.Exists(id);
+            return _Repo.Negocios.Exists(id);
         }
     }
 }

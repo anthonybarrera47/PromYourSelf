@@ -15,22 +15,23 @@ namespace PromYourSelf.Controllers
 {
     public class CitasController : Controller
     {
-        private readonly RepositorioBase<Citas> db;
+        private readonly Contexto db; 
+        private readonly IRepoWrapper _Repo;
         public static List<Citas> Lista;
-        private readonly IRepositoryCitas _RepoCita;
-        public CitasController(Contexto context, IRepositoryCitas RepoCita)
+       
+        public CitasController(Contexto context, IRepoWrapper RepoCita)
         {
-            db = new RepositorioBase<Citas>(context);
-            _RepoCita = RepoCita;
+            db = context;
+            _Repo = RepoCita;
         }
 
         // GET: Citas
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FechaInicio", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await db.GetListAsync(x => x.FechaInicio.ToString().Contains(filter.ToUpper()));
+                Lista = await _Repo.Citas.GetListAsync(x => x.FechaInicio.ToString().Contains(filter.ToUpper()));
             else
-                Lista = await db.GetListAsync(x => true);
+                Lista = await _Repo.Citas.GetListAsync(x => true);
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "FechaInicio");
             model.RouteValue = new RouteValueDictionary {
@@ -49,7 +50,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await db.SearchAsync(id);
+            var citas = await _Repo.Citas.SearchAsync(id);
 
             if (citas == null)
             {
@@ -74,7 +75,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                await db.SaveAsync(citas);
+                await _Repo.Citas.SaveAsync(citas);
                 return RedirectToAction(nameof(Index));
             }
             return View(citas);
@@ -88,7 +89,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await db.SearchAsync(id);
+            var citas = await _Repo.Citas.SearchAsync(id);
             if (citas == null)
             {
                 return NotFound();
@@ -112,7 +113,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await db.ModifiedAsync(citas);
+                    await _Repo.Citas.ModifiedAsync(citas);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -138,7 +139,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await db.SearchAsync(id);
+            var citas = await _Repo.Citas.SearchAsync(id);
             if (citas == null)
             {
                 return NotFound();
@@ -152,13 +153,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await db.DeleteAsync(id);
+            await _Repo.Citas.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CitasExists(int id)
         {
-            return db.Exists(id);
+            return _Repo.Citas.Exists(id);
         }
 
      

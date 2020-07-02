@@ -15,23 +15,23 @@ namespace PromYourSelf.Controllers
 {
     public class MensajesController : Controller
     {
-        private readonly RepositorioBase<Mensajes> db;
+        private readonly Contexto db;
+        private readonly IRepoWrapper _Repo;
         public static List<Mensajes> Lista;
-        private readonly IRepositoryMensajes _RepoMensaje;
 
-        public MensajesController(Contexto context, IRepositoryMensajes RepoMensaje)
+        public MensajesController(Contexto context, IRepoWrapper RepoMensaje)
         {
-            db = new RepositorioBase<Mensajes>(context);
-            _RepoMensaje = RepoMensaje;
+            db = context;
+            _Repo = RepoMensaje;
         }
 
         // GET: Mensajes
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Contenido", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await db.GetListAsync(x => x.Contenido.ToUpper().Contains(filter.ToUpper()));
+                Lista = await _Repo.Mensajes.GetListAsync(x => x.Contenido.ToUpper().Contains(filter.ToUpper()));
             else
-                Lista = await db.GetListAsync(x => true);
+                Lista = await _Repo.Mensajes.GetListAsync(x => true);
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Contenido");
             model.RouteValue = new RouteValueDictionary {
@@ -50,7 +50,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var mensajes = await db.SearchAsync(id);
+            var mensajes = await _Repo.Mensajes.SearchAsync(id);
 
             if (mensajes == null)
             {
@@ -75,7 +75,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                await db.SaveAsync(mensajes);
+                await _Repo.Mensajes.SaveAsync(mensajes);
                 return RedirectToAction(nameof(Index));
             }
             return View(mensajes);
@@ -89,7 +89,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var mensajes = await db.SearchAsync(id);
+            var mensajes = await _Repo.Mensajes.SearchAsync(id);
             if (mensajes == null)
             {
                 return NotFound();
@@ -113,7 +113,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await db.ModifiedAsync(mensajes);
+                    await _Repo.Mensajes.ModifiedAsync(mensajes);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -139,7 +139,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var mensajes = await db.SearchAsync(id);
+            var mensajes = await _Repo.Mensajes.SearchAsync(id);
             if (mensajes == null)
             {
                 return NotFound();
@@ -153,13 +153,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await db.DeleteAsync(id);
+            await _Repo.Mensajes.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool MensajesExists(int id)
         {
-            return db.Exists(id);
+            return _Repo.Mensajes.Exists(id);
         }
     }
 }

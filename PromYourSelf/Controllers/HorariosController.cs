@@ -13,19 +13,19 @@ namespace PromYourSelf.Controllers
 {
     public class HorariosController : Controller
     {
-        private readonly RepositorioBase<Horarios> db;
-        private readonly IRepositoryHorarios _RepoHorario;
+        private readonly Contexto db;
+        private readonly IRepoWrapper _Repo;
 
-        public HorariosController(Contexto context, IRepositoryHorarios RepoHorario)
+        public HorariosController(Contexto context, IRepoWrapper RepoHorario)
         {
-            db = new RepositorioBase<Horarios>(context);
-            _RepoHorario = RepoHorario;
+            db = context;
+            _Repo = RepoHorario;
         }
 
         // GET: Horarios
         public async Task<IActionResult> Index()
         {
-            return View(await db.GetListAsync(x => true));
+            return View(await _Repo.Horarios.GetListAsync(x => true));
         }
 
         // GET: Horarios/Details/5
@@ -36,7 +36,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await db.SearchAsync(id);
+            var horarios = await _Repo.Horarios.SearchAsync(id);
 
             if (horarios == null)
             {
@@ -61,7 +61,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                await db.SaveAsync(horarios);
+                await _Repo.Horarios.SaveAsync(horarios);
                 return RedirectToAction(nameof(Index));
             }
             return View(horarios);
@@ -75,7 +75,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await db.SearchAsync(id);
+            var horarios = await _Repo.Horarios.SearchAsync(id);
             if (horarios == null)
             {
                 return NotFound();
@@ -99,7 +99,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await db.ModifiedAsync(horarios);
+                    await _Repo.Horarios.ModifiedAsync(horarios);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,7 +125,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await db.SearchAsync(id);
+            var horarios = await _Repo.Horarios.SearchAsync(id);
             if (horarios == null)
             {
                 return NotFound();
@@ -139,13 +139,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await db.DeleteAsync(id);
+            await _Repo.Horarios.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool HorariosExists(int id)
         {
-            return db.Exists(id);
+            return _Repo.Horarios.Exists(id);
         }
     }
 }
