@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using PromYourSelf.BLL.Interfaces;
 
 namespace PromYourSelf.Controllers
 {
     public class HorariosController : Controller
     {
         private readonly RepositorioBase<Horarios> db;
+        private readonly IRepositoryHorarios _RepoHorario;
 
-        public HorariosController(Contexto context)
+        public HorariosController(Contexto context, IRepositoryHorarios RepoHorario)
         {
             db = new RepositorioBase<Horarios>(context);
+            _RepoHorario = RepoHorario;
         }
 
         // GET: Horarios

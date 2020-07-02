@@ -42,6 +42,13 @@ namespace PromYourSelf
 
 
             services.AddScoped<IRepositoryEmpleados, RepositorioEmpleado>();
+            services.AddScoped<IRepositoryCitas, RepositorioCitas>();
+            services.AddScoped<IRepositoryHorarios, RepositorioHorario>();
+            services.AddScoped<IRepositoryMensajes, RepositorioMensaje>();
+            services.AddScoped<IRepositoryNegocios, RepositorioNegocio>();
+            services.AddScoped<IRepositoryProductos, RepositorioProducto>();
+            services.AddScoped<IRepositoryUsuarios, RepositorioUsuario>();
+            services.AddScoped<IRepositoryVentas, RepositorioVenta>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

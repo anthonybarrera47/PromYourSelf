@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using PromYourSelf.BLL.Interfaces;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -16,9 +17,11 @@ namespace PromYourSelf.Controllers
     {
         private readonly RepositorioBase<Ventas> db;
         public static List<Ventas> Lista;
-        public VentasController(Contexto context)
+        private readonly IRepositoryVentas _RepoVenta;
+        public VentasController(Contexto context, IRepositoryVentas RepoVenta)
         {
             db = new RepositorioBase<Ventas>(context);
+            _RepoVenta = RepoVenta;
         }
 
         // GET: Ventas
