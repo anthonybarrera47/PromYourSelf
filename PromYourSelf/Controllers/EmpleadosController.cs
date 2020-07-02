@@ -11,27 +11,30 @@ using PromYourSelf.Utils;
 using DNTBreadCrumb.Core;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
+using PromYourSelf.BLL.Interfaces;
 
 namespace PromYourSelf.Controllers
 {
     [BreadCrumb(Title = "Empleado", Url = "/Empleados/Index", Order = 0)]
     public class EmpleadosController : Controller
     {
-        private readonly RepositorioBase<Empleados> db;
+        private readonly Contexto db;
+        private readonly IRepositoryEmpleados _RepoEmpleado;
         public static List<Empleados> Lista;
-        public EmpleadosController(Contexto context)
+        public EmpleadosController(Contexto context, IRepositoryEmpleados RepoEmpleado)
         {
-            db = new RepositorioBase<Empleados>(context);
+            db = context;
+            _RepoEmpleado = RepoEmpleado;
         }
 
         // GET: Empleados
         [BreadCrumb(Title = "Listado de Empelado", Order = 1)]
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre",int PageSize = 5)
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await db.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+                Lista = await _RepoEmpleado.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
             else
-                Lista = await db.GetListAsync(x => true);
+                Lista = await _RepoEmpleado.GetListAsync(x => true);
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Nombre");
             model.RouteValue = new RouteValueDictionary {
@@ -51,7 +54,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await db.SearchAsync(id);
+            var empleados = await _RepoEmpleado.SearchAsync(id);
 
             if (empleados == null)
             {
@@ -78,10 +81,10 @@ namespace PromYourSelf.Controllers
             string strbase64 = await Utils.Utils.ImageToBase64(Empleado.FotoFile);
             Empleado.Foto = strbase64;
 
-         
+
             if (ModelState.IsValid)
             {
-                await db.SaveAsync(Empleado);
+                await _RepoEmpleado.SaveAsync(Empleado);
                 return RedirectToAction(nameof(Index));
             }
             return View(Empleado);
@@ -96,7 +99,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await db.SearchAsync(id);
+            var empleados = await _RepoEmpleado.SearchAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -115,13 +118,17 @@ namespace PromYourSelf.Controllers
             {
                 return NotFound();
             }
-            string strbase64 = await Utils.Utils.ImageToBase64(empleados.FotoFile);
-            empleados.Foto = strbase64;
+            if (empleados.FotoFile != null)
+            {
+                string strbase64 = await Utils.Utils.ImageToBase64(empleados.FotoFile);
+                empleados.Foto = strbase64;
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await db.ModifiedAsync(empleados);
+                    await _RepoEmpleado.ModifiedAsync(empleados);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -148,7 +155,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await db.SearchAsync(id);
+            var empleados = await _RepoEmpleado.SearchAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -162,13 +169,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await db.DeleteAsync(id);
+            await _RepoEmpleado.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmpleadosExists(int id)
         {
-            return db.Exists(id);
+            return _RepoEmpleado.Exists(id);
         }
     }
 }

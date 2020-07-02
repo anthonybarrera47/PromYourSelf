@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Usuarios : CamposEstandar
+    public class Usuarios : IdentityUser<int>
     {
         [Key]
-        public new int UsuarioID { get; set; }
+        public  int UsuarioID { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
         public string UserName { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
@@ -30,7 +31,12 @@ namespace Models
         [Display(Name = "Tipo Usuario")]
         public TiposUsuario TipoUsuario { get; set; }
         public bool Estado { get; set; }
+        public bool EsNulo { get; set; }
+        public int CreadoPor { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public int ModificadoPor { get; set; }
+        public DateTime FechaModificacion { get; set; }
 
-      
+
     }
 }

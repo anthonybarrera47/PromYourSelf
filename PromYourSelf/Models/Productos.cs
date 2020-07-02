@@ -16,7 +16,7 @@ namespace Models
         [Required(ErrorMessage ="Este campo es requerido")]
         public string Nombre { get; set; }
         [StringLength(255,
-            ErrorMessage = "La descripcion no debe de tener mas de 255 caracteres.")]
+            ErrorMessage = "La descripción no debe de tener mas de 255 caracteres.")]
         public string Descripcion { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
         public int Unidad { get; set; }

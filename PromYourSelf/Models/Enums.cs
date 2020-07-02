@@ -14,7 +14,9 @@ namespace Models
     public enum TiposUsuario
     {
         Cliente = 0,
-        Administrador = 1
+        Administrador = 1,
+        Empleado = 2,
+        Guest = 3
     }
     public enum EstadoCita
     {

@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReflectionIT.Mvc.Paging;
+using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.BLL;
 
 namespace PromYourSelf
 {
@@ -38,6 +40,8 @@ namespace PromYourSelf
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<Contexto>(options => options.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
 
+
+            services.AddScoped<IRepositoryEmpleados, RepositorioEmpleado>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -63,7 +67,7 @@ namespace PromYourSelf
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=DashBoard}/{action=DashBoard}/{id?}");
             });
         }
     }

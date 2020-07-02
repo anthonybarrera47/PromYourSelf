@@ -20,6 +20,7 @@
                     <div class="text-center">
                         @if (Model.Foto != string.Empty)
                         {
+                            <input asp-for="Foto" hidden/>
                             <img src="@imgSrc" id="FotoResources" class="avatar img-circle img-thumbnail" alt="profile">
                         }
                         else

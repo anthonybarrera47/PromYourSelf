@@ -12,7 +12,7 @@ namespace Models
         [Key]
         public int FotoID { get; set; }
         public Productos Productos{ get; set; }
-        public byte[] Foto { get; set; }
+        public string Foto { get; set; }
 
     }
 }

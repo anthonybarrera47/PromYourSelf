@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using PromYourSelf.Models;
 
 namespace Models
 {
-    public class Contexto : IdentityDbContext
+    public class Contexto : IdentityDbContext<
+        Usuarios, Roles, int,
+        IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>,
+        IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DbSet<Citas> Citas { get; set; }
         public DbSet<Ciudad> Ciudad { get; set; }
