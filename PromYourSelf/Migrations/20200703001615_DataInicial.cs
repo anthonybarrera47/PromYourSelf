@@ -12,10 +12,17 @@ namespace PromYourSelf.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,10 +33,9 @@ namespace PromYourSelf.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
@@ -40,11 +46,53 @@ namespace PromYourSelf.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    Nombres = table.Column<string>(nullable: false),
+                    Apellidos = table.Column<string>(nullable: false),
+                    Foto = table.Column<string>(nullable: true),
+                    Genero = table.Column<int>(nullable: false),
+                    Email = table.Column<string>(type: "varchar(50)", maxLength: 256, nullable: false),
+                    Confirmado = table.Column<bool>(nullable: false),
+                    TipoUsuario = table.Column<int>(nullable: false),
+                    Estado = table.Column<bool>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.UniqueConstraint("AK_AspNetUsers_UsuarioID", x => x.UsuarioID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Citas",
+                columns: table => new
+                {
+                    CitaID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    NegocioID = table.Column<int>(nullable: false),
+                    EmpleadoAsignado = table.Column<int>(nullable: false),
+                    FechaInicio = table.Column<DateTime>(nullable: false),
+                    FechaFin = table.Column<DateTime>(nullable: false),
+                    CodigoComprobacion = table.Column<string>(maxLength: 15, nullable: false),
+                    Notas = table.Column<string>(nullable: true),
+                    Estado = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Citas", x => x.CitaID);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +123,7 @@ namespace PromYourSelf.Migrations
                     EmpleadoID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     ModificadoPor = table.Column<int>(nullable: false),
@@ -98,7 +146,7 @@ namespace PromYourSelf.Migrations
                 {
                     NegocioID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EsNulo = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     ModificadoPor = table.Column<int>(nullable: false),
@@ -118,39 +166,12 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
-                columns: table => new
-                {
-                    UsuarioID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    EsNulo = table.Column<int>(nullable: false),
-                    CreadoPor = table.Column<int>(nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    ModificadoPor = table.Column<int>(nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    UserName = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false),
-                    Nombres = table.Column<string>(nullable: false),
-                    Apellidos = table.Column<string>(nullable: false),
-                    Foto = table.Column<string>(nullable: true),
-                    Genero = table.Column<int>(nullable: false),
-                    Email = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Confirmado = table.Column<bool>(nullable: false),
-                    TipoUsuario = table.Column<int>(nullable: false),
-                    Estado = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Usuarios", x => x.UsuarioID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -171,7 +192,7 @@ namespace PromYourSelf.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -193,7 +214,7 @@ namespace PromYourSelf.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,8 +231,8 @@ namespace PromYourSelf.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,7 +255,7 @@ namespace PromYourSelf.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -251,13 +272,92 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Mensaje",
+                columns: table => new
+                {
+                    MensajeID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    ClienteId = table.Column<int>(nullable: true),
+                    NegocioID = table.Column<int>(nullable: false),
+                    Contenido = table.Column<string>(maxLength: 255, nullable: false),
+                    Tipo = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mensaje", x => x.MensajeID);
+                    table.ForeignKey(
+                        name: "FK_Mensaje_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ventas",
+                columns: table => new
+                {
+                    VentaID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    UsuariosId = table.Column<int>(nullable: true),
+                    NegocioID = table.Column<int>(nullable: false),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    Monto = table.Column<decimal>(nullable: false),
+                    CitaID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ventas", x => x.VentaID);
+                    table.ForeignKey(
+                        name: "FK_Ventas_AspNetUsers_UsuariosId",
+                        column: x => x.UsuariosId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CitasDetalle",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CitaID = table.Column<int>(nullable: true),
+                    ProductoID = table.Column<int>(nullable: false),
+                    Cantidad = table.Column<int>(nullable: false),
+                    Precio = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CitasDetalle", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_CitasDetalle_Citas_CitaID",
+                        column: x => x.CitaID,
+                        principalTable: "Citas",
+                        principalColumn: "CitaID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Productos",
                 columns: table => new
                 {
                     ProductoID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     ModificadoPor = table.Column<int>(nullable: false),
@@ -310,87 +410,25 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Citas",
+                name: "VentasDetalle",
                 columns: table => new
                 {
-                    CitaID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<int>(nullable: false),
-                    CreadoPor = table.Column<int>(nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    ModificadoPor = table.Column<int>(nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    NegocioID = table.Column<int>(nullable: false),
-                    FechaInicio = table.Column<DateTime>(nullable: false),
-                    FechaFin = table.Column<DateTime>(nullable: false),
-                    CodigoComprobacion = table.Column<string>(maxLength: 15, nullable: false),
-                    Estado = table.Column<int>(nullable: false)
+                    VentaID = table.Column<int>(nullable: true),
+                    ProductoID = table.Column<int>(nullable: false),
+                    Cantidad = table.Column<int>(nullable: false),
+                    Precio = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Citas", x => x.CitaID);
+                    table.PrimaryKey("PK_VentasDetalle", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Citas_Usuarios_UsuarioID",
-                        column: x => x.UsuarioID,
-                        principalTable: "Usuarios",
-                        principalColumn: "UsuarioID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Mensaje",
-                columns: table => new
-                {
-                    MensajeID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<int>(nullable: false),
-                    CreadoPor = table.Column<int>(nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    ModificadoPor = table.Column<int>(nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    NegocioID = table.Column<int>(nullable: false),
-                    Contenido = table.Column<string>(maxLength: 255, nullable: false),
-                    Tipo = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mensaje", x => x.MensajeID);
-                    table.ForeignKey(
-                        name: "FK_Mensaje_Usuarios_UsuarioID",
-                        column: x => x.UsuarioID,
-                        principalTable: "Usuarios",
-                        principalColumn: "UsuarioID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ventas",
-                columns: table => new
-                {
-                    VentaID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<int>(nullable: false),
-                    CreadoPor = table.Column<int>(nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    ModificadoPor = table.Column<int>(nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    NegocioID = table.Column<int>(nullable: false),
-                    Fecha = table.Column<DateTime>(nullable: false),
-                    Monto = table.Column<decimal>(nullable: false),
-                    CitaID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ventas", x => x.VentaID);
-                    table.ForeignKey(
-                        name: "FK_Ventas_Usuarios_UsuarioID",
-                        column: x => x.UsuarioID,
-                        principalTable: "Usuarios",
-                        principalColumn: "UsuarioID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_VentasDetalle_Ventas_VentaID",
+                        column: x => x.VentaID,
+                        principalTable: "Ventas",
+                        principalColumn: "VentaID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -400,7 +438,7 @@ namespace PromYourSelf.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     ModificadoPor = table.Column<int>(nullable: false),
@@ -426,7 +464,7 @@ namespace PromYourSelf.Migrations
                     FotoID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductosProductoID = table.Column<int>(nullable: true),
-                    Foto = table.Column<byte[]>(nullable: true)
+                    Foto = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -439,54 +477,10 @@ namespace PromYourSelf.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "CitasDetalle",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CitaID = table.Column<int>(nullable: true),
-                    ProductoID = table.Column<int>(nullable: false),
-                    Cantidad = table.Column<int>(nullable: false),
-                    Precio = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CitasDetalle", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_CitasDetalle_Citas_CitaID",
-                        column: x => x.CitaID,
-                        principalTable: "Citas",
-                        principalColumn: "CitaID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "VentasDetalle",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    VentaID = table.Column<int>(nullable: true),
-                    ProductoID = table.Column<int>(nullable: false),
-                    Cantidad = table.Column<int>(nullable: false),
-                    Precio = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VentasDetalle", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_VentasDetalle_Ventas_VentaID",
-                        column: x => x.VentaID,
-                        principalTable: "Ventas",
-                        principalColumn: "VentaID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", 0, new DateTime(2020, 6, 24, 19, 47, 59, 987, DateTimeKind.Local).AddTicks(4486), new DateTime(2020, 6, 24, 19, 47, 59, 988, DateTimeKind.Local).AddTicks(2923), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 2, 20, 16, 15, 424, DateTimeKind.Local).AddTicks(3557), new DateTime(2020, 7, 2, 20, 16, 15, 425, DateTimeKind.Local).AddTicks(2667), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -528,11 +522,6 @@ namespace PromYourSelf.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Citas_UsuarioID",
-                table: "Citas",
-                column: "UsuarioID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CitasDetalle_CitaID",
                 table: "CitasDetalle",
                 column: "CitaID");
@@ -553,9 +542,9 @@ namespace PromYourSelf.Migrations
                 column: "NegociosNegocioID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mensaje_UsuarioID",
+                name: "IX_Mensaje_ClienteId",
                 table: "Mensaje",
-                column: "UsuarioID");
+                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_EmpleadosEmpleadoID",
@@ -563,9 +552,9 @@ namespace PromYourSelf.Migrations
                 column: "EmpleadosEmpleadoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ventas_UsuarioID",
+                name: "IX_Ventas_UsuariosId",
                 table: "Ventas",
-                column: "UsuarioID");
+                column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VentasDetalle_VentaID",
@@ -615,9 +604,6 @@ namespace PromYourSelf.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Citas");
 
             migrationBuilder.DropTable(
@@ -633,7 +619,7 @@ namespace PromYourSelf.Migrations
                 name: "Empleados");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "AspNetUsers");
         }
     }
 }

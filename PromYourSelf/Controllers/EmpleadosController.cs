@@ -19,12 +19,12 @@ namespace PromYourSelf.Controllers
     public class EmpleadosController : Controller
     {
         private readonly Contexto db;
-        private readonly IRepositoryEmpleados _RepoEmpleado;
+        private readonly IRepoWrapper _Repo;
         public static List<Empleados> Lista;
-        public EmpleadosController(Contexto context, IRepositoryEmpleados RepoEmpleado)
+        public EmpleadosController(Contexto context, IRepoWrapper RepoEmpleado)
         {
             db = context;
-            _RepoEmpleado = RepoEmpleado;
+            _Repo = RepoEmpleado;
         }
 
         // GET: Empleados
@@ -32,9 +32,9 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await _RepoEmpleado.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+                Lista = await _Repo.Empleados.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
             else
-                Lista = await _RepoEmpleado.GetListAsync(x => true);
+                Lista = await _Repo.Empleados.GetListAsync(x => true);
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Nombre");
             model.RouteValue = new RouteValueDictionary {
@@ -54,7 +54,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _RepoEmpleado.SearchAsync(id);
+            var empleados = await _Repo.Empleados.SearchAsync(id);
 
             if (empleados == null)
             {
@@ -84,7 +84,7 @@ namespace PromYourSelf.Controllers
 
             if (ModelState.IsValid)
             {
-                await _RepoEmpleado.SaveAsync(Empleado);
+                await _Repo.Empleados.SaveAsync(Empleado);
                 return RedirectToAction(nameof(Index));
             }
             return View(Empleado);
@@ -99,7 +99,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _RepoEmpleado.SearchAsync(id);
+            var empleados = await _Repo.Empleados.SearchAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -128,7 +128,7 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await _RepoEmpleado.ModifiedAsync(empleados);
+                    await _Repo.Empleados.ModifiedAsync(empleados);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -155,7 +155,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _RepoEmpleado.SearchAsync(id);
+            var empleados = await _Repo.Empleados.SearchAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -169,13 +169,13 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _RepoEmpleado.DeleteAsync(id);
+            await _Repo.Empleados.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmpleadosExists(int id)
         {
-            return _RepoEmpleado.Exists(id);
+            return _Repo.Empleados.Exists(id);
         }
     }
 }

@@ -22,7 +22,8 @@ namespace Models
     {
         Solicitado = 0,
         EnProceso = 1,
-        Finalizado = 2
+        Finalizado = 2,
+        Cancelada = 3
     }
     public enum TipoProducto
     {
