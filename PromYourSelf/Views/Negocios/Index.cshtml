@@ -3,9 +3,10 @@
 @{
     string Titulo = "Listado  de Negocios";
     ViewData["Title"] = Titulo;
+    string Edit = "Edit";
+    string Delete = "Delete";
+    string Details = "Details";
     int PageSize = 1;
-    var start = this.Model.StartPageIndex;
-    var stop = this.Model.StopPageIndex;
 }
 
 <h1>Negocios</h1>
@@ -84,9 +85,7 @@
                                 @Html.DisplayFor(modelItem => item.Longitud)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.NegocioID"><i class="fas fa-edit">&nbsp; Editar</i></a> |
-                                <a asp-action="Details" asp-route-id="@item.NegocioID"><i class="fas fa-info-circle">&nbsp;Detalles</i></a> |
-                                <a asp-action="Delete" asp-route-id="@item.NegocioID"><i class="fas fa-trash-alt">&nbsp;Eliminar</i></a>
+                                <partial name="_ActionsPartialView" model="new Actions() { Key =item.NegocioID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
                             </td>
                         </tr>
                     }
