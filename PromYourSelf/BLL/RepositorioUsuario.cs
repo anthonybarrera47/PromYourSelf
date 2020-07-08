@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Microsoft.AspNetCore.Identity;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using System;
@@ -11,9 +12,11 @@ namespace PromYourSelf.BLL
     public class RepositorioUsuario : RepositorioBase<Usuarios>, IRepositoryUsuarios
     {
         private readonly Contexto _context;
-        public RepositorioUsuario(Contexto context) : base(context)
+        private readonly UserManager<Usuarios> _userManager;
+        public RepositorioUsuario(Contexto context, UserManager<Usuarios> userManager) : base(context)
         {
             _context = context;
+            _userManager = userManager;
         }
     }
 }

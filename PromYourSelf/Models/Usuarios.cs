@@ -14,8 +14,6 @@ namespace Models
         [Key]
         public  int UsuarioID { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
-        public string UserName { get; set; }
-        [Required(ErrorMessage = "Este campo es requerido")]
         public string Password { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
         public string Nombres { get; set; }
@@ -26,7 +24,7 @@ namespace Models
         [Required(ErrorMessage = "Este campo es requerido")]
         [Column("Email", TypeName = "varchar(50)")]
         [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Email inválido.")]
-        public string Email { get; set; }
+        public override string Email { get; set; }
         public bool Confirmado { get; set; }
         [Display(Name = "Tipo Usuario")]
         public TiposUsuario TipoUsuario { get; set; }

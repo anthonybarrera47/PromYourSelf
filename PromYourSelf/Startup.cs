@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ReflectionIT.Mvc.Paging;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.BLL;
+using PromYourSelf.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace PromYourSelf
 {
@@ -40,6 +42,26 @@ namespace PromYourSelf
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<Contexto>(options => options.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
 
+            services.AddIdentity<Usuarios, Roles>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            }
+           ).AddEntityFrameworkStores<Contexto>().AddDefaultTokenProviders();
+
+            //Donde redirecciona cuando no estan autorizados a ver paginas
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/EntradaApp/Login";  //Cuando alguien no tenga permiso a una pagina, lo enviara aqui.
+                options.AccessDeniedPath = "/EntradaApp/AccesoDenegado";
+                options.Cookie.Name = ".applicationname";
+                options.Cookie.HttpOnly = true; // This must be true to prevent XSS
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            });
 
             //services.AddScoped<IRepositoryEmpleados, RepositorioEmpleado>();
             //services.AddScoped<IRepositoryCitas, RepositorioCitas>();

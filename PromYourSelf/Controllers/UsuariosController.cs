@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -16,12 +17,17 @@ namespace PromYourSelf.Controllers
     public class UsuariosController : Controller
     {
         private readonly Contexto db;
+        private readonly UserManager<Usuarios> _userManager;
+        private readonly SignInManager<Usuarios> _signInManager;
         private readonly IRepoWrapper _Repo;
         public static List<Usuarios> Lista;
-        public UsuariosController(Contexto context, IRepoWrapper RepoUsuario)
+        public UsuariosController(Contexto context, IRepoWrapper RepoUsuario,
+            SignInManager<Usuarios> signInManager, UserManager<Usuarios> userManager)
         {
             db = context;
             _Repo = RepoUsuario;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Usuarios
@@ -70,7 +76,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create (Usuarios usuarios)
+        public async Task<IActionResult> Create(Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {

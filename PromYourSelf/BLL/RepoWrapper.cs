@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Models;
 using PromYourSelf.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace PromYourSelf.BLL
     public class RepoWrapper : IRepoWrapper
     {
         private readonly Contexto _RepoWrapper;
+        private readonly UserManager<Usuarios> _userManager;
         private IRepositoryCitas _Citas;
         private IRepositoryEmpleados _Empleados;
         private IRepositoryHorarios _Horarios;
@@ -19,9 +21,10 @@ namespace PromYourSelf.BLL
         private IRepositoryUsuarios _Usuarios;
         private IRepositoryVentas _Ventas;
 
-        public RepoWrapper(Contexto contexto)
+        public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager)
         {
             _RepoWrapper = contexto;
+            _userManager = userManager;
         }
         public IRepositoryCitas Citas
         {
@@ -106,7 +109,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Usuarios == null)
                 {
-                    _Usuarios = new RepositorioUsuario(_RepoWrapper);
+                    _Usuarios = new RepositorioUsuario(_RepoWrapper,_userManager);
                 }
 
                 return _Usuarios;
