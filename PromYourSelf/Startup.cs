@@ -73,6 +73,8 @@ namespace PromYourSelf
             //services.AddScoped<IRepositoryVentas, RepositorioVenta>();
             services.AddScoped<IRepoWrapper, RepoWrapper>();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //inyecta los datos del usuario conectado a todos los controllers
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

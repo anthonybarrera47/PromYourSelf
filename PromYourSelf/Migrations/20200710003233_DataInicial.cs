@@ -17,7 +17,6 @@ namespace PromYourSelf.Migrations
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
-                    UsuarioID = table.Column<int>(nullable: false),
                     EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
@@ -35,6 +34,7 @@ namespace PromYourSelf.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
@@ -47,8 +47,6 @@ namespace PromYourSelf.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    UsuarioID = table.Column<int>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: false),
                     Password = table.Column<string>(nullable: false),
                     Nombres = table.Column<string>(nullable: false),
                     Apellidos = table.Column<string>(nullable: false),
@@ -57,6 +55,7 @@ namespace PromYourSelf.Migrations
                     Email = table.Column<string>(type: "varchar(50)", maxLength: 256, nullable: false),
                     Confirmado = table.Column<bool>(nullable: false),
                     TipoUsuario = table.Column<int>(nullable: false),
+                    Posicion = table.Column<string>(maxLength: 40, nullable: false),
                     Estado = table.Column<bool>(nullable: false),
                     EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
@@ -67,7 +66,6 @@ namespace PromYourSelf.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.UniqueConstraint("AK_AspNetUsers_UsuarioID", x => x.UsuarioID);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +171,8 @@ namespace PromYourSelf.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
+                    ClaimAction = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,7 +193,8 @@ namespace PromYourSelf.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
+                    ClaimAction = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -232,7 +232,12 @@ namespace PromYourSelf.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,7 +253,7 @@ namespace PromYourSelf.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -480,7 +485,7 @@ namespace PromYourSelf.Migrations
             migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 2, 20, 16, 15, 424, DateTimeKind.Local).AddTicks(3557), new DateTime(2020, 7, 2, 20, 16, 15, 425, DateTimeKind.Local).AddTicks(2667), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 9, 20, 32, 33, 348, DateTimeKind.Local).AddTicks(4386), new DateTime(2020, 7, 9, 20, 32, 33, 349, DateTimeKind.Local).AddTicks(3037), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

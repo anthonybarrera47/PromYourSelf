@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Microsoft.AspNetCore.Http;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using System;
@@ -11,7 +12,7 @@ namespace PromYourSelf.BLL
     public class RepositorioProducto : RepositorioBase<Productos>, IRepositoryProductos
     {
         private readonly Contexto _context;
-        public RepositorioProducto(Contexto context) : base(context)
+        public RepositorioProducto(Contexto context, IHttpContextAccessor accessor) : base(context, accessor)
         {
             _context = context;
         }

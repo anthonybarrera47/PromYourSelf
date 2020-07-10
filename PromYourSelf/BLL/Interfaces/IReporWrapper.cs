@@ -15,6 +15,8 @@ namespace PromYourSelf.BLL.Interfaces
         IRepositoryProductos Productos { get; }
         IRepositoryUsuarios Usuarios { get; }
         IRepositoryVentas Ventas { get; }
+        IRepositoryRol Rol { get; }
+        
     }
 }
 

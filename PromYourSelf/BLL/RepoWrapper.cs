@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models;
+using PromYourSelf.Models.ControlUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +15,12 @@ namespace PromYourSelf.BLL
 {
     public class RepoWrapper : IRepoWrapper
     {
-        private readonly Contexto _RepoWrapper;
+        private readonly Contexto _RepoContexto;
+        private readonly RoleManager<Roles> _rolManager;
         private readonly UserManager<Usuarios> _userManager;
+        private readonly IOptions<ErrorMsg> _errorMsg;
+        private readonly ILogger _logger;
+        private readonly IHttpContextAccessor _accessor;
         private IRepositoryCitas _Citas;
         private IRepositoryEmpleados _Empleados;
         private IRepositoryHorarios _Horarios;
@@ -20,11 +29,19 @@ namespace PromYourSelf.BLL
         private IRepositoryProductos _Productos;
         private IRepositoryUsuarios _Usuarios;
         private IRepositoryVentas _Ventas;
+        private IRepositoryRol _rol;
 
-        public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager)
+        public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
+                IOptions<ErrorMsg> errorMsg,
+                ILogger<RepoWrapper> logger,
+                IHttpContextAccessor accessor)
         {
-            _RepoWrapper = contexto;
+            _RepoContexto = contexto;
             _userManager = userManager;
+            _errorMsg = errorMsg;
+            _userManager = userManager;
+            _logger = logger;
+            _accessor = accessor;
         }
         public IRepositoryCitas Citas
         {
@@ -32,7 +49,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Citas == null)
                 {
-                    _Citas = new RepositorioCitas(_RepoWrapper);
+                    _Citas = new RepositorioCitas(_RepoContexto, _accessor);
                 }
 
                 return _Citas;
@@ -45,7 +62,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Empleados == null)
                 {
-                    _Empleados = new RepositorioEmpleado(_RepoWrapper);
+                    _Empleados = new RepositorioEmpleado(_RepoContexto, _userManager, _errorMsg, _accessor);
                 }
 
                 return _Empleados;
@@ -58,7 +75,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Horarios == null)
                 {
-                    _Horarios = new RepositorioHorario(_RepoWrapper);
+                    _Horarios = new RepositorioHorario(_RepoContexto, _accessor);
                 }
 
                 return _Horarios;
@@ -71,7 +88,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Mensajes == null)
                 {
-                    _Mensajes = new RepositorioMensaje(_RepoWrapper);
+                    _Mensajes = new RepositorioMensaje(_RepoContexto, _accessor);
                 }
 
                 return _Mensajes;
@@ -84,7 +101,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Negocios == null)
                 {
-                    _Negocios = new RepositorioNegocio(_RepoWrapper);
+                    _Negocios = new RepositorioNegocio(_RepoContexto, _accessor);
                 }
 
                 return _Negocios;
@@ -97,7 +114,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Productos == null)
                 {
-                    _Productos = new RepositorioProducto(_RepoWrapper);
+                    _Productos = new RepositorioProducto(_RepoContexto, _accessor);
                 }
 
                 return _Productos;
@@ -109,7 +126,7 @@ namespace PromYourSelf.BLL
             {
                 if (_Usuarios == null)
                 {
-                    _Usuarios = new RepositorioUsuario(_RepoWrapper,_userManager);
+                    _Usuarios = new RepositorioUsuario(_RepoContexto, _userManager, _errorMsg, _logger, _accessor);
                 }
 
                 return _Usuarios;
@@ -122,10 +139,22 @@ namespace PromYourSelf.BLL
             {
                 if (_Ventas == null)
                 {
-                    _Ventas = new RepositorioVenta(_RepoWrapper);
+                    _Ventas = new RepositorioVenta(_RepoContexto, _accessor);
                 }
 
                 return _Ventas;
+            }
+        }
+        public IRepositoryRol Rol
+        {
+            get
+            {
+                if (_rol == null)
+                {
+                    _rol = new RepositorioRoles(_RepoContexto, _rolManager, _errorMsg, _accessor);
+                }
+
+                return _rol;
             }
         }
 

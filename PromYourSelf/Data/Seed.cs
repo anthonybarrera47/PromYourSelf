@@ -32,7 +32,10 @@ namespace PromYourSelf.Data
                     LockoutEnabled = false,
                     ModificadoPor = 0,
                     EsNulo = false,
-                    CreadoPor = 0
+                    CreadoPor = 0,
+                    Posicion = "Administrador",
+                    FechaModificacion = DateTime.Now,
+                    FechaCreacion = DateTime.Now
                 };
                 var _user = await userManager.FindByNameAsync(poweruser.UserName);
                 if (_user == null)
@@ -41,6 +44,7 @@ namespace PromYourSelf.Data
                     if (result.Succeeded)
                     {
                         await userManager.AddClaimAsync(poweruser, new Claim("Nombre", poweruser.Nombres));
+                        await userManager.AddClaimAsync(poweruser, new Claim("Posicion", poweruser.Posicion));
                         Roles rol = await rolManager.FindByNameAsync("Administrador");
                         if (rol == null)
                         {

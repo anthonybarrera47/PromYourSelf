@@ -15,47 +15,9 @@ namespace PromYourSelf.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
@@ -72,19 +34,6 @@ namespace PromYourSelf.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -390,8 +339,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 7, 7, 15, 4, 30, 774, DateTimeKind.Local).AddTicks(9158),
-                            FechaModificacion = new DateTime(2020, 7, 7, 15, 4, 30, 775, DateTimeKind.Local).AddTicks(6192),
+                            FechaCreacion = new DateTime(2020, 7, 9, 20, 32, 33, 348, DateTimeKind.Local).AddTicks(4386),
+                            FechaModificacion = new DateTime(2020, 7, 9, 20, 32, 33, 349, DateTimeKind.Local).AddTicks(3037),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,
@@ -509,6 +458,10 @@ namespace PromYourSelf.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("Posicion")
+                        .IsRequired()
+                        .HasMaxLength(40);
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<int>("TipoUsuario");
@@ -516,14 +469,9 @@ namespace PromYourSelf.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<int>("UsuarioID");
-
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("UsuarioID");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -592,6 +540,71 @@ namespace PromYourSelf.Migrations
                     b.ToTable("VentasDetalle");
                 });
 
+            modelBuilder.Entity("PromYourSelf.Models.ControlUsers.RoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimAction");
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<int>("RoleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.ControlUsers.UserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimAction");
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.ControlUsers.UserRole", b =>
+                {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("RoleId");
+
+                    b.Property<int>("CreadoPor");
+
+                    b.Property<bool>("EsNulo");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<int>("ModificadoPor");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
             modelBuilder.Entity("PromYourSelf.Models.Roles", b =>
                 {
                     b.Property<int>("Id")
@@ -617,8 +630,6 @@ namespace PromYourSelf.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256);
 
-                    b.Property<int>("UsuarioID");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -629,37 +640,8 @@ namespace PromYourSelf.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
-                {
-                    b.HasOne("PromYourSelf.Models.Roles")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.HasOne("Models.Usuarios")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Models.Usuarios")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.HasOne("PromYourSelf.Models.Roles")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Models.Usuarios")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -728,6 +710,35 @@ namespace PromYourSelf.Migrations
                     b.HasOne("Models.Ventas", "Venta")
                         .WithMany("Details")
                         .HasForeignKey("VentaID");
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.ControlUsers.RoleClaim", b =>
+                {
+                    b.HasOne("PromYourSelf.Models.Roles")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.ControlUsers.UserClaim", b =>
+                {
+                    b.HasOne("Models.Usuarios")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.ControlUsers.UserRole", b =>
+                {
+                    b.HasOne("PromYourSelf.Models.Roles", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Models.Usuarios", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

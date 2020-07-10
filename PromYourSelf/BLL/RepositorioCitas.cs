@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Microsoft.AspNetCore.Http;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using System;
@@ -11,7 +12,7 @@ namespace PromYourSelf.BLL
     public class RepositorioCitas : RepositorioBase<Citas>,IRepositoryCitas
     {
         private readonly Contexto _context;
-        public RepositorioCitas(Contexto context) : base(context)
+        public RepositorioCitas(Contexto context, IHttpContextAccessor accessor) : base(context, accessor)
         {
             _context = context;
         }

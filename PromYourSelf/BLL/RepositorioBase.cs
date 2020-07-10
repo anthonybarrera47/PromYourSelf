@@ -6,15 +6,21 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using PromYourSelf.Utils;
 
 namespace BLL
 {
     public class RepositorioBase<T> : IDisposable, IRepository<T> where T : class
     {
         private readonly Contexto db;
-        public RepositorioBase(Contexto contexto)
+        public ClaimsPrincipal User { get; }
+
+        public RepositorioBase(Contexto contexto, IHttpContextAccessor accessor)
         {
             db = contexto;
+            User = accessor.HttpContext.User;
         }
         ~RepositorioBase()
         {
@@ -73,7 +79,6 @@ namespace BLL
                         Lista.RemoveAll(x => (x as CamposEstandar).EsNulo == true);
 
                 }
-
             }
             catch (Exception)
             { throw; }
@@ -84,8 +89,22 @@ namespace BLL
             bool paso = false;
             try
             {
+                if (entity.GetType().BaseType == typeof(CamposEstandar))
+                {
+                    (entity as CamposEstandar).EsNulo = false;
+                    (entity as CamposEstandar).CreadoPor = User.GetUserID().ToInt();
+                    (entity as CamposEstandar).ModificadoPor = User.GetUserID().ToInt();
+                }
+
+                if (entity.GetType().BaseType == typeof(Usuarios))
+                {
+                    (entity as Usuarios).EsNulo = false;
+                    (entity as Usuarios).CreadoPor = User.GetUserID().ToInt();
+                    (entity as Usuarios).ModificadoPor = User.GetUserID().ToInt();
+                }
                 if (db.Set<T>().AddAsync(entity) != null)
                     paso = await db.SaveChangesAsync() > 0;
+
             }
             catch (Exception)
             { throw; }
@@ -97,6 +116,12 @@ namespace BLL
             bool paso = false;
             try
             {
+                if (entity.GetType().BaseType == typeof(CamposEstandar))
+                    (entity as CamposEstandar).ModificadoPor = User.GetUserID().ToInt();
+
+                if (entity.GetType().BaseType == typeof(Usuarios))
+                    (entity as Usuarios).ModificadoPor = User.GetUserID().ToInt();
+
                 db.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 paso = (await db.SaveChangesAsync() > 0);
             }

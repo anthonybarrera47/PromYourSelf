@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using PromYourSelf.Models;
+using PromYourSelf.Models.ControlUsers;
 
 namespace Models
 {
     public class Contexto : IdentityDbContext<
         Usuarios, Roles, int,
-        IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>,
-        IdentityRoleClaim<int>, IdentityUserToken<int>>
+        UserClaim, UserRole, IdentityUserLogin<int>,
+        RoleClaim, IdentityUserToken<int>>
     {
         public DbSet<Citas> Citas { get; set; }
         public DbSet<Ciudad> Ciudad { get; set; }
@@ -35,11 +36,11 @@ namespace Models
 
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            builder.Entity<Negocios>().HasData(
+            modelBuilder.Entity<Negocios>().HasData(
               new Negocios()
               {
                   NegocioID = 1,
@@ -57,35 +58,60 @@ namespace Models
               }
 
               );
+            //Application User
+            modelBuilder.Entity<Usuarios>(entity =>
+            {
+                //entity.Property(e => e.Id).HasColumnName("Id");
 
-           
+                entity.HasMany(e => e.UserRoles)
+                .WithOne(e => e.User)
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Restrict); //Esto se debe hacer para evitar que sql server diga que hay referencias ondelete cíclicas.
+                                                    //.IsRequired();
+            });
+
+
+            //---
+            //Application Roles
+            //--------------------------------
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                // entity.HasIndex(x => x.NormalizedName).HasName("RoleNameIndex").IsUnique(false); //permite que existan nombres duplicados
+                entity.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+            //---
+
         }
 
 
         private void OnBeforeSaving()
         {
-            var entries = ChangeTracker.Entries();
-            foreach (var item in entries)
-            {
-                if (item.Entity is CamposEstandar camposEstandar)
-                {
-                    var now = DateTime.Now;
+            //var entries = ChangeTracker.Entries();
+            //foreach (var item in entries)
+            //{
+            //    if (item.Entity is CamposEstandar camposEstandar)
+            //    {
+            //        var now = DateTime.Now;
 
-                    switch (item.State)
-                    {
-                        case EntityState.Modified:
-                            camposEstandar.ModificadoPor = camposEstandar.UsuarioID;
-                            camposEstandar.FechaModificacion = now;
-                            break;
-                        case EntityState.Added:
-                            camposEstandar.CreadoPor = camposEstandar.UsuarioID;
-                            camposEstandar.FechaCreacion = now;
-                            camposEstandar.ModificadoPor = camposEstandar.UsuarioID;
-                            camposEstandar.FechaModificacion = now;
-                            break;
-                    }
-                }
-            }
+            //        switch (item.State)
+            //        {
+            //            case EntityState.Modified:
+            //                camposEstandar.ModificadoPor = camposEstandar.UsuarioID;
+            //                camposEstandar.FechaModificacion = now;
+            //                break;
+            //            case EntityState.Added:
+            //                camposEstandar.CreadoPor = camposEstandar.UsuarioID;
+            //                camposEstandar.FechaCreacion = now;
+            //                camposEstandar.ModificadoPor = camposEstandar.UsuarioID;
+            //                camposEstandar.FechaModificacion = now;
+            //                break;
+            //        }
+            //    }
+            //}
         }
         public override int SaveChanges()
         {

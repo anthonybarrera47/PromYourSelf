@@ -1,8 +1,4 @@
 ﻿@model Models.Usuarios
-
-
-
-
 @{
     string Titulo = "Crear Usuario";
     ViewData["Title"] = Titulo;
@@ -58,11 +54,9 @@
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#New">New</a></li>
                     </ul>
 
-
                     <div class="tab-content">
                         <div class="tab-pane active" id="Datos">
                             <hr>
-
 
                             <div class="form-row">
                                 <div class="col-6">
@@ -106,8 +100,8 @@
                             <div class="form-row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label asp-for="UserName">UserName</label>
-                                        <input asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="User name" title="Ingrese su user name.">
+                                        @Html.DisplayNameFor(x=>x.UserName)
+                                        <input asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario.">
                                         <span asp-validation-for="UserName" class="text-danger"></span>
                                     </div>
                                 </div>
