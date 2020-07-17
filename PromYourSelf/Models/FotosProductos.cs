@@ -11,7 +11,7 @@ namespace Models
     {
         [Key]
         public int FotoID { get; set; }
-        public Productos Productos{ get; set; }
+        public int ProductoID { get; set; }
         public string Foto { get; set; }
 
     }

@@ -10,7 +10,7 @@ using Models;
 namespace PromYourSelf.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200710003233_DataInicial")]
+    [Migration("20200715223919_DataInicial")]
     partial class DataInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,11 +217,11 @@ namespace PromYourSelf.Migrations
 
                     b.Property<string>("Foto");
 
-                    b.Property<int?>("ProductosProductoID");
+                    b.Property<int>("ProductoID");
 
                     b.HasKey("FotoID");
 
-                    b.HasIndex("ProductosProductoID");
+                    b.HasIndex("ProductoID");
 
                     b.ToTable("FotosProductos");
                 });
@@ -341,8 +341,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 7, 9, 20, 32, 33, 348, DateTimeKind.Local).AddTicks(4386),
-                            FechaModificacion = new DateTime(2020, 7, 9, 20, 32, 33, 349, DateTimeKind.Local).AddTicks(3037),
+                            FechaCreacion = new DateTime(2020, 7, 15, 18, 39, 18, 863, DateTimeKind.Local).AddTicks(3299),
+                            FechaModificacion = new DateTime(2020, 7, 15, 18, 39, 18, 864, DateTimeKind.Local).AddTicks(6120),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,
@@ -674,9 +674,10 @@ namespace PromYourSelf.Migrations
 
             modelBuilder.Entity("Models.FotosProductos", b =>
                 {
-                    b.HasOne("Models.Productos", "Productos")
+                    b.HasOne("Models.Productos")
                         .WithMany("Fotos")
-                        .HasForeignKey("ProductosProductoID");
+                        .HasForeignKey("ProductoID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Models.Horarios", b =>

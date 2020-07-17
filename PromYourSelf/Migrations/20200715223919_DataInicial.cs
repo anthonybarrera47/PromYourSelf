@@ -468,24 +468,24 @@ namespace PromYourSelf.Migrations
                 {
                     FotoID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ProductosProductoID = table.Column<int>(nullable: true),
+                    ProductoID = table.Column<int>(nullable: false),
                     Foto = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FotosProductos", x => x.FotoID);
                     table.ForeignKey(
-                        name: "FK_FotosProductos_Productos_ProductosProductoID",
-                        column: x => x.ProductosProductoID,
+                        name: "FK_FotosProductos_Productos_ProductoID",
+                        column: x => x.ProductoID,
                         principalTable: "Productos",
                         principalColumn: "ProductoID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 9, 20, 32, 33, 348, DateTimeKind.Local).AddTicks(4386), new DateTime(2020, 7, 9, 20, 32, 33, 349, DateTimeKind.Local).AddTicks(3037), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 15, 18, 39, 18, 863, DateTimeKind.Local).AddTicks(3299), new DateTime(2020, 7, 15, 18, 39, 18, 864, DateTimeKind.Local).AddTicks(6120), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -537,9 +537,9 @@ namespace PromYourSelf.Migrations
                 column: "ProductosProductoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FotosProductos_ProductosProductoID",
+                name: "IX_FotosProductos_ProductoID",
                 table: "FotosProductos",
-                column: "ProductosProductoID");
+                column: "ProductoID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Horarios_NegociosNegocioID",
