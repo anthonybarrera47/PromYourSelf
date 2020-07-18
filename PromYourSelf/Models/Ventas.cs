@@ -22,5 +22,15 @@ namespace Models
         [Required(ErrorMessage = "Este campo es requerido")]
         public int CitaID{ get; set; }
         public virtual List<VentasDetalle> Details{ get; set; }
+
+        public Ventas()
+        {
+            VentaID = 0;
+            NegocioID = 0;
+            Fecha = DateTime.Now;
+            Monto = 0;
+            CitaID = 0;
+            Details = new List<VentasDetalle>();
+        }
     }
 }

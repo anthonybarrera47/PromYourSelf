@@ -97,14 +97,13 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.CreadoPor)
                             </td>
-                            <td>
-                                <partial name="_ActionsPartialView" model="new Actions() { Key =item.ProductoID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                            </td>
+                            <partial name="_ActionsPartialView" model="new Actions() { Key =item.ProductoID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
+
                         </tr>
                     }
                 </tbody>
             </table>
             <partial name="_PaginationPartialView" model="this.Model" />
         </div>
-</div>
+    </div>
 </div>

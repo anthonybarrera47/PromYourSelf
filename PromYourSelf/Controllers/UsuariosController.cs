@@ -23,7 +23,7 @@ namespace PromYourSelf.Controllers
         private readonly SignInManager<Usuarios> _signInManager;
         private readonly IRepoWrapper _Repo;
         private readonly ILogger<UsuariosController> _logger;
-        private readonly string webRoot; 
+        private readonly string webRoot;
         public static List<Usuarios> Lista;
         public UsuariosController(Contexto context, IRepoWrapper RepoUsuario,
             SignInManager<Usuarios> signInManager, UserManager<Usuarios> userManager,
@@ -74,8 +74,9 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Usuarios/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+           
             return View();
         }
 

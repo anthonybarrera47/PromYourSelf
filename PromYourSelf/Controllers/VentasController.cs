@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -60,8 +61,17 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Ventas/Create
-        public IActionResult Create()
+        public async Task< IActionResult> Create()
         {
+            //var lista = await (from datos in db.Productos.AsNoTracking().AsQueryable()
+            //               .Where(x => x.EsNulo == false)
+            //                   select new Generico
+            //                   {
+            //                       Id = datos.ProductoID.ToString(),
+            //                       Name = datos.Nombre
+            //                   }).ToListAsync();
+
+            ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
             return View();
         }
 
@@ -72,12 +82,17 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Ventas ventas)
         {
-            if (ModelState.IsValid)
+            //buscar producto
+            //calcular
+            //guardar
+            /*if (ModelState.IsValid)
             {
                 await _Repo.Ventas.SaveAsync(ventas);
                 return RedirectToAction(nameof(Index));
             }
-            return View(ventas);
+            return View(ventas);*/
+            int a = 1;
+            return View();
         }
 
         // GET: Ventas/Edit/5

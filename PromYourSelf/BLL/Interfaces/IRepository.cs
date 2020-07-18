@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PromYourSelf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,5 +18,6 @@ namespace BLL
         Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression,bool GetNullFields = false);
         bool Exists(int id);
         ClaimsPrincipal User { get; }
+        Task<List<Generico>> GetGenericList();
     }
 }

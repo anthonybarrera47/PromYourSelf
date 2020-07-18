@@ -1,53 +1,209 @@
 ﻿@model Models.Ventas
 
 @{
-    ViewData["Title"] = "Create";
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    Button.ActionButtonSaveOrEdit = "Create";
+    Button.TextButtonSaveOrEdit = "Guardar";
+    string Titulo = "Crear Venta";
+    ViewData["Title"] = Titulo;
 }
 
-<h1>Create</h1>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow mb-4">
+        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
 
-<h4>Ventas</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input asp-for="Fecha" class="form-control" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
+        <div class="card-body">
+
+            <div class="row justify-content-end">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label asp-for="Fecha" class="control-label"></label>
+                        <input asp-for="Fecha" class="form-control" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Monto" class="control-label"></label>
-                <input asp-for="Monto" class="form-control" />
-                <span asp-validation-for="Monto" class="text-danger"></span>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="control-label">Nombres</label>
+                        <select id="Nombre" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
+                                class="form-control select2"
+                                style="width:100%;"
+                                data-placeholder="Seleccione el producto">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label id="CantidadLB" class="control-label"> Cantidad</label>
+                        <input for="CantidadLB" class="form-control" type="text" id="Cantidad" />
+                    </div>
+                </div>
+
+                <div class="col-3 ">
+                    <label id="PrecioLB" class="control-label">Precio</label>
+                    <div class="form-group form-inline">
+                        <input for="PrecioLB" class="form-control" type="number" id="Precio" />
+                        <input value="Agregar" type="button" class="btn btn-primary" onclick="AgregaConcepto(); return false;" />
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CitaID" class="control-label"></label>
-                <input asp-for="CitaID" class="form-control" />
-                <span asp-validation-for="CitaID" class="text-danger"></span>
+
+            <div class="row" id="divProductos">
+                <div class="table table-responsive">
+                    <table class="table table-hover" id="tablaConceptos">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Cantidad</th>
+                                <th>Nombre</th>
+                                <th>Precio unitario</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="CreadoPor" class="control-label"></label>
-                <input asp-for="CreadoPor" class="form-control" />
-                <span asp-validation-for="CreadoPor" class="text-danger"></span>
+            <div class="row justify-content-end">
+                <label>Total:  $<bold id="total"></bold></label>
             </div>
-            <div class="form-group">
-                <label asp-for="ModificadoPor" class="control-label"></label>
-                <input asp-for="ModificadoPor" class="form-control" />
-                <span asp-validation-for="ModificadoPor" class="text-danger"></span>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Monto" class="control-label"></label>
+                        <input asp-for="Monto" class="form-control" />
+                        <span asp-validation-for="Monto" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="CitaID" class="control-label"></label>
+                        <input asp-for="CitaID" class="form-control" />
+                        <span asp-validation-for="CitaID" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
+        <partial name="_ButtonsCardFooterPartialView" model="Button" />
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<script>
+    var list = [];
+    var num = 0;
+    function eliminar(e) {
+        e.preventDefault();        
+        var row = e.srcElement.parentNode.parentNode;
+        let parent = row.parentNode;          
+        let id = parseInt(row.cells[0].textContent);
+        list.splice(list.indexOf(el => el.id == id), 1);
+        calcularTotal();
+        row.parentNode.removeChild(row);
+        return false;
+    }
+
+    function calcularTotal() {
+        console.log('lista', list);
+        let total = list.reduce((a, b) => a + b.cantidad * b.precio, 0);
+        $('#total').html(total.toString());
+    }
+    function AgregaConcepto() {         
+        let Cantidad = document.getElementById("Cantidad").value;
+        let Precio = document.getElementById("Precio").value;
+        //let Nombre = document.getElementById("Nombre").val();
+        let Nombre = $('#Nombre :selected').text();
+        let id = $('#Nombre :selected').val();
+        let itemExists = list.find(el => el.id == parseInt(id))
+        if (!itemExists) {
+            list.push({ id: id, nombre: Nombre, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
+           
+        } else {
+            //mostrar mensaje de error
+            alert("Este producto ya esta agregado.");
+            return false;
+        }
+        
+        console.log('lista de items: ', list);
+        calcularTotal();
+
+        //agregamos tabla
+        let Tabla = document.getElementById("tablaConceptos");
+        let TR = document.createElement("tr");
+        let TDCantidad = document.createElement("td");
+        let TDNombre = document.createElement("td");
+        let TDPrecio = document.createElement("td");
+        let TDTotal = document.createElement("td");
+        let TDEliminar = document.createElement("td");
+        let btnEliminar = document.createElement('button');
+        btnEliminar.className = "btn btn-danger";
+        btnEliminar.innerHTML = "Eliminar";
+        btnEliminar.addEventListener("click", eliminar);
+        TDEliminar.appendChild(btnEliminar);
+        TR.appendChild(TDCantidad);
+        TR.appendChild(TDNombre);
+        TR.appendChild(TDPrecio);
+        TR.appendChild(TDTotal);
+        TR.appendChild(TDEliminar);
+        TDCantidad.innerHTML = Cantidad;
+        TDNombre.innerHTML = Nombre;
+        TDPrecio.innerHTML = Precio;
+        TDTotal.innerHTML = parseFloat(Cantidad) * parseFloat(Precio);
+        Tabla.appendChild(TR);
+
+        //agregamos hiddens
+        let DivProductos = document.getElementById("divProductos");
+        let HiddenIndex = document.createElement("input");
+        let HiddenCantidad = document.createElement("input");
+        let HiddenNombre = document.createElement("input");
+        let HiddenPrecio = document.createElement("input");
+        let HiddenProductoId = document.createElement("input");
+        console.log('el id es', parseInt(id)); 
+        HiddenProductoId.name = "Details[" + num + "].ProductoID";               
+        HiddenProductoId.value = parseInt(id);
+        HiddenProductoId.type = "hidden";
+        HiddenIndex.name = "Details.Index";
+        HiddenIndex.value = num;
+        HiddenIndex.type = "hidden";
+        HiddenCantidad.name = "Details[" + num + "].Cantidad";
+        HiddenCantidad.value = Cantidad;
+        HiddenCantidad.type = "hidden";
+        HiddenNombre.name = "Details[" + num + "].Nombre";
+        HiddenNombre.value = Nombre;
+        HiddenNombre.type = "hidden";
+        HiddenPrecio.name = "Details[" + num + "].Precio";
+        HiddenPrecio.value = Precio;
+        HiddenPrecio.type = "hidden";       
+        DivProductos.appendChild(HiddenIndex);
+        DivProductos.appendChild(HiddenCantidad);
+        DivProductos.appendChild(HiddenNombre);
+        DivProductos.appendChild(HiddenPrecio);
+        DivProductos.appendChild(HiddenProductoId);
+
+        document.getElementById("Cantidad").value = "";
+        document.getElementById("Precio").value = "";
+        document.getElementById("Nombre").value = "";
+
+        num++;
+    }
+</script>
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/vendor/select2/js/select2.full.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select2').select2({ width: 'resolve', theme: "classic" });
+        });
+    </script>
 }
+

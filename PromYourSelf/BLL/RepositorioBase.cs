@@ -9,6 +9,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using PromYourSelf.Utils;
+using PromYourSelf.ViewModels;
 
 namespace BLL
 {
@@ -133,6 +134,11 @@ namespace BLL
         public bool Exists(int id)
         {
             return db.FindAsync<T>(id) != null;
+        }
+
+        public Task<List<Generico>> GetGenericList()
+        {
+            throw new NotImplementedException();
         }
     }
 }
