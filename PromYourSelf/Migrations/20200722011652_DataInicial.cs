@@ -485,7 +485,7 @@ namespace PromYourSelf.Migrations
             migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 15, 18, 39, 18, 863, DateTimeKind.Local).AddTicks(3299), new DateTime(2020, 7, 15, 18, 39, 18, 864, DateTimeKind.Local).AddTicks(6120), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 21, 21, 16, 51, 921, DateTimeKind.Local).AddTicks(3176), new DateTime(2020, 7, 21, 21, 16, 51, 922, DateTimeKind.Local).AddTicks(1174), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

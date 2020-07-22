@@ -24,9 +24,9 @@ namespace PromYourSelf.Data
                 var poweruser = new Usuarios
                 {
                     UserName = "root",
-                    Password = "1234567",
                     Email = "root@nose.com",
                     Nombres = "Root",
+                    Password="1234",
                     Apellidos = "Root ",
                     NormalizedUserName = "root",
                     LockoutEnabled = false,
@@ -40,10 +40,10 @@ namespace PromYourSelf.Data
                 var _user = await userManager.FindByNameAsync(poweruser.UserName);
                 if (_user == null)
                 {
-                    var result = await userManager.CreateAsync(poweruser, "1234567");
+                    var result = await userManager.CreateAsync(poweruser, "1234");
                     if (result.Succeeded)
                     {
-                        await userManager.AddClaimAsync(poweruser, new Claim("Nombre", poweruser.Nombres));
+                        await userManager.AddClaimAsync(poweruser, new Claim("Nombres", poweruser.Nombres));
                         await userManager.AddClaimAsync(poweruser, new Claim("Posicion", poweruser.Posicion));
                         Roles rol = await rolManager.FindByNameAsync("Administrador");
                         if (rol == null)

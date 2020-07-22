@@ -10,7 +10,7 @@ using Models;
 namespace PromYourSelf.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200715223919_DataInicial")]
+    [Migration("20200722011652_DataInicial")]
     partial class DataInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -341,8 +341,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 7, 15, 18, 39, 18, 863, DateTimeKind.Local).AddTicks(3299),
-                            FechaModificacion = new DateTime(2020, 7, 15, 18, 39, 18, 864, DateTimeKind.Local).AddTicks(6120),
+                            FechaCreacion = new DateTime(2020, 7, 21, 21, 16, 51, 921, DateTimeKind.Local).AddTicks(3176),
+                            FechaModificacion = new DateTime(2020, 7, 21, 21, 16, 51, 922, DateTimeKind.Local).AddTicks(1174),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,

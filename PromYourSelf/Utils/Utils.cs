@@ -58,7 +58,7 @@ namespace PromYourSelf.Utils
 		{
 			if (principal == null)
 				throw new ArgumentNullException(nameof(principal));
-			return principal.FindFirst(c => c.Type == "Nombre")?.Value;
+			return principal.FindFirst(c => c.Type == "Nombres")?.Value;
 		}
 		public static string GetPosicion(this ClaimsPrincipal principal)
 		{
