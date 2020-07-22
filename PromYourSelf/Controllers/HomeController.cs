@@ -12,6 +12,7 @@ using PromYourSelf.ViewModels;
 
 namespace PromYourSelf.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly SignInManager<Usuarios> _signInManager;
