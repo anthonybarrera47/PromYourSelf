@@ -2,6 +2,9 @@
 
 
 @{
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    Button.ActionButtonSaveOrEdit = "Create";
+    Button.TextButtonSaveOrEdit = "Guardar";
     string Titulo = "Crear Empleado";
     ViewData["Title"] = Titulo;
 }
@@ -126,21 +129,7 @@
             </div><!--/col-9-->
         </div>
 
-
-        <div class="card-footer">
-            <div class="form-group">
-                <div class="col-12">
-                    <button class="btn btn-lg btn-success pull-right" value="Create" type="submit"><i class="fas fa-save"></i> Guardar</button>
-                    <button class="btn btn-lg btn-info" type="reset"><i class="fas fa-redo-alt"></i> Limpiar</button>
-                    <button class="btn btn-lg btn-warning" type="reset"><i class="fas fa-redo-alt"></i> Back to List</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div>
-        <a class="btn btn-lg btn-warning" asp-action="Index">Back to List</a>
+        <partial name="_ButtonsCardFooterPartialView" model="Button" />
     </div>
 </form>
 @section Scripts

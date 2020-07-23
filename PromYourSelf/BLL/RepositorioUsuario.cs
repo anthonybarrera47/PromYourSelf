@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.ControlUsers;
+using PromYourSelf.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,18 @@ namespace PromYourSelf.BLL
             _userManager = userManager;
             _errorMsg = errorMsg;
             _logger = logger;
+        }
+
+        public static Usuarios UserViewModelToUser(RegisterViewModel viewModel)
+        {
+            Usuarios usuarios = new Usuarios();
+
+            usuarios.Nombres = viewModel.Name;
+            usuarios.Apellidos = viewModel.LastName;
+            usuarios.Password = viewModel.Password;
+            usuarios.Email = viewModel.Email;
+            usuarios.UserName = viewModel.Email;
+            return usuarios;
         }
     }
 }

@@ -103,15 +103,13 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Estado)
                             </td>
+                            <partial name="_ActionsPartialView" model="new Actions() { Key =item.Id,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
 
-                            <td>
-                                <partial name="_ActionsPartialView" model="new Actions() { Key =item.Id,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
             <partial name="_PaginationPartialView" model="this.Model" />
         </div>
-</div>
+    </div>
 </div>

@@ -96,8 +96,7 @@ namespace BLL
                     (entity as CamposEstandar).CreadoPor = User.GetUserID().ToInt();
                     (entity as CamposEstandar).ModificadoPor = User.GetUserID().ToInt();
                 }
-
-                if (entity.GetType().BaseType == typeof(Usuarios))
+                if (entity.GetType() == typeof(Usuarios))
                 {
                     (entity as Usuarios).EsNulo = false;
                     (entity as Usuarios).CreadoPor = User.GetUserID().ToInt();
@@ -120,7 +119,7 @@ namespace BLL
                 if (entity.GetType().BaseType == typeof(CamposEstandar))
                     (entity as CamposEstandar).ModificadoPor = User.GetUserID().ToInt();
 
-                if (entity.GetType().BaseType == typeof(Usuarios))
+                if (entity.GetType() == typeof(Usuarios))
                     (entity as Usuarios).ModificadoPor = User.GetUserID().ToInt();
 
                 db.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
