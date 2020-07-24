@@ -2,7 +2,7 @@
 @using PromYourSelf.Models
 @using PromYourSelf.ViewModels
 @using Microsoft.Extensions.Options;
-@using PromYourSelf.Utils; 
+@using PromYourSelf.Utils;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @using ReflectionIT.Mvc.Paging
@@ -10,4 +10,5 @@
 @addTagHelper *,DNTBreadCrumb.Core
 
 @inject IOptions<PromYourSelf.Models.ControlUsers.ErrorMsg> _errorMsg
+@inject IOptions<PromYourSelf.Models.Configuraciones.AppSettings> _appSettings
 @inject PromYourSelf.BLL.Interfaces.IRepoWrapper _repo;

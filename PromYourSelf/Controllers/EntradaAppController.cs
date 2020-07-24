@@ -92,5 +92,12 @@ namespace PromYourSelf.Controllers
             ModelState.AddModelError("", "Usuario/Contraseña Inválidos");
             return View(model);
         }
+        // POST: /api/auth/logout
+        [Authorize, HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Dashboard", "Dashboard");
+        }
     }
 }

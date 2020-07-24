@@ -41,5 +41,10 @@ namespace PromYourSelf.BLL
             usuarios.UserName = viewModel.Email;
             return usuarios;
         }
+
+        public Task<Usuarios> GetUserInfoByEmail(string email)
+        {
+            return _userManager.FindByEmailAsync(email);
+        }
     }
 }

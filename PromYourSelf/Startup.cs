@@ -17,6 +17,7 @@ using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.BLL;
 using PromYourSelf.Models;
 using Microsoft.AspNetCore.Identity;
+using PromYourSelf.Models.Configuraciones;
 
 namespace PromYourSelf
 {
@@ -74,6 +75,8 @@ namespace PromYourSelf
             services.AddScoped<IRepoWrapper, RepoWrapper>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //inyecta los datos del usuario conectado a todos los controllers
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings")); //inyecta los datos constantes de la app.
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

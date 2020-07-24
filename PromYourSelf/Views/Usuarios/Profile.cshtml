@@ -1,0 +1,158 @@
+﻿@model ProfileViewModel
+@{
+    ValuesCardHeader cardHeader = new ValuesCardHeader();
+    cardHeader.Text = "Perfil";
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    Button.ActionButtonSaveOrEdit = "Edit";
+    Button.TextButtonSaveOrEdit = "Editar";
+    ViewData["Title"] = cardHeader.Text;
+    var imgSrc = $"data:image/jpeg;base64,{Model.Foto}";
+}
+
+<hr />
+
+<form class="form" asp-action="PerfilUsuario" method="post" id="registrationForm" enctype="multipart/form-data">
+    <div class="card shadow mb-4">
+        <partial name="_CardHeaderPartialView" model="cardHeader" />
+        <div class="card-body">
+            <div class="row">
+                <input type="hidden" asp-for="Id" name="Id" />
+                <div class="col-3">
+                    <!--left col-->
+                    <div class="text-center">
+                        @if (Model.Foto != null && Model.Foto != string.Empty)
+                        {
+                            <input asp-for="Foto" hidden />
+                            <img src="@imgSrc" id="FotoResources" class="avatar img-circle img-thumbnail" alt="profile">
+                        }
+                        else
+                        {
+                            <img src="~/img/avatar.png" id="FotoResources" class="avatar img-circle img-thumbnail" alt="avatar">
+                        }
+                        <hr />
+                        <div class="row justify-content-center">
+                            <input hidden id="inputFoto" asp-for="Foto" name="foto" type="file" onchange="showMyImage(this)" onclick="this.value=null;" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
+                            <input hidden id="inputFotoFile" name="logo" asp-for="FotoFile" type="file" />
+                            <a class="btn btn-primary" href="javascript:changeLogo('inputFoto');">Cambiar</a>
+                            &nbsp;
+                            <a class="btn btn-danger" href="javascript:removeImage('@Url.Content(_appSettings.Value.UserSinFoto)','inputFoto','removeLogo');">Eliminar</a>
+                            <input type="hidden" style="display: none" value="0" name="removeLogo" id="removeLogo">
+                        </div>
+
+                    </div>
+                    <hr><br>
+
+
+                </div><!--/col-3-->
+                <div class="col-9">
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Nombres">Nombre</label>
+                                <input asp-for="Nombres" type="text" class="form-control" name="Nombres" id="nombre" placeholder="Nombre" title="Ingrese su nombres.">
+                                <span asp-validation-for="Nombres" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Apellidos">Apellido</label>
+                                <input asp-for="Apellidos" type="text" class="form-control" name="Apellidos" id="Apellido" placeholder="Apellido" title="Ingrese su Apellido">
+                                <span asp-validation-for="Apellidos" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label"></label>
+                                <input asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario.">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Genero">G&eacute;nero</label>
+                                <select asp-for="Genero" name="Genero" class="form-control" title="Seleccion un género.">
+                                    <option value="0">Masculino</option>
+                                    <option value="1">Femenino</option>
+                                    <option value="2">Otros</option>
+                                </select>
+                                <span asp-validation-for="Genero" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" type="email" name="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/col-9-->
+        <partial name="_ButtonsCardFooterPartialView" model="Button" />
+    </div>
+
+</form>
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        function showMyImage(fileInput) {
+            console.log('Estableciendo imagen or defecto');
+            let file = fileInput.files[0];
+            console.log('file', file);
+            let imageType = /image.*/;
+            if (!file.type.match(imageType)) {
+                alert("Formato de archivo incorrecto! Seleccione una imagen");
+                return;
+            }
+
+            var img = document.getElementById("FotoResources");
+            document.getElementById("inputFotoFile").files = fileInput.files ;
+            console.log('fotoEl', img);
+            img.file = file;
+            var reader = new FileReader();
+
+            reader.onload = (function (aImg) {
+
+                return function (e) {
+                    aImg.src = e.target.result;
+                    $("InputFoto").val(' ');
+                };
+            })(img);
+            $("#removeLogo").val(0);
+            reader.readAsDataURL(file);
+            //thumbnil.style.display = 'block';
+            console.log('fotoEl', img);
+
+            //for (var i = 0; i < files.length; i++) {
+            //    var file = files[i];
+            //    console.log(file.name);
+            //    let imageType = /image.*/;
+            //    if (!file.type.match(imageType)) {
+            //        continue;
+            //    }
+            //    var img = document.getElementById("FotoResources");
+            //    img.file = file;
+            //    var reader = new FileReader();
+            //    reader.onload = (function (aImg) {
+            //        return function (e) {
+            //            aImg.src = e.target.result;
+            //        };
+            //    })(img);
+            //    reader.readAsDataURL(file);
+            //    thumbnil.style.display = 'block';
+            //    //$("#banner_name").text(file.name);
+
+            //}*/
+        }
+    </script>
+
+}

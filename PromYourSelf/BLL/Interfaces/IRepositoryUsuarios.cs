@@ -9,6 +9,6 @@ namespace PromYourSelf.BLL.Interfaces
 {
     public interface IRepositoryUsuarios : IRepository<Usuarios>
     {
-
+        Task<Usuarios> GetUserInfoByEmail(string email);
     }
 }

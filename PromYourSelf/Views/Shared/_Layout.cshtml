@@ -72,7 +72,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU USUARIOS-->
-
             <!--INICIO DE SUBMENU NEGOCIOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsNegocios" aria-expanded="true" aria-controls="collapseNegocios">
@@ -88,7 +87,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU NEGOCIOS-->
-
             <!--INICIO DE SUBMENU EMPLEADOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="true" aria-controls="collapseEmpleados">
@@ -104,7 +102,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU EMPLEADOS-->
-
             <!--INICIO DE SUBMENU PRODUCTOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos" aria-expanded="true" aria-controls="collapseproductos">
@@ -120,7 +117,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU PRODUCTOS-->
-
             <!--INICIO DE SUBMENU citaS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecitas" aria-expanded="true" aria-controls="collapsecitas">
@@ -136,7 +132,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU citaS-->
-
             <!--INICIO DE SUBMENU ventas-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseventas" aria-expanded="true" aria-controls="collapseventas">
@@ -152,7 +147,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU ventas-->
-
             <!--INICIO DE SUBMENU mensajes-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsemensajes" aria-expanded="true" aria-controls="collapsemensajes">
@@ -417,7 +411,7 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" asp-controller="usuarios" asp-action="edit/1">
+                                <a class="dropdown-item" href="@Url.Action("Profile","Usuarios",new { Id=User.GetUserID()})">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -430,20 +424,31 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                @if (User.GetUserID().ToInt() <= 0)
+                                {
+                                    <a class="dropdown-item" href="@Url.Action("Login","EntradaApp")">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Iniciar Sesi&oacute;n
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar Sesi&oacute;n
+                                    </a>
+                                }
+
                             </div>
                         </li>
                     </ul>
-                     
+
                 </nav>
                 <breadcrumb asp-homepage-title="Inicio"
                             asp-homepage-url="@Url.Action("Index","Home")"
                             asp-bootstrap-version="V4"
                             asp-homepage-glyphicon="fas fa-home">
-                    
+
                 </breadcrumb>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
@@ -455,7 +460,6 @@
                 </div>
             </div>
             <!-- End of Main Content -->
-
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -475,25 +479,27 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+    <form asp-action="Logout" asp-controller="EntradaApp">
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Seguro que desea cerrar sesión?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Presion "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Cerrar Sesión</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -503,7 +509,7 @@
 
     <environment include="Development">
         @*<script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
         <!-- Bootstrap core JavaScript-->
         <script src="~/vendor/jquery/jquery.min.js"></script>
         <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -520,7 +526,7 @@
         <!-- Page level custom scripts -->
         <script src="~/js/demo/chart-area-demo.js"></script>
         <script src="~/js/demo/chart-pie-demo.js"></script>
-
+        <script src="~/js/profile-image-manager.js"></script>
     </environment>
     <environment exclude="Development">
         @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -551,7 +557,7 @@
         <!-- Page level custom scripts -->
         <script src="~/js/demo/chart-area-demo.js"></script>
         <script src="~/js/demo/chart-pie-demo.js"></script>
-
+        <script src="~/js/profile-image-manager.js"></script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
