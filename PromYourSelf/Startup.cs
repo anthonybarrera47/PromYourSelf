@@ -41,8 +41,9 @@ namespace PromYourSelf
             });
             //Aqui inyetamos la conexion con la base de datos.
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<Contexto>(options => options.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
-
+                .AddDbContext<Contexto>(options => options.UseSqlServer(Configuration["ConnectionStrings:ConStr"]), 
+                ServiceLifetime.Scoped);
+            services.AddSignalR();
             services.AddIdentity<Usuarios, Roles>(options =>
             {
                 options.Password.RequireDigit = false;

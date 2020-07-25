@@ -40,24 +40,32 @@ namespace PromYourSelf.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Usuario,
-                   model.Password, model.RememberMe, false);
-
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    var result = await _signInManager.PasswordSignInAsync(model.Usuario,
+                       model.Password, model.RememberMe, false);
+
+                    if (result.Succeeded)
                     {
-                        return Redirect(model.ReturnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
+                        if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                        {
+                            return Redirect(model.ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
+                        }
                     }
                 }
+                ModelState.AddModelError("", "Usuario/Contraseña Inválidos");
+
             }
-            ModelState.AddModelError("", "Usuario/Contraseña Inválidos");
+            catch (Exception)
+            {
+                throw;
+            }
             return View(model);
         }
         [HttpGet]
@@ -73,7 +81,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                 //TODO: Agregar posicion como va.
+                //TODO: Agregar posicion como va.
                 Usuarios usuarios = RepositorioUsuario.UserViewModelToUser(model);
                 usuarios.Posicion = "Administrador";
                 var _user = await _userManager.FindByNameAsync(usuarios.UserName);
@@ -84,7 +92,7 @@ namespace PromYourSelf.Controllers
 
                     if (result.Succeeded)
                     {
-                      return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
+                        return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
                     }
                 }
 

@@ -32,12 +32,14 @@ namespace PromYourSelf.BLL
         private IRepositoryRol _rol;
 
         public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
+                RoleManager<Roles> rolManager,
                 IOptions<ErrorMsg> errorMsg,
                 ILogger<RepoWrapper> logger,
                 IHttpContextAccessor accessor)
         {
             _RepoContexto = contexto;
             _userManager = userManager;
+            _rolManager = rolManager;
             _errorMsg = errorMsg;
             _userManager = userManager;
             _logger = logger;

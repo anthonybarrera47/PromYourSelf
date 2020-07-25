@@ -10,14 +10,14 @@ using Models;
 namespace PromYourSelf.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200722011652_DataInicial")]
+    [Migration("20200725200148_DataInicial")]
     partial class DataInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -341,8 +341,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 7, 21, 21, 16, 51, 921, DateTimeKind.Local).AddTicks(3176),
-                            FechaModificacion = new DateTime(2020, 7, 21, 21, 16, 51, 922, DateTimeKind.Local).AddTicks(1174),
+                            FechaCreacion = new DateTime(2020, 7, 25, 16, 1, 48, 643, DateTimeKind.Local).AddTicks(1459),
+                            FechaModificacion = new DateTime(2020, 7, 25, 16, 1, 48, 643, DateTimeKind.Local).AddTicks(9408),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,
@@ -640,6 +640,34 @@ namespace PromYourSelf.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("PromYourSelf.ViewModels.ProfileViewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Apellidos");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Foto");
+
+                    b.Property<int>("Genero");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Telefono");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>

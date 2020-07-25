@@ -6,7 +6,12 @@
     Button.ActionButtonSaveOrEdit = "Edit";
     Button.TextButtonSaveOrEdit = "Editar";
     ViewData["Title"] = cardHeader.Text;
-    var imgSrc = $"data:image/jpeg;base64,{Model.Foto}";
+    string imgSrc = null;
+    if (Model != null)
+    {
+        imgSrc = $"data:image/jpeg;base64,{Model.Foto}";
+    }
+
 }
 
 <hr />
@@ -102,7 +107,7 @@
 </form>
 @section Scripts
     {
-    <script type="text/javascript">
+    @*<script type="text/javascript">
 
         function showMyImage(fileInput) {
             console.log('Estableciendo imagen or defecto');
@@ -151,8 +156,8 @@
             //    thumbnil.style.display = 'block';
             //    //$("#banner_name").text(file.name);
 
-            //}*/
-        }
+            //}*/*@
+}
     </script>
 
 }

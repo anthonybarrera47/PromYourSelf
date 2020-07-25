@@ -28,6 +28,8 @@ namespace Models
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Ventas> Ventas { get; set; }
 
+        public Contexto()
+        { }
 
         public Contexto(DbContextOptions<Contexto> options)
     : base(options)
@@ -133,6 +135,7 @@ namespace Models
             OnBeforeSaving();
             return base.SaveChangesAsync(cancellationToken);
         }
+        public DbSet<PromYourSelf.ViewModels.ProfileViewModel> ProfileViewModel { get; set; }
     }
 }
 //https://entityframeworkcore.com/knowledge-base/50862525/seed-entity-with-owned-property

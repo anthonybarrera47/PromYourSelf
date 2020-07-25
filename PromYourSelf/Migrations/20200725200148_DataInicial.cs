@@ -164,6 +164,25 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProfileViewModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Nombres = table.Column<string>(maxLength: 50, nullable: false),
+                    Apellidos = table.Column<string>(nullable: true),
+                    Genero = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    Foto = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    Telefono = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProfileViewModel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -485,7 +504,7 @@ namespace PromYourSelf.Migrations
             migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 21, 21, 16, 51, 921, DateTimeKind.Local).AddTicks(3176), new DateTime(2020, 7, 21, 21, 16, 51, 922, DateTimeKind.Local).AddTicks(1174), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 25, 16, 1, 48, 643, DateTimeKind.Local).AddTicks(1459), new DateTime(2020, 7, 25, 16, 1, 48, 643, DateTimeKind.Local).AddTicks(9408), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -601,6 +620,9 @@ namespace PromYourSelf.Migrations
 
             migrationBuilder.DropTable(
                 name: "Mensaje");
+
+            migrationBuilder.DropTable(
+                name: "ProfileViewModel");
 
             migrationBuilder.DropTable(
                 name: "VentasDetalle");

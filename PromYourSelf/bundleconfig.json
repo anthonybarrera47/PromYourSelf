@@ -1,0 +1,23 @@
+[
+  {
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "outputFileName": "wwwroot/js/portal.min.js",
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/portal.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/font-awesome/css/font-awesome.css",
+      "wwwroot/css/site.css"
+    ]
+  }
+]

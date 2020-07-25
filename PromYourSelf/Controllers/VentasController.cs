@@ -85,14 +85,12 @@ namespace PromYourSelf.Controllers
             //buscar producto
             //calcular
             //guardar
-            /*if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _Repo.Ventas.SaveAsync(ventas);
                 return RedirectToAction(nameof(Index));
             }
-            return View(ventas);*/
-            int a = 1;
-            return View();
+            return View(ventas);
         }
 
         // GET: Ventas/Edit/5

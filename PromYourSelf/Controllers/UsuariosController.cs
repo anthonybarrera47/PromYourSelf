@@ -246,11 +246,11 @@ namespace PromYourSelf.Controllers
 
                     ///elimina los claims nombre y posicion, el idOrganizacion no cambia
                     await _userManager.RemoveClaimsAsync(user, userClaims.Where(x => x.Type.Equals("Foto")));
-                    await _userManager.RemoveClaimsAsync(user, userClaims.Where(x => x.Type.Equals("Nombre")));
+                    await _userManager.RemoveClaimsAsync(user, userClaims.Where(x => x.Type.Equals("Nombres")));
 
                     ///agrega los claims nuevamente
-                    await _userManager.AddClaimAsync(user, new Claim("Nombre", user.Nombres));
-                    if (user.Foto != null)
+                    await _userManager.AddClaimAsync(user, new Claim("Nombres", user.Nombres));
+                    if (user.Foto != null && user.Foto != string.Empty && user.Foto.Length > 0)
                         await _userManager.AddClaimAsync(user, new Claim("Foto", user.Foto));
 
                     await _signInManager.RefreshSignInAsync(user);
