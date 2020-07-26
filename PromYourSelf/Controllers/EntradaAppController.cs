@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Models;
 using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
+using PromYourSelf.Utils;
 using PromYourSelf.ViewModels;
 
 namespace PromYourSelf.Controllers
@@ -26,8 +28,9 @@ namespace PromYourSelf.Controllers
             _repoWrappers = repoWrappers;
         }
         public IActionResult Index()
-        {
-            return View();
+        {			
+
+			return View();
         }
         [HttpGet]
         public IActionResult Login(string returnUrl = "")
@@ -41,8 +44,9 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             try
-            {
-                if (ModelState.IsValid)
+            {				
+
+				if (ModelState.IsValid)
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.Usuario,
                        model.Password, model.RememberMe, false);
@@ -55,7 +59,16 @@ namespace PromYourSelf.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
+							var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();							
+							if (user.Posicion == Posicion.Administrador.GetDescription())
+							{
+								await SaveDefaultCompany(user);
+								return RedirectToAction("DashBoardEmpresarial", "DashBoard");
+							} else
+							{
+								return RedirectToAction("DashBoard", "DashBoard");
+							}
+                            
                         }
                     }
                 }
@@ -107,5 +120,23 @@ namespace PromYourSelf.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Dashboard", "Dashboard");
         }
-    }
+
+		public async Task SaveDefaultCompany(Usuarios usuario)
+		{			
+
+			bool save = (await _repoWrappers.Negocios.GetListAsync(m => m.UsuarioID == usuario.Id)).ToList().Count() <= 0;
+			if (save)
+			{
+				Negocios negocio = new Negocios
+				{
+					UsuarioID = usuario.Id,
+					Telefono1 = "809231231",
+					Telefono2 = "809231231",
+					Direccion = "SFM",
+					NombreComercial = "PromYourSelfDefault",
+				};
+				await _repoWrappers.Negocios.SaveAsync(negocio);
+			}
+		}
+	}
 }

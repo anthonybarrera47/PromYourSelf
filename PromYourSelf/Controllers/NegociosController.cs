@@ -59,8 +59,22 @@ namespace PromYourSelf.Controllers
             return View(negocios);
         }
 
-        // GET: Negocios/Create
-        public IActionResult Create()
+		// GET: Negocios/Details/5
+		public async Task<IActionResult> MiNegocio(int? id)
+		{
+			Negocios negocio = (await _Repo.Negocios.GetListAsync(m => m.UsuarioID == id)).FirstOrDefault();
+						
+
+			if (negocio == null)
+			{
+				return NotFound();
+			}
+
+			return View(negocio);
+		}
+
+		// GET: Negocios/Create
+		public IActionResult Create()
         {
             return View();
         }

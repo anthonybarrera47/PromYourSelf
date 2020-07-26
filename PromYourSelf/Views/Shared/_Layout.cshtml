@@ -65,7 +65,7 @@
                 </a>
                 <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@
+                        @*<h6 class="collapse-header">Custom Components:</h6>*@                        
                         <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
                         <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
                     </div>
@@ -81,9 +81,11 @@
                 <div id="collapsNegocios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Custom Components:</h6>*@
-                        <a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>
-                        <a class="collapse-item" asp-controller="negocios" asp-action="create">Nuevo Negocio</a>
-                    </div>
+                        @if (User.GetPosicion() == Models.Posicion.Normal.GetDescription())
+                        {<a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>}
+                        @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+                        {<a class="collapse-item" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">Mi Negocio</a>}
+                        </div>
                 </div>
             </li>
             <!--FIN DE SUBMENU NEGOCIOS-->

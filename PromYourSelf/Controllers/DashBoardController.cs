@@ -18,5 +18,10 @@ namespace PromYourSelf.Controllers
         {
             return View();
         }
-    }
+
+		public IActionResult DashBoardEmpresarial()
+		{
+			return View();
+		}
+	}
 }
