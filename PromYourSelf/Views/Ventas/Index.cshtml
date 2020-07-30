@@ -1,4 +1,4 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<Models.Ventas>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<VentasIndexViewModel>
 
 @{
     string Titulo = "Listado  de Ventas";
@@ -44,13 +44,13 @@
                             @Html.SortableHeaderFor(model => model.Fecha)
                         </th>
                         <th>
+                            @Html.SortableHeaderFor(model => model.Nombres)
+                        </th>
+                        <th>
                             @Html.SortableHeaderFor(model => model.Monto)
                         </th>
                         <th>
                             @Html.SortableHeaderFor(model => model.CitaID)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.CreadoPor)
                         </th>
                         <th>Acci&oacute;n</th>
                     </tr>
@@ -58,23 +58,21 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Fecha)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Monto)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CitaID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreadoPor)
-                            </td>
-                            <td>
-                                <partial name="_ActionsPartialView" model="new Actions() { Key =item.VentaID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Monto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CitaID)
+                        </td>
+                        <partial name="_ActionsPartialView" model="new Actions() { Key =item.VentaID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
+                    </tr>
                     }
                 </tbody>
             </table>

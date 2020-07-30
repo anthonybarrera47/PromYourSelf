@@ -24,11 +24,23 @@
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-start">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label class="control-label">Productos</label>
+                        <select id="Cliente" asp-for="UsuarioClienteID" asp-items="@(new SelectList(ViewBag.Clientes, "Id", "Nombres"))"
+                                class="form-control select2"
+                                style="width:100%;"
+                                data-placeholder="Seleccione el Cliente">
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-3">
                     <div class="form-group">
-                        <label class="control-label">Nombres</label>
-                        <select id="Nombre" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
+                        <label class="control-label">Productos</label>
+                        <select id="Producto" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
                                 class="form-control select2"
                                 style="width:100%;"
                                 data-placeholder="Seleccione el producto">
@@ -57,7 +69,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Cantidad</th>
-                                <th>Nombre</th>
+                                <th>Producto</th>
                                 <th>Precio unitario</th>
                                 <th>Total</th>
                                 <th>Acciones</th>
@@ -70,11 +82,11 @@
             <div class="row justify-content-end">
                 <label>Total:  $<bold id="total"></bold></label>
             </div>
-            <div class="row">
-                <div class="col-6">
+            <div class="row justify-content-end">
+                <div class="col-3">
                     <div class="form-group">
                         <label asp-for="Monto" class="control-label"></label>
-                        <input asp-for="Monto" class="form-control" />
+                        <input asp-for="Monto" id="Monto" style="text-align:right" disabled readonly class="form-control" />
                         <span asp-validation-for="Monto" class="text-danger"></span>
                     </div>
                 </div>
@@ -97,10 +109,10 @@
 <script>
     var list = [];
     var num = 0;
+
     function eliminar(e) {
         e.preventDefault();        
-        var row = e.srcElement.parentNode.parentNode;
-        let parent = row.parentNode;          
+        var row = e.srcElement.parentNode.parentNode;         
         let id = parseInt(row.cells[0].textContent);
         list.splice(list.indexOf(el => el.id == id), 1);
         calcularTotal();
@@ -112,23 +124,24 @@
         console.log('lista', list);
         let total = list.reduce((a, b) => a + b.cantidad * b.precio, 0);
         $('#total').html(total.toString());
+        document.getElementById("Monto").value = total.toString();
     }
     function AgregaConcepto() {         
         let Cantidad = document.getElementById("Cantidad").value;
         let Precio = document.getElementById("Precio").value;
-        //let Nombre = document.getElementById("Nombre").val();
-        let Nombre = $('#Nombre :selected').text();
-        let id = $('#Nombre :selected').val();
+        //let Producto = document.getElementById("Producto").val();
+        let Producto = $('#Producto :selected').text();
+        let id = $('#Producto :selected').val();
         let itemExists = list.find(el => el.id == parseInt(id))
         if (!itemExists) {
-            list.push({ id: id, nombre: Nombre, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
+            list.push({ id: id, Producto: Producto, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
            
         } else {
             //mostrar mensaje de error
             alert("Este producto ya esta agregado.");
             return false;
         }
-        
+        console.log('Precio de items: ', list);
         console.log('lista de items: ', list);
         calcularTotal();
 
@@ -136,7 +149,7 @@
         let Tabla = document.getElementById("tablaConceptos");
         let TR = document.createElement("tr");
         let TDCantidad = document.createElement("td");
-        let TDNombre = document.createElement("td");
+        let TDProducto = document.createElement("td");
         let TDPrecio = document.createElement("td");
         let TDTotal = document.createElement("td");
         let TDEliminar = document.createElement("td");
@@ -146,12 +159,12 @@
         btnEliminar.addEventListener("click", eliminar);
         TDEliminar.appendChild(btnEliminar);
         TR.appendChild(TDCantidad);
-        TR.appendChild(TDNombre);
+        TR.appendChild(TDProducto);
         TR.appendChild(TDPrecio);
         TR.appendChild(TDTotal);
         TR.appendChild(TDEliminar);
         TDCantidad.innerHTML = Cantidad;
-        TDNombre.innerHTML = Nombre;
+        TDProducto.innerHTML = Producto;
         TDPrecio.innerHTML = Precio;
         TDTotal.innerHTML = parseFloat(Cantidad) * parseFloat(Precio);
         Tabla.appendChild(TR);
@@ -160,7 +173,7 @@
         let DivProductos = document.getElementById("divProductos");
         let HiddenIndex = document.createElement("input");
         let HiddenCantidad = document.createElement("input");
-        let HiddenNombre = document.createElement("input");
+        let HiddenProducto = document.createElement("input");
         let HiddenPrecio = document.createElement("input");
         let HiddenProductoId = document.createElement("input");
         console.log('el id es', parseInt(id)); 
@@ -173,21 +186,20 @@
         HiddenCantidad.name = "Details[" + num + "].Cantidad";
         HiddenCantidad.value = Cantidad;
         HiddenCantidad.type = "hidden";
-        HiddenNombre.name = "Details[" + num + "].Nombre";
-        HiddenNombre.value = Nombre;
-        HiddenNombre.type = "hidden";
+        HiddenProducto.name = "Details[" + num + "].Producto";
+        HiddenProducto.value = Producto;
+        HiddenProducto.type = "hidden";
         HiddenPrecio.name = "Details[" + num + "].Precio";
         HiddenPrecio.value = Precio;
         HiddenPrecio.type = "hidden";       
         DivProductos.appendChild(HiddenIndex);
         DivProductos.appendChild(HiddenCantidad);
-        DivProductos.appendChild(HiddenNombre);
+        DivProductos.appendChild(HiddenProducto);
         DivProductos.appendChild(HiddenPrecio);
         DivProductos.appendChild(HiddenProductoId);
 
         document.getElementById("Cantidad").value = "";
         document.getElementById("Precio").value = "";
-        document.getElementById("Nombre").value = "";
 
         num++;
     }

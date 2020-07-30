@@ -46,5 +46,10 @@ namespace PromYourSelf.BLL
         {
             return _userManager.FindByEmailAsync(email);
         }
+        public async Task<string> GetUserNmaeById(int Id)
+        {
+            var Usuario = await _context.Usuarios.FindAsync(Id);
+            return Usuario.Nombres;
+        }
     }
 }

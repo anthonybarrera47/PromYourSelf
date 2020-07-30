@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
@@ -18,11 +20,13 @@ namespace PromYourSelf.Controllers
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;
-        public static List<Ventas> Lista;
-        public VentasController(Contexto context, IRepoWrapper RepoVenta)
+        private readonly IHttpContextAccessor _accesor;
+        public static List<VentasIndexViewModel> Lista;
+        public VentasController(Contexto context, IRepoWrapper RepoVenta,IHttpContextAccessor accessor)
         {
             db = context;
             _Repo = RepoVenta;
+            _accesor = accessor;
         }
 
         // GET: Ventas
@@ -70,9 +74,9 @@ namespace PromYourSelf.Controllers
             //                       Id = datos.ProductoID.ToString(),
             //                       Name = datos.Nombre
             //                   }).ToListAsync();
-
+            ViewBag.Clientes = await _Repo.Usuarios.GetListAsync(x => true);
             ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
-            return View();
+            return View(new Ventas());
         }
 
         // POST: Ventas/Create
@@ -87,9 +91,12 @@ namespace PromYourSelf.Controllers
             //guardar
             if (ModelState.IsValid)
             {
+
                 await _Repo.Ventas.SaveAsync(ventas);
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Clientes = await _Repo.Usuarios.GetListAsync(x => true);
+            ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
             return View(ventas);
         }
 
