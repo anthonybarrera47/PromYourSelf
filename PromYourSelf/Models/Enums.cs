@@ -39,5 +39,4 @@ namespace Models
 		[Description("Normal")]
 		Normal = 1
 	}
-
 }

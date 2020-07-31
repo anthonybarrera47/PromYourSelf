@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Text;
 
 namespace PromYourSelf.Utils
 {
@@ -122,6 +123,8 @@ namespace PromYourSelf.Utils
         {
             return obj.GetType().GetProperties();
         }
-    }
+		
+	}
+
 
 }

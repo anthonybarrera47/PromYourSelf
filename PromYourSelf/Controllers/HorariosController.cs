@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.ViewModels;
 
 namespace PromYourSelf.Controllers
 {
@@ -49,7 +50,7 @@ namespace PromYourSelf.Controllers
         // GET: Horarios/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new HorariosViewModel());
         }
 
         // POST: Horarios/Create
@@ -57,11 +58,12 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Horarios horarios)
+        public async Task<IActionResult> Create(HorariosViewModel horarios)
         {
             if (ModelState.IsValid)
             {
-                await _Repo.Horarios.SaveAsync(horarios);
+                Horarios horario = horarios.ConvertToHorario();
+                await _Repo.Horarios.SaveAsync(horario);
                 return RedirectToAction(nameof(Index));
             }
             return View(horarios);
@@ -76,11 +78,12 @@ namespace PromYourSelf.Controllers
             }
 
             var horarios = await _Repo.Horarios.SearchAsync(id);
-            if (horarios == null)
+            HorariosViewModel Horario = horarios.ConvertToHorariosViewModel();
+            if (Horario == null)
             {
                 return NotFound();
             }
-            return View(horarios);
+            return View(Horario);
         }
 
         // POST: Horarios/Edit/5
@@ -88,9 +91,9 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Horarios horarios)
+        public async Task<IActionResult> Edit(int id, HorariosViewModel horarios)
         {
-            if (id != horarios.HorarioID)
+            if (id != horarios.Id)
             {
                 return NotFound();
             }
@@ -99,11 +102,12 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    await _Repo.Horarios.ModifiedAsync(horarios);
+                    Horarios horario = horarios.ConvertToHorario();
+                    await _Repo.Horarios.ModifiedAsync(horario);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HorariosExists(horarios.HorarioID))
+                    if (!HorariosExists(horarios.Id))
                     {
                         return NotFound();
                     }

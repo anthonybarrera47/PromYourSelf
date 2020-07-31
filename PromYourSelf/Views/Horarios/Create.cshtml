@@ -1,62 +1,142 @@
-﻿@model Models.Horarios
+﻿@model HorariosViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    Button.ActionButtonSaveOrEdit = "Create";
+    Button.TextButtonSaveOrEdit = "Guardar";
+    string Titulo = "Crear Horarios";
+    ViewData["Title"] = Titulo;
 }
+<form class="form" asp-action="Create" id="registrationForm">
+    <div class="card shadow mb-4">
+        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
+        <div class="card-body">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h1>Create</h1>
 
-<h4>Horarios</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Lunes" class="control-label"></label>
-                <input asp-for="Lunes" class="form-control" />
-                <span asp-validation-for="Lunes" class="text-danger"></span>
+                <div class="row col-12">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Lunes</label>
+                            <input type="time" asp-for="LunesDesde" class="form-control" />
+                            <span asp-validation-for="LunesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="LunesHasta" data-val="true" data-val-error="Debe elegir una ambos horarios" class="form-control" />
+                            <span asp-validation-for="LunesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-12">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Martes</label>
+                            <input type="time" asp-for="MartesDesde" class="form-control" />
+                            <span asp-validation-for="MartesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="MartesHasta" data-val="true" data-val-error="Debe elegir una ambos horarios" class="form-control" />
+                            <span asp-validation-for="MartesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-12">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Miercoles</label>
+                            <input type="time" asp-for="MiercolesDesde" class="form-control" />
+                            <span asp-validation-for="MiercolesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="MiercolesHasta" data-val="true" data-val-error="Debe elegir una ambos horarios" class="form-control" />
+                            <span asp-validation-for="MiercolesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-12">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Jueves</label>
+                            <input type="time" asp-for="JuevesDesde" class="form-control" />
+                            <span asp-validation-for="JuevesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="JuevesHasta" data-val="true" data-val-error="Debe elegir una ambos horarios" class="form-control" />
+                            <span asp-validation-for="JuevesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-12">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Viernes</label>
+                            <input type="time" asp-for="ViernesDesde" class="form-control" />
+                            <span asp-validation-for="ViernesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="ViernesHasta" data-val="true" data-val-error="Debe elegir una ambos horarios" class="form-control" />
+                            <span asp-validation-for="ViernesDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Sabado</label>
+                            <input type="time" asp-for="SabadoDesde" class="form-control" />
+                            <span asp-validation-for="SabadoDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="SabadoHasta" data-val="true" data-val-error="Debe elegir una ambos horarios" class="form-control" />
+                            <span asp-validation-for="SabadoDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-12">
+
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">Domingo</label>
+                            <input type="time" asp-for="DomingoDesde" class="form-control" />
+                            <span asp-validation-for="DomingoDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="control-label">&nbsp;</label>
+                            <input type="time" asp-for="DomingoHasta" class="form-control" />
+                            <span asp-validation-for="DomingoDesde" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Martes" class="control-label"></label>
-                <input asp-for="Martes" class="form-control" />
-                <span asp-validation-for="Martes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Miercoles" class="control-label"></label>
-                <input asp-for="Miercoles" class="form-control" />
-                <span asp-validation-for="Miercoles" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Jueves" class="control-label"></label>
-                <input asp-for="Jueves" class="form-control" />
-                <span asp-validation-for="Jueves" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Viernes" class="control-label"></label>                                                               
-                <input asp-for="Viernes" class="form-control" />
-                <span asp-validation-for="Viernes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sabado" class="control-label"></label>
-                <input asp-for="Sabado" class="form-control" />
-                <span asp-validation-for="Sabado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Domingo" class="control-label"></label>
-                <input asp-for="Domingo" class="form-control" />
-                <span asp-validation-for="Domingo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+            <partial name="_ButtonsCardFooterPartialView" model="Button" />
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
