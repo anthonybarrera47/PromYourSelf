@@ -16,6 +16,7 @@ namespace PromYourSelf.BLL.Interfaces
         IRepositoryUsuarios Usuarios { get; }
         IRepositoryVentas Ventas { get; }
         IRepositoryRol Rol { get; }
+        IRepositoryCodeValidation CodeValidation { get; }
         
     }
 }

@@ -30,5 +30,6 @@ namespace PromYourSelf.ViewModels
 
 		[Display(Name = "Teléfono")]
 		public string Telefono { get; set; }
+		public bool Confirmado { get; set; }
 	}
 }

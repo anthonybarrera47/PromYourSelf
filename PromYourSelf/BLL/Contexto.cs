@@ -27,6 +27,7 @@ namespace Models
         public DbSet<Productos> Productos { get; set; }
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Ventas> Ventas { get; set; }
+        public DbSet<CodeValidation> CodeValidation { get; set; }
 
         public Contexto()
         { }

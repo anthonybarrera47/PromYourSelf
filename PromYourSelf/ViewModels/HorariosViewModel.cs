@@ -138,6 +138,7 @@ namespace PromYourSelf.ViewModels
         {
             Horarios Horario = new Horarios
             {
+                HorarioID = Id,
                 Lunes = LunesHorario,
                 Martes = MartesHorario,
                 Miercoles = MiercolesHorario,

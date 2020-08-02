@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.ViewModels;
+using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
@@ -16,6 +18,7 @@ namespace PromYourSelf.Controllers
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;
+        public static List<Empleados> Lista;
 
         public HorariosController(Contexto context, IRepoWrapper RepoHorario)
         {
@@ -24,9 +27,20 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Horarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre", int PageSize = 5)
         {
-            return View(await _Repo.Horarios.GetListAsync(x => true));
+            if (!string.IsNullOrWhiteSpace(filter))
+                Lista = await _Repo.Empleados.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+            else
+                Lista = await _Repo.Empleados.GetListAsync(x => true);
+
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Nombre");
+            model.RouteValue = new RouteValueDictionary {
+                            { "filter", filter}
+            };
+            model.Action = "Index";
+
+            return View(model);
         }
 
         // GET: Horarios/Details/5

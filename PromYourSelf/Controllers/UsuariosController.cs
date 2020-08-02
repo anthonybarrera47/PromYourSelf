@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL;
@@ -269,10 +270,15 @@ namespace PromYourSelf.Controllers
             await _Repo.Usuarios.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-
         private bool UsuariosExists(int id)
         {
             return _Repo.Usuarios.Exists(id);
+        }
+        [HttpGet]
+        public IActionResult ConfirmarUsuario(int Id)
+        {
+
+            return View();
         }
     }
 }

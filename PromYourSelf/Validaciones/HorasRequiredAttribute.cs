@@ -38,13 +38,13 @@ namespace Validaciones
 
             var comparisonValue = (string)property.GetValue(validationContext.ObjectInstance);
 
-            if (currentValue == string.Empty && comparisonValue == string.Empty)
+            if ((currentValue == null && comparisonValue == null) || (currentValue == string.Empty && comparisonValue == string.Empty))
                 return ValidationResult.Success;
 
-            if (comparisonValue == string.Empty)
+            if (comparisonValue == string.Empty || comparisonValue == null)
                 return new ValidationResult(ErrorMessage);
 
-            if (currentValue == string.Empty)
+            if (currentValue == string.Empty || currentValue == null)
                 return new ValidationResult(ErrorMessage);
             return ValidationResult.Success;
         }

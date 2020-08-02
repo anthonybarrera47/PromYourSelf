@@ -30,6 +30,7 @@ namespace PromYourSelf.BLL
         private IRepositoryUsuarios _Usuarios;
         private IRepositoryVentas _Ventas;
         private IRepositoryRol _rol;
+        private IRepositoryCodeValidation _CodeValidation;
 
         public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
                 RoleManager<Roles> rolManager,
@@ -157,6 +158,19 @@ namespace PromYourSelf.BLL
                 }
 
                 return _rol;
+            }
+        }
+
+        public IRepositoryCodeValidation CodeValidation
+        {
+            get
+            {
+                if (_CodeValidation == null)
+                {
+                    _CodeValidation = new RepositorioCodeValidation(_RepoContexto, _accessor);
+                }
+
+                return _CodeValidation;
             }
         }
 
