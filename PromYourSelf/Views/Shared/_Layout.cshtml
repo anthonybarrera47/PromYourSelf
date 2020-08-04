@@ -58,52 +58,90 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <!--INICIO DE SUBMENU USUARIOS-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Usuarios</span>
-                </a>
-                <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@                        
-                        <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
-                        <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
-                    </div>
-                </div>
-            </li>
-            <!--FIN DE SUBMENU USUARIOS-->
-            <!--INICIO DE SUBMENU NEGOCIOS-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsNegocios" aria-expanded="true" aria-controls="collapseNegocios">
-                    <i class="fas fa-fw fa-business-time"></i>
-                    <span>Negocios</span>
-                </a>
-                <div id="collapsNegocios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@
-                        @if (User.GetPosicion() == Models.Posicion.Normal.GetDescription())
-                        {<a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>}
-                        @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                        {<a class="collapse-item" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">Mi Negocio</a>}
+            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
+                            <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
                         </div>
-                </div>
-            </li>
-            <!--FIN DE SUBMENU NEGOCIOS-->
-            <!--INICIO DE SUBMENU EMPLEADOS-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="true" aria-controls="collapseEmpleados">
-                    <i class="fas fa-fw fa-person-booth"></i>
-                    <span>Empleados</span>
-                </a>
-                <div id="collapseEmpleados" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@
-                        <a class="collapse-item" asp-controller="empleados" asp-action="index">Listado de Empleados</a>
-                        <a class="collapse-item" asp-controller="empleados" asp-action="create">Nuevo Empleado</a>
                     </div>
-                </div>
-            </li>
-            <!--FIN DE SUBMENU EMPLEADOS-->
+                </li>
+                <!--FIN DE SUBMENU USUARIOS-->
+                <!--INICIO DE SUBMENU NEGOCIOS-->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsNegocios" aria-expanded="true" aria-controls="collapseNegocios">
+                        <i class="fas fa-fw fa-business-time"></i>
+                        <span>Negocios</span>
+                    </a>
+                    <div id="collapsNegocios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            @if (User.GetPosicion() == Models.Posicion.Normal.GetDescription())
+                            {<a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>}
+                            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+                            {<a class="collapse-item" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">Mi Negocio</a>}
+                        </div>
+                    </div>
+                </li>
+
+                <!--INICIO DE SUBMENU EMPLEADOS-->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="true" aria-controls="collapseEmpleados">
+                        <i class="fas fa-fw fa-person-booth"></i>
+                        <span>Empleados</span>
+                    </a>
+                    <div id="collapseEmpleados" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" asp-controller="empleados" asp-action="index">Listado de Empleados</a>
+                            <a class="collapse-item" asp-controller="empleados" asp-action="create">Nuevo Empleado</a>
+                        </div>
+                    </div>
+                </li>
+                <!--FIN DE SUBMENU EMPLEADOS-->
+
+                <!--INICIO DE SUBMENU ventas-->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseventas" aria-expanded="true" aria-controls="collapseventas">
+                        <i class="fas fa-fw fa-th"></i>
+                        <span>ventas</span>
+                    </a>
+                    <div id="collapseventas" class="collapse" aria-labelledby="collapseventas" data-parent="#collapseventas">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" asp-controller="ventas" asp-action="index">Listado de ventas</a>
+                            <a class="collapse-item" asp-controller="ventas" asp-action="create">Nuevo venta</a>
+                        </div>
+                    </div>
+                </li>
+                <!--FIN DE SUBMENU ventas-->
+            }
+            @if (User.GetPosicion() == Models.Posicion.Normal.GetDescription())
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExplorar" aria-expanded="true" aria-controls="collapseExplorar">
+                        <i class="fas fa-fw fa-business-time"></i>
+                        <span>Explorar</span>
+                    </a>
+                    <div id="collapseExplorar" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">Buscar Servicios</a>
+                            <a class="collapse-item" asp-controller="negocios" asp-action="index">Descubrir Negocios</a>
+
+                        </div>
+                    </div>
+                </li>
+            }
+            <!--FIN DE SUBMENU NEGOCIOS-->
             <!--INICIO DE SUBMENU PRODUCTOS-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos" aria-expanded="true" aria-controls="collapseproductos">
@@ -134,21 +172,6 @@
                 </div>
             </li>
             <!--FIN DE SUBMENU citaS-->
-            <!--INICIO DE SUBMENU ventas-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseventas" aria-expanded="true" aria-controls="collapseventas">
-                    <i class="fas fa-fw fa-th"></i>
-                    <span>ventas</span>
-                </a>
-                <div id="collapseventas" class="collapse" aria-labelledby="collapseventas" data-parent="#collapseventas">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@
-                        <a class="collapse-item" asp-controller="ventas" asp-action="index">Listado de ventas</a>
-                        <a class="collapse-item" asp-controller="ventas" asp-action="create">Nuevo venta</a>
-                    </div>
-                </div>
-            </li>
-            <!--FIN DE SUBMENU ventas-->
             <!--INICIO DE SUBMENU mensajes-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsemensajes" aria-expanded="true" aria-controls="collapsemensajes">
@@ -511,7 +534,7 @@
 
     <environment include="Development">
         @*<script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
         <!-- Bootstrap core JavaScript-->
         <script src="~/vendor/jquery/jquery.min.js"></script>
         <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

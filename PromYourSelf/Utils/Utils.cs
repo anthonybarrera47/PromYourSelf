@@ -10,31 +10,35 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Text;
+using System.Data.Common;
+using Models;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PromYourSelf.Utils
 {
-    public static class Utils
-    {
-        public static async Task<string> ImageToBase64(IFormFile foto)
-        {
-            if (foto != null)
-            {
-                MemoryStream memoryStream = new MemoryStream();
-                await foto.CopyToAsync(memoryStream);
-                using (var image = Image.FromStream(memoryStream))
-                {
-                    using (MemoryStream m = new MemoryStream())
-                    {
-                        image.Save(m, image.RawFormat); byte[] imageBytes = m.ToArray(); // Convert byte[] to Base64 String 
-                        string base64String = Convert.ToBase64String(imageBytes);
-                        return base64String;
-                    }
-                }
-            }
-            else
-                return string.Empty;
+	public static class Utils
+	{
+		public static async Task<string> ImageToBase64(IFormFile foto)
+		{
+			if (foto != null)
+			{
+				MemoryStream memoryStream = new MemoryStream();
+				await foto.CopyToAsync(memoryStream);
+				using (var image = Image.FromStream(memoryStream))
+				{
+					using (MemoryStream m = new MemoryStream())
+					{
+						image.Save(m, image.RawFormat); byte[] imageBytes = m.ToArray(); // Convert byte[] to Base64 String 
+						string base64String = Convert.ToBase64String(imageBytes);
+						return base64String;
+					}
+				}
+			}
+			else
+				return string.Empty;
 
-        }
+		}
 		public static string GetUserID(this ClaimsPrincipal principal)
 		{
 			if (principal == null)
@@ -120,10 +124,36 @@ namespace PromYourSelf.Utils
 			}
 		}
 		public static PropertyInfo[] GetProperties(object obj)
-        {
-            return obj.GetType().GetProperties();
-        }
-		
+		{
+			return obj.GetType().GetProperties();
+		}
+
+		public static List<T> RawSqlQuery<T>(string query, Func<DbDataReader, T> map)
+		{
+			using (var context = new Contexto())
+			{
+				using (var command = context.Database.GetDbConnection().CreateCommand())
+				{
+					command.CommandText = query;
+					command.CommandType = CommandType.Text;
+
+					context.Database.OpenConnection();
+
+					using (var result = command.ExecuteReader())
+					{
+						var entities = new List<T>();
+
+						while (result.Read())
+						{
+							entities.Add(map(result));
+						}
+
+						return entities;
+					}
+				}
+			}
+
+		}
 	}
 
 

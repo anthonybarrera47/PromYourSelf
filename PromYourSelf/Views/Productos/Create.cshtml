@@ -158,20 +158,19 @@
     }
     function updateHiddenInputs() {
 
-let div = document.getElementById('fotosPreview');
+        let div = document.getElementById('fotosPreview');
         //una vez agregadas las imagenes recorremos las imagenes almacenadas
-                let fotosHidden = document.getElementById('fotosHidden');
-                //borramos todos los hidden
-                while (fotosHidden.firstChild) {
-                    fotosHidden.firstChild.remove();
-                }
-                //volvemos a agregar los hidden
-                div.childNodes.forEach((val, idx, parent) => {
-                    console.log('foto', val);
-                    let input = createHiddenInput("Fotos[" + idx + "].Foto", val.src);
-                    fotosHidden.appendChild(input);
-
-                });
+        let fotosHidden = document.getElementById('fotosHidden');
+        //borramos todos los hidden
+        while (fotosHidden.firstChild) {
+            fotosHidden.firstChild.remove();
+        }
+        //volvemos a agregar los hidden
+        div.childNodes.forEach((val, idx, parent) => {       
+            console.log('foto', val);
+            let input = createHiddenInput("Fotos[" + idx + "].Foto", val.src);
+            fotosHidden.appendChild(input);
+        });
     }
 
     function remove(el) {

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Utils;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -66,10 +69,30 @@ namespace PromYourSelf.Controllers
             return View();
         }
 
-        // POST: Mensajes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+	//	public async Task<IViewComponentResult> InvokeAsync(
+	//int usuarioId)
+	//	{
+	//		this.mensajes = await this.db.Mensaje.Where<Mensajes>(x => x.UsuarioID == usuarioId || x.NegocioID == usuarioId).ToListAsync();
+
+	//		List<int> ids = this.mensajes.Select(x => x.NegocioID).Distinct().ToList();
+
+
+	//		this.negocios = this.db.Negocios.Where<Negocios>(c => ids.Any(x => x == c.NegocioID)).ToList();
+
+	//		return View(new ChatViewModel(mensajes, negocios));
+	//	}
+
+		public async Task<JsonResult> GetMessages(int negocioId)
+		{
+			int userId = User.GetUserID().ToInt();
+			List<Mensajes> mensajes = await _Repo.Mensajes.GetListAsync(x => x.NegocioID == negocioId && x.UsuarioID == userId);		
+			return new JsonResult(JsonConvert.SerializeObject(mensajes));
+		}
+
+		// POST: Mensajes/Create
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Mensajes mensajes)
         {
