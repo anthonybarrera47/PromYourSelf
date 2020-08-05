@@ -12,9 +12,10 @@ namespace Models
     {
         [Key]
         public int MensajeID { get; set; }
-        public Usuarios Cliente{ get; set; }
-        public int NegocioID { get; set; }
-        [Required(ErrorMessage = "Este campo es obligatorio")]
+		public int ReceptorID { get; set; }
+		[ForeignKey("ReceptorID")]
+		public Usuarios Receptor { get; set; }		
+		[Required(ErrorMessage = "Este campo es obligatorio")]
         [StringLength(255,
             ErrorMessage = "El Contenido debe ser menor a 255 caracteres.")]
         public string Contenido { get; set; }

@@ -3,7 +3,8 @@
     "inputFiles": [
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
-      "wwwroot/js/site.js"
+      "wwwroot/js/site.js",
+      "wwwroot/js/signalr/"
     ],
     "minify": {
       "enabled": true,
@@ -17,7 +18,8 @@
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "wwwroot/lib/font-awesome/css/font-awesome.css",
-      "wwwroot/css/site.css"
+      "wwwroot/css/site.css",
+      "wwwroot/js/signalr/"
     ]
   }
 ]
