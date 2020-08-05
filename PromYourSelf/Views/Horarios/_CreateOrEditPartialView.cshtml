@@ -1,14 +1,26 @@
 ﻿@model HorariosViewModel
+@{
+    ButtonsCardFooter Button = new ButtonsCardFooter();
 
-    <partial name="_CreateOrEditPartialView" model="Model" />
+    string Action = (Model.Id == 0) ? "Create" : "Edit";
+    string Texto = (Model.Id == 0) ? "Guardar" : "Editar";
+    Button.ActionButtonSaveOrEdit = Action;
+    Button.TextButtonSaveOrEdit = Texto;
+    string Titulo = (Model.Id == 0) ? "Crear Horarios" : "Modificar Horarios";
+    ViewData["Title"] = Titulo;
+}
 
-@*<form class="form" asp-action="Create" id="registrationForm">
+<form class="form" asp-action="@Action" id="registrationForm">
     <div class="card shadow mb-4">
         <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
         <div class="card-body">
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                @if (Model.Id != 0)
+                {
+                    <input type="hidden" asp-for="Id" />
+                }
 
                 <div class="row col-12">
                     <div class="col-2">
@@ -135,4 +147,6 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@
+}
+
+

@@ -18,7 +18,7 @@ namespace PromYourSelf.Controllers
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;
-        public static List<Empleados> Lista;
+        public static List<Horarios> Lista;
 
         public HorariosController(Contexto context, IRepoWrapper RepoHorario)
         {
@@ -27,14 +27,12 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Horarios
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre", int PageSize = 5)
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Lunes", int PageSize = 5)
         {
-            if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await _Repo.Empleados.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
-            else
-                Lista = await _Repo.Empleados.GetListAsync(x => true);
 
-            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Nombre");
+            Lista = await _Repo.Horarios.GetListAsync(x => true);
+
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Lunes");
             model.RouteValue = new RouteValueDictionary {
                             { "filter", filter}
             };

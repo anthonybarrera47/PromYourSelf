@@ -7,12 +7,8 @@
     string Titulo = "Modificar Horarios";
     ViewData["Title"] = Titulo;
 }
-
-<h1>Edit</h1>
-
-<h4>Horarios</h4>
-<hr />
-<form class="form" asp-action="Edit" id="registrationForm">
+<partial name="_CreateOrEditPartialView" model="Model" />
+@*<form class="form" asp-action="Edit" id="registrationForm">
     <div class="card shadow mb-4">
         <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
         <div class="card-body">
@@ -145,4 +141,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+}*@
