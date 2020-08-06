@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using PromYourSelf.Models;
+using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.ViewModels;
 
 namespace PromYourSelf.Controllers
 {
     
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly SignInManager<Usuarios> _signInManager;
         private readonly UserManager<Usuarios> _userManager;

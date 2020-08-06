@@ -4,7 +4,8 @@
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
       "wwwroot/js/site.js",
-      "wwwroot/js/signalr/"
+      "wwwroot/js/signalr/",
+      "wwwroot/js/sweetAlert/"
     ],
     "minify": {
       "enabled": true,
@@ -19,7 +20,8 @@
       "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "wwwroot/lib/font-awesome/css/font-awesome.css",
       "wwwroot/css/site.css",
-      "wwwroot/js/signalr/"
+      "wwwroot/js/signalr/",
+      "wwwroot/js/sweetAlert/"
     ]
   }
 ]

@@ -9,10 +9,11 @@ using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
 using PromYourSelf.Models.ControlUsers;
+using PromYourSelf.Models.SweetAlert;
 
 namespace PromYourSelf.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController : BaseController
     {
         private readonly Contexto _context;
         private readonly RoleManager<Roles> _roleManager;

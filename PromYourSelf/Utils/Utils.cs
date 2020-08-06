@@ -152,7 +152,6 @@ namespace PromYourSelf.Utils
 					}
 				}
 			}
-
 		}
 	}
 

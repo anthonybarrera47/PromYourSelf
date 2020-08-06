@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BLL;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -17,13 +15,14 @@ using Microsoft.Extensions.Options;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.Configuraciones;
+using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
 using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-    public class UsuariosController : Controller
+    public class UsuariosController : BaseController
     {
         private readonly Contexto db;
         private readonly UserManager<Usuarios> _userManager;
@@ -217,11 +216,31 @@ namespace PromYourSelf.Controllers
                 {
                     if (removeLogo.Equals("1") || logo != null)
                     {
+                        string archivoActual = Path.Combine(webRoot, _appSettings.Value.RutaImagenesUsers, user.Foto);
+                        if (System.IO.File.Exists(archivoActual))
+                        {
+                            try
+                            {
+                                System.GC.Collect(); ///Si no se hace esto dice algunas veces quel archivo esta siendo utilizado por otro proceso
+                                System.GC.WaitForPendingFinalizers();
+                                System.IO.File.Delete(archivoActual);
+
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.LogDebug("PerfilUsuario", e);
+                            }
+                        }
                         user.Foto = null;
                     }
                     if (logo != null && removeLogo.Equals("0"))
                     {
-                        user.Foto = await Utils.Utils.ImageToBase64(logo);
+                        string fileExtension = Path.GetExtension(logo.FileName);
+                        string fileName = user.Id + fileExtension;
+                        user.Foto = fileName;
+                        fileName = Path.Combine(webRoot, _appSettings.Value.RutaImagenesUsers, fileName);
+                        logo.CopyTo(new FileStream(fileName, FileMode.Create));
+                        //user.Foto = await Utils.Utils.ImageToBase64(logo);
                     }
                     user.Nombres = modelo.Nombres;
                     user.Email = modelo.Email;
@@ -279,6 +298,55 @@ namespace PromYourSelf.Controllers
         {
 
             return View();
+        }
+        public async Task<ActionResult> ChangePassword()
+        {
+            var user = await _userManager.FindByIdAsync(this.User.GetUserID());
+            ChangePasswordViewModel model = new ChangePasswordViewModel
+            {
+                Nombre = user.Nombres,
+                UserID = this.User.GetUserID().ToInt()
+            };
+            return View(model);
+        }
+
+
+
+        //TODO: Cambiar Password: 2 - Agregar el método CambiarPassword GET y POST en el Controller y luego el View
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword([Bind("UserID, PasswordActual, Password, ConfirmarPassword")] ChangePasswordViewModel modelo)
+        {
+
+            var user = await _userManager.FindByIdAsync(this.User.GetUserID());
+            var checkPassResult = await _userManager.CheckPasswordAsync(user, modelo.PasswordActual);
+            if (!checkPassResult)
+            {
+                ModelState.AddModelError("", "Contraseña actual incorrecta.");
+            }
+
+            if (!modelo.Password.Equals(modelo.ConfirmarPassword))
+            {
+                ModelState.AddModelError("", "Las contraseñas con coinciden.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                //TODO: Cambiar Password: 2 - Validar el modelo , usar el userManager para resetear el password en el POST de CambiarPassword
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, modelo.Password);
+                if (result.Succeeded)
+                {
+                    SweetAlert(TitleType.OperacionExitosa, MessageType.RegistroGuardado, IconType.success);
+                    return RedirectToAction("Profile", new RouteValueDictionary(
+                                                                    new { controller = "Usuarios", action = "Profile", Id = modelo.UserID }));
+                }
+                else
+                    ModelState.AddModelError("", result.Errors.FirstOrDefault().ToString());
+            }
+
+            return View(modelo);
         }
     }
 }

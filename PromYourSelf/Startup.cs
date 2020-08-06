@@ -34,7 +34,7 @@ namespace PromYourSelf
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSignalR();
+			
 			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -46,6 +46,7 @@ namespace PromYourSelf
 				.AddDbContext<Contexto>(options => options.UseSqlServer(Configuration["ConnectionStrings:ConStr"]),
 				ServiceLifetime.Scoped);
 			services.AddSignalR();
+
 			services.AddIdentity<Usuarios, Roles>(options =>
 			{
 				options.Password.RequireDigit = false;
@@ -65,7 +66,10 @@ namespace PromYourSelf
 				options.Cookie.HttpOnly = true; // This must be true to prevent XSS
 				options.Cookie.SameSite = SameSiteMode.None;
 				options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+				options.SlidingExpiration = true;
 			});
+			// services.ConfigureApplicationCookie(opts => opts.LoginPath = "/EntradaApp/Login");
 
 			//services.AddScoped<IRepositoryEmpleados, RepositorioEmpleado>();
 			//services.AddScoped<IRepositoryCitas, RepositorioCitas>();

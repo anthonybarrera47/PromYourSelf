@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models.SweetAlert;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-    public class ProductosController : Controller
+    public class ProductosController : BaseController
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;

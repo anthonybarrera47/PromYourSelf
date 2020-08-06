@@ -4,12 +4,13 @@
     cardHeader.Text = "Perfil";
     ButtonsCardFooter Button = new ButtonsCardFooter();
     Button.ActionButtonSaveOrEdit = "Edit";
-    Button.TextButtonSaveOrEdit = "Editar";
+    Button.TextButtonSaveOrEdit = "Guardar Cambios";
     ViewData["Title"] = cardHeader.Text;
     string imgSrc = null;
-    if (Model != null)
+    if (Model.Foto != null && Model.Foto != string.Empty)
     {
-        imgSrc = $"data:image/jpeg;base64,{Model.Foto}";
+        //imgSrc = $"data:image/jpeg;base64,{Model.Foto}";
+        imgSrc = $"{_appSettings.Value.UrlFotosUsuario}{Model.Foto}";
     }
 
 }
@@ -32,11 +33,11 @@
                         }
                         else
                         {
-                            <img src="~/img/avatar.png" id="FotoResources" class="avatar img-circle img-thumbnail" alt="avatar">
+                            <img src="@Url.Content(_appSettings.Value.UserSinFoto)" id="FotoResources" class="avatar img-circle img-thumbnail" alt="avatar">
                         }
                         <hr />
                         <div class="row justify-content-center">
-                            <input hidden id="inputFoto" asp-for="Foto" name="foto" type="file" onchange="showMyImage(this)" onclick="this.value=null;" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
+                            <input hidden id="inputFoto" asp-for="Foto" name="foto" type="file" onchange="ShowMyImage(this)" onclick="this.value=null;" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
                             <input hidden id="inputFotoFile" name="logo" asp-for="FotoFile" type="file" />
                             <a class="btn btn-primary" href="javascript:changeLogo('inputFoto');">Cambiar</a>
                             &nbsp;
@@ -135,7 +136,7 @@
     {
     <script type="text/javascript">
 
-        function showMyImage(fileInput) {
+        function ShowMyImage(fileInput) {
             console.log('Estableciendo imagen or defecto');
             let file = fileInput.files[0];
             console.log('file', file);
@@ -182,7 +183,7 @@
                 thumbnil.style.display = 'block';
                 //$("#banner_name").text(file.name);
 
-            }* /
+            }
         }
     </script>
 

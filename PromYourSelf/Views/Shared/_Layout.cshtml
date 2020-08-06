@@ -22,6 +22,8 @@
     </environment>
     <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/sweetAlert/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="~/js/sweetAlert/sweetalert2.min.css">
 </head>
 <body>
     <div id="wrapper">
@@ -440,6 +442,13 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+                                @if (User.GetUserID().ToInt() > 0)
+                                {
+                                    <a class="dropdown-item" href="@Url.Action("ChangePassword","Usuarios")">
+                                        <i class="fas fa-shield-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cambiar Contrase&ntilde;a
+                                    </a>
+                                }
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
@@ -504,7 +513,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <form asp-action="Logout" asp-controller="EntradaApp">
+    <form method="post" asp-action="Logout" asp-controller="EntradaApp">
         <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -585,6 +594,37 @@
         @*<script src="~/js/profile-image-manager.js"></script>*@
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sweetAlert/sweetalert2.all.min.js"></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+    <script src="~/js/profile-image-manager.js"></script>
+
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script type="text/javascript">
+            @Html.Raw(TempData["SweetAlert"])
+        </script>
+
+    }
+
+    @if (ViewBag.ToastSweetAlert != null)
+    {
+        <script type="text/javascript">
+            function ToastSweetAlert(Type, Titulo) {
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                Toast.fire({
+                    type: Type,
+                    title: Titulo
+                });
+            }
+        </script>
+    }
 
     @RenderSection("Scripts", required: false)
 </body>

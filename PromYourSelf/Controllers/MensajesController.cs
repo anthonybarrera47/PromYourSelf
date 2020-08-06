@@ -12,12 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-	public class MensajesController : Controller
+	public class MensajesController : BaseController
 	{
 		private readonly Contexto db;
 		private readonly IRepoWrapper _Repo;

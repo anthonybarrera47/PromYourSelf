@@ -11,12 +11,13 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-    public class VentasController : Controller
+    public class VentasController : BaseController
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;

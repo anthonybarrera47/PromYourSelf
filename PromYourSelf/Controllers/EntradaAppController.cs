@@ -11,12 +11,13 @@ using Models;
 using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
+using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
 using PromYourSelf.ViewModels;
 
 namespace PromYourSelf.Controllers
 {
-    public class EntradaAppController : Controller
+    public class EntradaAppController : BaseController
     {
         private readonly SignInManager<Usuarios> _signInManager;
         private readonly UserManager<Usuarios> _userManager;
@@ -61,7 +62,7 @@ namespace PromYourSelf.Controllers
                         else
                         {
                             var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
-
+                           
                             if (user.Posicion == Posicion.Administrador.GetDescription())
                             {
                                 await SaveDefaultCompany(user);
@@ -71,7 +72,6 @@ namespace PromYourSelf.Controllers
                             {
                                 return RedirectToAction("DashBoard", "DashBoard");
                             }
-
                         }
                     }
                 }

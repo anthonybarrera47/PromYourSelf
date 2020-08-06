@@ -14,5 +14,6 @@ namespace PromYourSelf.ViewModels
         public readonly string TextButtonReset = "Limpiar";
         public string ActionButtonBackToList { get; set; } = "Index";
         public string TextButtonBackToList { get; set; } = "Volver a la Lista";
+        public bool ShowButtonBackToList { get; set; } = true;
     }
 }

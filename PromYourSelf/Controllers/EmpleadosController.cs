@@ -12,11 +12,12 @@ using DNTBreadCrumb.Core;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models.SweetAlert;
 
 namespace PromYourSelf.Controllers
 {
     [BreadCrumb(Title = "Empleado", Url = "/Empleados/Index", Order = 0)]
-    public class EmpleadosController : Controller
+    public class EmpleadosController : BaseController
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;

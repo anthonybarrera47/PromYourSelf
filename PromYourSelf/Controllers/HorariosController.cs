@@ -9,12 +9,13 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-    public class HorariosController : Controller
+    public class HorariosController : BaseController
     {
         private readonly Contexto db;
         private readonly IRepoWrapper _Repo;

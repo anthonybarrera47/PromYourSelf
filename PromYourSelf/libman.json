@@ -14,6 +14,10 @@
         "dist/browser/signalr.min.js",
         "dist/browser/signalr.js"
       ]
+    },
+    {
+      "library": "limonte-sweetalert2@7.33.1",
+      "destination": "wwwroot/js/sweetAlert/"
     }
   ]
 }

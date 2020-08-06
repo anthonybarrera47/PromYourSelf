@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PromYourSelf.Models.SweetAlert;
 
 namespace PromYourSelf.Controllers
 {
    
-    public class DashBoardController : Controller
+    public class DashBoardController : BaseController
     {
         public IActionResult Index()
         {
