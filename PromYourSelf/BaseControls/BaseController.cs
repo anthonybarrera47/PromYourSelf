@@ -11,7 +11,7 @@ namespace PromYourSelf.Models.SweetAlert
     {
         public void SweetAlert(TitleType Title, MessageType Mensaje, IconType Icon)
         {
-            var HTML = "Swal.fire({title: '"+Title+"', text: '"+Mensaje.GetDescription()+"',type: '"+Icon+"' });";            
+            var HTML = "Swal.fire({title: '"+Title.GetDescription()+"', text: '"+Mensaje.GetDescription()+"',type: '"+Icon+"' });";            
             TempData["SweetAlert"] = HTML;
         }
     }

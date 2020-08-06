@@ -132,8 +132,9 @@
     </div>
 
 </form>
-@section Scripts
-    {
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script type="text/javascript">
 
         function ShowMyImage(fileInput) {
@@ -165,26 +166,25 @@
             console.log('fotoEl', img);
 
             for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                console.log(file.name);
+                let fileInterna = files[i];
+                console.log(fileInterna.name);
                 let imageType = /image.*/;
-                if (!file.type.match(imageType)) {
+                if (!fileInterna.type.match(imageType)) {
                     continue;
                 }
                 var img = document.getElementById("FotoResources");
-                img.file = file;
+                img.file = fileInterna;
                 var reader = new FileReader();
                 reader.onload = (function (aImg) {
                     return function (e) {
                         aImg.src = e.target.result;
                     };
                 })(img);
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(fileInterna);
                 thumbnil.style.display = 'block';
-                //$("#banner_name").text(file.name);
-
+                //$("#banner_name").text(fileInterna.name);
+                console.log('Hola');
             }
-        }
-    </script>
 
+    </script>
 }

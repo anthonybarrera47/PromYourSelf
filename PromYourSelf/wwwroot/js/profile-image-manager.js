@@ -15,10 +15,10 @@ function removeImage(url, idImg, idRemove) {
 
 function showMyImageRefresh(src) {
     console.log('refrescando imagen');
-    var img = document.getElementById("FotoResources");
+    let img = document.getElementById("FotoResources");
     img.file = null;
     img.src = src;
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = (function (aImg) {
         return function (e) {
             aImg.src = e.target.result;
