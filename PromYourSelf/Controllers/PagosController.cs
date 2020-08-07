@@ -2,47 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models;
 using PromYourSelf.Models.SweetAlert;
-using PromYourSelf.ViewModels;
-using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-    public class HorariosController : BaseController
+    public class PagosController : BaseController
     {
-        private readonly Contexto db;
         private readonly IRepoWrapper _Repo;
-        public static List<Horarios> Lista;
-
-        public HorariosController(Contexto context, IRepoWrapper RepoHorario)
+        public static List<Pagos> Lista;
+        public PagosController(IRepoWrapper RepoEmpleado)
         {
-            db = context;
-            _Repo = RepoHorario;
+            _Repo = RepoEmpleado;
         }
 
-        // GET: Horarios
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Lunes", int PageSize = 5)
+        // GET: Pagos
+        public async Task<IActionResult> Index()
         {
-
-            Lista = await _Repo.Horarios.GetListAsync(x => true);
-
-            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Lunes");
-            model.RouteValue = new RouteValueDictionary {
-                            { "filter", filter}
-            };
-            model.Action = "Index";
-
-            return View(model);
+            return View(await _Repo.Pagos.GetListAsync(x => true));
         }
 
-        // GET: Horarios/Details/5
+        // GET: Pagos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,39 +35,38 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await _Repo.Horarios.FindAsync(id);
-
-            if (horarios == null)
+            var pagos = await _Repo.Pagos.FindAsync(id);
+            if (pagos == null)
             {
                 return NotFound();
             }
 
-            return View(horarios);
+            return View(pagos);
         }
 
-        // GET: Horarios/Create
-        public IActionResult Create()
+        // GET: Pagos/Create
+        public async Task<IActionResult> Create()
         {
-            return View(new HorariosViewModel());
+            ViewBag.TipoClasificacion = await _Repo.TiposClasficacion.GetListAsync(x => true);
+            return View(new Pagos());
         }
 
-        // POST: Horarios/Create
+        // POST: Pagos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(HorariosViewModel horarios)
+        public async Task<IActionResult> Create([Bind("PagoID,Fecha,NegocioID,Monto,Concepto")] Pagos pagos)
         {
             if (ModelState.IsValid)
             {
-                Horarios horario = horarios.ConvertToHorario();
-                await _Repo.Horarios.SaveAsync(horario);
+                await _Repo.Pagos.SaveAsync(pagos);
                 return RedirectToAction(nameof(Index));
             }
-            return View(horarios);
+            return View(pagos);
         }
 
-        // GET: Horarios/Edit/5
+        // GET: Pagos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,23 +74,22 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await _Repo.Horarios.FindAsync(id);
-            HorariosViewModel Horario = horarios.ConvertToHorariosViewModel();
-            if (Horario == null)
+            var pagos = await _Repo.Pagos.FindAsync(id);
+            if (pagos == null)
             {
                 return NotFound();
             }
-            return View(Horario);
+            return View(pagos);
         }
 
-        // POST: Horarios/Edit/5
+        // POST: Pagos/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, HorariosViewModel horarios)
+        public async Task<IActionResult> Edit(int id, [Bind("PagoID,Fecha,NegocioID,Monto,Concepto,UsuarioID,EsNulo,CreadoPor,FechaCreacion,ModificadoPor,FechaModificacion")] Pagos pagos)
         {
-            if (id != horarios.Id)
+            if (id != pagos.PagoID)
             {
                 return NotFound();
             }
@@ -115,12 +98,12 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
-                    Horarios horario = horarios.ConvertToHorario();
-                    await _Repo.Horarios.ModifiedAsync(horario);
+                    //_context.Update(pagos);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HorariosExists(horarios.Id))
+                    if (!await PagosExists(pagos.PagoID))
                     {
                         return NotFound();
                     }
@@ -131,10 +114,10 @@ namespace PromYourSelf.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(horarios);
+            return View(pagos);
         }
 
-        // GET: Horarios/Delete/5
+        // GET: Pagos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,27 +125,28 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var horarios = await _Repo.Horarios.FindAsync(id);
-            if (horarios == null)
+            var pagos = await _Repo.Pagos.FindAsync(id);
+            if (pagos == null)
             {
                 return NotFound();
             }
 
-            return View(horarios);
+            return View(pagos);
         }
 
-        // POST: Horarios/Delete/5
+        // POST: Pagos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _Repo.Horarios.DeleteAsync(id);
+            await _Repo.Pagos.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HorariosExists(int id)
+        private async Task<bool> PagosExists(int id)
         {
-            return _Repo.Horarios.Exists(id);
+            List<Pagos> ListaPagos = await _Repo.Pagos.GetListAsync(x => true);
+            return ListaPagos.Any(e => e.PagoID == id);
         }
     }
 }

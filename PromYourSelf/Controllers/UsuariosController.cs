@@ -71,7 +71,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _Repo.Usuarios.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.FindAsync(id);
 
             if (usuarios == null)
             {
@@ -110,7 +110,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _Repo.Usuarios.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.FindAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -160,7 +160,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _Repo.Usuarios.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.FindAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -175,7 +175,7 @@ namespace PromYourSelf.Controllers
                 return RedirectToAction("DashBoard", "DashBoard");
             }
 
-            var usuarios = await _Repo.Usuarios.SearchAsync(id);
+            var usuarios = await _Repo.Usuarios.FindAsync(id);
             if (usuarios == null)
             {
                 return NotFound();
@@ -210,7 +210,7 @@ namespace PromYourSelf.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = await _Repo.Usuarios.SearchAsync(modelo.Id);
+                var user = await _Repo.Usuarios.FindAsync(modelo.Id);
 
                 if (user != null)
                 {

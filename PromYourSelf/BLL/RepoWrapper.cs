@@ -31,6 +31,8 @@ namespace PromYourSelf.BLL
         private IRepositoryVentas _Ventas;
         private IRepositoryRol _rol;
         private IRepositoryCodeValidation _CodeValidation;
+        private IRepositoryPagos _RepositoryPagos;
+        private IRepositoryTipoClasificacion _RepositoryTipoClasificacion;
 
         public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
                 RoleManager<Roles> rolManager,
@@ -173,6 +175,29 @@ namespace PromYourSelf.BLL
                 return _CodeValidation;
             }
         }
+        public IRepositoryPagos Pagos
+        {
+            get
+            {
+                if (_RepositoryPagos == null)
+                {
+                    _RepositoryPagos = new RepositorioPagos(_RepoContexto, _accessor);
+                }
 
+                return _RepositoryPagos;
+            }
+        }
+        public IRepositoryTipoClasificacion TiposClasficacion
+        {
+            get
+            {
+                if (_RepositoryTipoClasificacion == null)
+                {
+                    _RepositoryTipoClasificacion = new RepositorioTipoClasificacion(_RepoContexto, _accessor);
+                }
+
+                return _RepositoryTipoClasificacion;
+            }
+        }
     }
 }

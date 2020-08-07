@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200729234937_AgregandoFKUsuarioCliente.cs" />
     <Compile Remove="Migrations\20200729234937_AgregandoFKUsuarioCliente.Designer.cs" />
+    <Compile Remove="Migrations\20200807011812_AgregandoPagos.cs" />
+    <Compile Remove="Migrations\20200807011812_AgregandoPagos.Designer.cs" />
   </ItemGroup>
 
 

@@ -1,0 +1,56 @@
+﻿@model PromYourSelf.Models.Pagos
+
+@{
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    ValuesCardHeader cardHeader = new ValuesCardHeader();
+    string Action = (Model.PagoID == 0) ? "Create" : "Edit";
+    string Texto = (Model.PagoID == 0) ? "Guardar" : "Editar";
+    Button.ActionButtonSaveOrEdit = Action;
+    Button.TextButtonSaveOrEdit = Texto;
+    cardHeader.Text = (Model.PagoID == 0) ? "Crear Pago" : "Modificar Pago";
+    ViewData["Title"] = cardHeader.Text;
+}
+
+
+<form class="form" asp-action="Create" method="post" id="registrationForm">
+    <div class="card shadow mb-4">
+        <partial name="_CardHeaderPartialView" model="cardHeader" />
+        <div class="card-body">
+            <div class="row">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                @if (Model.PagoID != 0)
+                {
+                    <input type="hidden" asp-for="PagoID" />
+                }
+                <div class="form-group">
+                    <label asp-for="Fecha" class="control-label"></label>
+                    <input asp-for="Fecha" class="form-control" />
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+                <label class="control-label">Tipo de Clasificaci&oacute;n</label>
+                <select id=""></select>
+                <select id="Producto" asp-items="@(new SelectList(ViewBag.TipoClasificacion, "ProductoID", "Nombre"))"
+                        class="form-control select2"
+                        style="width:100%;"
+                        data-placeholder="Seleccione el producto">
+                </select>
+                <div class="form-group">
+                    <label asp-for="TipoClasificacion" hidden class="control-label"></label>
+                    <input asp-for="TipoClasificacion" hidden class="form-control" />
+                    <span asp-validation-for="TipoClasificacion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Monto" class="control-label"></label>
+                    <input asp-for="Monto" class="form-control" />
+                    <span asp-validation-for="Monto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Concepto" class="control-label"></label>
+                    <input asp-for="Concepto" class="form-control" />
+                    <span asp-validation-for="Concepto" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <partial name="_ButtonsCardFooterPartialView" model="Button" />
+    </div>
+</form>

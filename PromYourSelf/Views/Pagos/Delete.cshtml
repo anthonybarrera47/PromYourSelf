@@ -1,0 +1,81 @@
+﻿@model PromYourSelf.Models.Pagos
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Pagos</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NegocioID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NegocioID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Monto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Monto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Concepto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Concepto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UsuarioID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UsuarioID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EsNulo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EsNulo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreadoPor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreadoPor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaCreacion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaCreacion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ModificadoPor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ModificadoPor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaModificacion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaModificacion)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PagoID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

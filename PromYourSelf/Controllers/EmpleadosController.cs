@@ -55,7 +55,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _Repo.Empleados.SearchAsync(id);
+            var empleados = await _Repo.Empleados.FindAsync(id);
 
             if (empleados == null)
             {
@@ -100,7 +100,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _Repo.Empleados.SearchAsync(id);
+            var empleados = await _Repo.Empleados.FindAsync(id);
             if (empleados == null)
             {
                 return NotFound();
@@ -156,7 +156,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var empleados = await _Repo.Empleados.SearchAsync(id);
+            var empleados = await _Repo.Empleados.FindAsync(id);
             if (empleados == null)
             {
                 return NotFound();

@@ -1,18 +1,18 @@
 ﻿@model HorariosViewModel
 @{
     ButtonsCardFooter Button = new ButtonsCardFooter();
-
+    ValuesCardHeader cardHeader = new ValuesCardHeader();
     string Action = (Model.Id == 0) ? "Create" : "Edit";
     string Texto = (Model.Id == 0) ? "Guardar" : "Editar";
     Button.ActionButtonSaveOrEdit = Action;
     Button.TextButtonSaveOrEdit = Texto;
-    string Titulo = (Model.Id == 0) ? "Crear Horarios" : "Modificar Horarios";
-    ViewData["Title"] = Titulo;
+    cardHeader.Text = (Model.Id == 0) ? "Crear Horarios" : "Modificar Horarios";
+    ViewData["Title"] = cardHeader.Text;
 }
 
 <form class="form" asp-action="@Action" id="registrationForm">
     <div class="card shadow mb-4">
-        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
+        <partial name="_CardHeaderPartialView" model="cardHeader" />
         <div class="card-body">
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

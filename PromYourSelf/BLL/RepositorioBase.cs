@@ -33,7 +33,7 @@ namespace BLL
 		{
 
 		}
-		public virtual async Task<T> SearchAsync(int? id)
+		public virtual async Task<T> FindAsync(int? id)
 		{
 			T entity;
 			try

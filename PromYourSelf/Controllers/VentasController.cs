@@ -55,7 +55,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var ventas = await _Repo.Ventas.SearchAsync(id);
+            var ventas = await _Repo.Ventas.FindAsync(id);
 
             if (ventas == null)
             {
@@ -109,7 +109,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var ventas = await _Repo.Ventas.SearchAsync(id);
+            var ventas = await _Repo.Ventas.FindAsync(id);
             if (ventas == null)
             {
                 return NotFound();
@@ -159,7 +159,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var ventas = await _Repo.Ventas.SearchAsync(id);
+            var ventas = await _Repo.Ventas.FindAsync(id);
             if (ventas == null)
             {
                 return NotFound();

@@ -51,7 +51,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await _Repo.Citas.SearchAsync(id);
+            var citas = await _Repo.Citas.FindAsync(id);
 
             if (citas == null)
             {
@@ -90,7 +90,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await _Repo.Citas.SearchAsync(id);
+            var citas = await _Repo.Citas.FindAsync(id);
             if (citas == null)
             {
                 return NotFound();
@@ -140,7 +140,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var citas = await _Repo.Citas.SearchAsync(id);
+            var citas = await _Repo.Citas.FindAsync(id);
             if (citas == null)
             {
                 return NotFound();

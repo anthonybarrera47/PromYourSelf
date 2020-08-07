@@ -55,7 +55,7 @@ namespace PromYourSelf.Controllers
 				return NotFound();
 			}
 
-			var mensajes = await _Repo.Mensajes.SearchAsync(id);
+			var mensajes = await _Repo.Mensajes.FindAsync(id);
 
 			if (mensajes == null)
 			{
@@ -129,7 +129,7 @@ namespace PromYourSelf.Controllers
 				return NotFound();
 			}
 
-			var mensajes = await _Repo.Mensajes.SearchAsync(id);
+			var mensajes = await _Repo.Mensajes.FindAsync(id);
 			if (mensajes == null)
 			{
 				return NotFound();
@@ -179,7 +179,7 @@ namespace PromYourSelf.Controllers
 				return NotFound();
 			}
 
-			var mensajes = await _Repo.Mensajes.SearchAsync(id);
+			var mensajes = await _Repo.Mensajes.FindAsync(id);
 			if (mensajes == null)
 			{
 				return NotFound();

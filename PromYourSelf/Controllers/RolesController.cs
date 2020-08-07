@@ -42,7 +42,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var rol = await _repo.Rol.SearchAsync(id);
+            var rol = await _repo.Rol.FindAsync(id);
             if (rol == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var applicationRole = await _repo.Rol.SearchAsync(id);
+            var applicationRole = await _repo.Rol.FindAsync(id);
             if (applicationRole == null)
             {
                 return NotFound();
@@ -102,7 +102,7 @@ namespace PromYourSelf.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var applicationRole = await _repo.Rol.SearchAsync(id);
+            var applicationRole = await _repo.Rol.FindAsync(id);
             //await _rolRepo.Eliminar(applicationRole);
             await _roleManager.DeleteAsync(applicationRole);
             return RedirectToAction(nameof(Index));

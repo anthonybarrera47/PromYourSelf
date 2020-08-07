@@ -50,7 +50,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var productos = await _Repo.Productos.SearchAsync(id);
+            var productos = await _Repo.Productos.FindAsync(id);
 
             if (productos == null)
             {
@@ -89,7 +89,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var productos = await _Repo.Productos.SearchAsync(id);
+            var productos = await _Repo.Productos.FindAsync(id);
             if (productos == null)
             {
                 return NotFound();
@@ -139,7 +139,7 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var productos = await _Repo.Productos.SearchAsync(id);
+            var productos = await _Repo.Productos.FindAsync(id);
             if (productos == null)
             {
                 return NotFound();
