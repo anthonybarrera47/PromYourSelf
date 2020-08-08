@@ -4,7 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cad1LFmApInoTY5wF_qwK_hQHnIOWfo&callback=initMap"
+        type="text/javascript"></script>
 <h1>Create</h1>
 
 <h4>Negocios</h4>
@@ -34,15 +35,15 @@
                 <span asp-validation-for="Telefono2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Latitud" class="control-label"></label>
-                <input asp-for="Latitud" class="form-control" />
+                <input id="inputLatitud" type="hidden" asp-for="Latitud" class="form-control" />
                 <span asp-validation-for="Latitud" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Longitud" class="control-label"></label>
-                <input asp-for="Longitud" class="form-control" />
+
+                <input id="inputLongitud" type="hidden" asp-for="Longitud" class="form-control" />
                 <span asp-validation-for="Longitud" class="text-danger"></span>
             </div>
+            <div id="mapa" style="width: 800px;height: 600px;"></div>
+            <hr /><br />
+            <div id="latlong"></div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -53,6 +54,72 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+
+<script>
+    let map, infoWindow;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("mapa"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 15
+        });
+        infoWindow = new google.maps.InfoWindow();
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    document.getElementById('inputLatitud').value = pos.lat;
+                    document.getElementById('inputLongitud').value = pos.lng;
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent("<h3>Esta es tu ubicación. Localiza los negocios cercanos.</h3><br><input class='form-control' placeholder='Introduzca un servicio'><br><a class='btn text-white btn-primary btn-block'><i class='fa fa-search'></i></a><br><a class='btn text-white btn-primary btn-block'>Visitar Negocio</a>");
+                    //infoWindow.open(map);
+                    console.log('pos', pos);
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: 'Ubicacion del negocio',
+                        draggable: true
+                    });
+                    marker.addListener('click', function () {
+                        infoWindow.open(map, marker);
+                    });
+
+                    marker.addListener('dragend', function (evt) {
+                        document.getElementById('inputLatitud').value = evt.latLng.lat();
+                        document.getElementById('inputLongitud').value = evt.latLng.lng();
+                        document.getElementById('latlong').innerHTML = '<p>Latitud: ' + evt.latLng.lat().toFixed(3) + ' Lóngitud: ' + evt.latLng.lng().toFixed(3) + '</p>';
+                    });
+
+
+                    map.setCenter(pos);
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation
+                ? "Error: The Geolocation service failed."
+                : "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(map);
+    }
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

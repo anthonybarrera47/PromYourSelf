@@ -88,7 +88,7 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Create(Negocios negocios)
         {
             if (ModelState.IsValid)
-            {
+            {				
                 await _Repo.Negocios.SaveAsync(negocios);
                 return RedirectToAction(nameof(Index));
             }
