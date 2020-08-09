@@ -4,9 +4,6 @@
 @{
     string Titulo = "Listado  de Productos";
     ViewData["Title"] = Titulo;
-    string Edit = "Edit";
-    string Delete = "Delete";
-    string Details = "Details";
     int PageSize = 1;
 }
 
@@ -37,73 +34,6 @@
 <br />
 <div class="card shadow">
     <div class="card-body">
-
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="thead-light">
-                    <tr>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.Nombre)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.Descripcion)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.Unidad)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.Stock)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.Precio)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.PrecioOferta)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.TipoProductos)
-                        </th>
-                        <th>
-                            @Html.SortableHeaderFor(model => model.CreadoPor)
-                        </th>
-                        <th>Acci&oacute;n</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nombre)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Descripcion)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Unidad)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Stock)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Precio)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PrecioOferta)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TipoProductos)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreadoPor)
-                            </td>
-                            <partial name="_ActionsPartialView" model="new Actions() { Key =item.ProductoID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <partial name="_PaginationPartialView" model="this.Model" />
-        </div>
+        <partial name="_CreateOrEditPartialView" model="Model" />
     </div>
 </div>

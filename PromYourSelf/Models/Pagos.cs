@@ -1,11 +1,12 @@
 ﻿using Models;
+using PromYourSelf.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PromYourSelf.Models
+namespace Models
 {
     public class Pagos : CamposEstandar
     {

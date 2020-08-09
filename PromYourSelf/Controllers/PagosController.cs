@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DNTBreadCrumb.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
 using PromYourSelf.Models.SweetAlert;
+using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
+    [BreadCrumb(Title = "Empleado", Url = "/Empleados/Index", Order = 0)]
     public class PagosController : BaseController
     {
         private readonly IRepoWrapper _Repo;
@@ -22,10 +26,32 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Pagos
-        public async Task<IActionResult> Index()
+        [BreadCrumb(Title = "Listado de Empelado", Order = 1)]
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Monto", int PageSize = 5)
         {
-            return View(await _Repo.Pagos.GetListAsync(x => true));
+            var Modelo = await FillIndex(filter, page, sortExpression, PageSize);
+            return View(Modelo);
         }
+        public async Task<ActionResult> PartialIndex(string filter, int page = 1, string sortExpression = "Monto", int PageSize = 5)
+        {
+            var Modelo = await FillIndex(filter,page,sortExpression,PageSize);
+            return PartialView("Index", Modelo);
+        }
+        public async Task<PagingList<Pagos>> FillIndex(string filter, int page = 1, string sortExpression = "Monto", int PageSize = 5)
+        {
+            if (!string.IsNullOrWhiteSpace(filter))
+                Lista = await _Repo.Pagos.GetListAsync(x => true);
+            else
+                Lista = await _Repo.Pagos.GetListAsync(x => true);
+
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Monto");
+            model.RouteValue = new RouteValueDictionary {
+                            { "filter", filter}
+            };
+            model.Action = "Index";
+            return model;
+        }
+
 
         // GET: Pagos/Details/5
         public async Task<IActionResult> Details(int? id)

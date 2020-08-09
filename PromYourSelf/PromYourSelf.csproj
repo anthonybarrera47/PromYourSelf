@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20200729234937_AgregandoFKUsuarioCliente.Designer.cs" />
     <Compile Remove="Migrations\20200807011812_AgregandoPagos.cs" />
     <Compile Remove="Migrations\20200807011812_AgregandoPagos.Designer.cs" />
+    <Compile Remove="Migrations\20200807022159_AgregandoPagos.cs" />
+    <Compile Remove="Migrations\20200807022159_AgregandoPagos.Designer.cs" />
+    <Compile Remove="Migrations\20200808000104_QuitandoElCampoPosicion.cs" />
+    <Compile Remove="Migrations\20200808000104_QuitandoElCampoPosicion.Designer.cs" />
   </ItemGroup>
 
 

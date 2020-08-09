@@ -10,7 +10,7 @@ using Models;
 namespace PromYourSelf.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200807022159_AgregandoPagos")]
+    [Migration("20200808001157_AgregandoPagos")]
     partial class AgregandoPagos
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -337,8 +337,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 6, 22, 21, 59, 214, DateTimeKind.Local).AddTicks(3941),
-                            FechaModificacion = new DateTime(2020, 8, 6, 22, 21, 59, 215, DateTimeKind.Local).AddTicks(3971),
+                            FechaCreacion = new DateTime(2020, 8, 7, 20, 11, 57, 668, DateTimeKind.Local).AddTicks(6509),
+                            FechaModificacion = new DateTime(2020, 8, 7, 20, 11, 57, 669, DateTimeKind.Local).AddTicks(4352),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,

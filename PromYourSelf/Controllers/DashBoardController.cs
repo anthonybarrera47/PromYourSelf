@@ -8,13 +8,14 @@ using PromYourSelf.Models.SweetAlert;
 
 namespace PromYourSelf.Controllers
 {
-   
+    [Authorize]
     public class DashBoardController : BaseController
     {
         public IActionResult Index()
         {
             return View();
         }
+        [Authorize]
         public IActionResult DashBoard()
         {
             return View();

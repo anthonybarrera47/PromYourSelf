@@ -77,7 +77,7 @@ namespace PromYourSelf.Controllers
 		// GET: Negocios/Create
 		public IActionResult Create()
         {
-            return View();
+            return View(new Negocios());
         }
 
         // POST: Negocios/Create

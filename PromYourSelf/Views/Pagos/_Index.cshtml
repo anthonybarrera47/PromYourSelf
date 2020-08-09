@@ -1,0 +1,48 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<Models.Pagos>
+
+@{
+    string Edit = "Edit";
+    string Delete = "Delete";
+    string Details = "Details";
+}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NegocioID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Monto)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concepto)
+                    </th>
+                    <th>Acci&oacute;n</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NegocioID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Monto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concepto)
+                        </td>
+                        <partial name="_ActionsPartialView" model="new Actions() { Key =item.PagoID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <partial name="_PaginationPartialView" model="this.Model" />

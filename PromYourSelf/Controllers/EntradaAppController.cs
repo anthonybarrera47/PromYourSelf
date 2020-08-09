@@ -51,7 +51,7 @@ namespace PromYourSelf.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.Usuario,
-                       model.Password, model.RememberMe, false);
+                       model.Password, false, lockoutOnFailure:false);
 
                     if (result.Succeeded)
                     {

@@ -61,7 +61,7 @@ namespace PromYourSelf.Migrations
                 keyColumn: "NegocioID",
                 keyValue: 1,
                 columns: new[] { "FechaCreacion", "FechaModificacion" },
-                values: new object[] { new DateTime(2020, 8, 6, 22, 21, 59, 214, DateTimeKind.Local).AddTicks(3941), new DateTime(2020, 8, 6, 22, 21, 59, 215, DateTimeKind.Local).AddTicks(3971) });
+                values: new object[] { new DateTime(2020, 8, 7, 20, 11, 57, 668, DateTimeKind.Local).AddTicks(6509), new DateTime(2020, 8, 7, 20, 11, 57, 669, DateTimeKind.Local).AddTicks(4352) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pagos_TipoClasificacionID",

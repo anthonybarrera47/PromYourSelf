@@ -19,14 +19,15 @@ namespace Models
         public string NombreComercial { get; set; }
         [Required(ErrorMessage = "Este es Campo obligatorio")]
         [StringLength(255,
-            ErrorMessage = "La descripcion no debe de tener mas de 255 caracteres.")]
+            ErrorMessage = "La descripción no debe de tener mas de 255 caracteres.")]
+        [Display(Name = "Dirección")]
         public string Direccion { get; set; }
         [Required(ErrorMessage = "Este es Campo obligatorio")]
-        [Display(Name = "Teléfono")]
+        [Display(Name = "Teléfono 1")]
         [StringLength(20, ErrorMessage = "Máximo 20 caracteres.")]
         [DataType(DataType.PhoneNumber)]
         public string Telefono1 { get; set; }
-        [Display(Name = "Teléfono")]
+        [Display(Name = "Teléfono 2")]
         [StringLength(20, ErrorMessage = "Máximo 20 caracteres.")]
         [DataType(DataType.PhoneNumber)]
         public string Telefono2 { get; set; }
