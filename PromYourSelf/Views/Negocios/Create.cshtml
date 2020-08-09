@@ -98,11 +98,10 @@
                         title: 'Ubicacion del negocio',
                         draggable: true
                     });
-                    marker.addListener('click', function () {
-                        infoWindow.open(map, marker);
-                    });
+                  
 
                     marker.addListener('dragend', function (evt) {
+                        console.log('new Position: ', evt.latLng.lat(), evt.latLng.lng());
                         document.getElementById('inputLatitud').value = evt.latLng.lat();
                         document.getElementById('inputLongitud').value = evt.latLng.lng();
                         document.getElementById('latlong').innerHTML = '<p>Latitud: ' + evt.latLng.lat().toFixed(3) + ' Lóngitud: ' + evt.latLng.lng().toFixed(3) + '</p>';
