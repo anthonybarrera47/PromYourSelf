@@ -96,7 +96,7 @@ namespace PromYourSelf.Controllers
 		{
 			int userId = User.GetUserID().ToInt();
 			mensaje.CreadoPor = userId;
-			mensaje.Tipo = Mensajes.TipoContenido.Texto;
+			mensaje.Tipo = TipoContenido.Texto;
 			mensaje.UsuarioID = userId;
 			mensaje.CreadoPor = userId;			
 			mensaje.ModificadoPor = userId;

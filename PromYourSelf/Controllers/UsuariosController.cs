@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models;
 using PromYourSelf.Models.Configuraciones;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
@@ -293,12 +294,6 @@ namespace PromYourSelf.Controllers
         {
             return _Repo.Usuarios.Exists(id);
         }
-        [HttpGet]
-        public IActionResult ConfirmarUsuario(int Id)
-        {
-
-            return View();
-        }
         public async Task<ActionResult> ChangePassword()
         {
             var user = await _userManager.FindByIdAsync(this.User.GetUserID());
@@ -347,6 +342,41 @@ namespace PromYourSelf.Controllers
             }
 
             return View(modelo);
+        }
+        public async Task<ActionResult> ConfirmarUsuario(int? id)
+        {
+
+            if (id == null)
+            {
+                return RedirectToAction("DashBoard", "DashBoard");
+            }
+
+            var usuarios = await _Repo.Usuarios.FindAsync(id);
+            if (usuarios == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await EntradaAppController.SendMail(usuarios, _Repo);
+            }
+
+            var ViewModel = new ConfirmarUsuarioViewModel();
+            ViewModel.UsuarioID = usuarios.Id;
+            return View(ViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmarUsuario([Bind("CodigoConfirmacion")] ConfirmarUsuarioViewModel modelo)
+        {
+            CodeValidation Code = await _Repo.CodeValidation.FindAsync(x => x.Codigo.Equals(modelo.CodigoConfirmacion));
+
+            if (Code.UsuarioID.Equals(modelo.UsuarioID))
+            {
+                double x = (Code.TiempoExpiracion.Date - DateTime.Now.Date).TotalDays;
+            }
+
+            return View();
         }
     }
 }

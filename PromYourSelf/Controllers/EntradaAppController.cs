@@ -109,7 +109,7 @@ namespace PromYourSelf.Controllers
             {
                 //TODO: Agregar posicion como va.
                 Usuarios usuarios = RepositorioUsuario.UserViewModelToUser(model);
-                usuarios.Posicion = "Administrador";
+                usuarios.Posicion = Posicion.Normal.GetDescription();
                 var _user = await _userManager.FindByNameAsync(usuarios.UserName);
                 if (_user == null)
                 {
@@ -117,7 +117,9 @@ namespace PromYourSelf.Controllers
 
                     if (result.Succeeded)
                     {
-                        await SendMail(usuarios);
+                        await EntradaAppController.SendMail(usuarios, _repoWrappers);
+                        //TODO: LOGIN DIRECTO LUEGO DE REGISTRAR
+
                         return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
                     }
                 }
@@ -152,16 +154,33 @@ namespace PromYourSelf.Controllers
                 await _repoWrappers.Negocios.SaveAsync(negocio);
             }
         }
-        public async Task SendMail(Usuarios usuarios)
+        public static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
         {
-
+            bool Paso = false;
             MailMessage mail = new MailMessage();
             CodeValidation Code = new CodeValidation();
             Code.UsuarioID = usuarios.Id;
             Code.Email = usuarios.Email;
             Code.UsuarioID = usuarios.Id;
+            Code.TiempoExpiracion = DateTime.Now.AddDays(1);//24Horas para expirar el codigo.
             Code = _repoWrappers.CodeValidation.GenerarToken(Code);
-            if (await _repoWrappers.CodeValidation.SaveAsync(Code))
+            CodeValidation CodeModificar = await _repoWrappers.CodeValidation.FindAsync(x => x.UsuarioID.Equals(Code.UsuarioID));
+
+            if (CodeModificar == null)
+            {
+                Paso = await _repoWrappers.CodeValidation.SaveAsync(Code);
+            }
+            else
+            {
+                double x = (Code.TiempoExpiracion.Date - DateTime.Now.Date).TotalDays;
+                if (x < 0)
+                {
+                    CodeModificar.TiempoExpiracion = DateTime.Now.AddDays(1);
+                    CodeModificar = _repoWrappers.CodeValidation.GenerarToken(Code);
+                    Paso = await _repoWrappers.CodeValidation.ModifiedAsync(Code);
+                }
+            }
+            if (Paso)
             {
                 mail.From = new MailAddress("proyectoaplicada2@gmail.com");
                 mail.To.Add(usuarios.Email);

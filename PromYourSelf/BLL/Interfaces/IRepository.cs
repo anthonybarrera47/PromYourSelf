@@ -15,6 +15,7 @@ namespace BLL
         Task<bool> ModifiedAsync(T entity);
         Task<bool> DeleteAsync(int? id);
         Task<T> FindAsync(int? id);
+        Task<T> FindAsync(Expression<Func<T, bool>> expression);
         Task<List<T>> GetListAsync(Expression<Func<T, bool>> expression,bool GetNullFields = false);
         bool Exists(int id);
         ClaimsPrincipal User { get; }

@@ -3,7 +3,7 @@
 <div class="card-footer">
     <div class="text-center">
         <div class="form-group col-12 " display: inline-block>
-            <button class="btn btn-lg btn-success pull-right" value="@Model.ActionButtonSaveOrEdit" type="submit"><i class="fas fa-save"></i> @Model.TextButtonSaveOrEdit</button>
+            <button class="btn btn-lg btn-success pull-right" value="@Model.ActionButtonSaveOrEdit" type="submit"><i class="@Model.CssButtonSaveOrEdit"></i> @Model.TextButtonSaveOrEdit</button>
             <button class="btn btn-lg btn-info" type="@Model.ActionButtonReset"><i class="fas fa-redo-alt"></i> @Model.TextButtonReset</button>
             @if (Model.ShowButtonBackToList)
             {

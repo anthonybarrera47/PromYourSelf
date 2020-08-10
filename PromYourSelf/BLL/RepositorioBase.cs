@@ -47,8 +47,6 @@ namespace BLL
 							entity = null;
 					}
 				}
-
-
 			}
 			catch (Exception)
 			{ throw; }
@@ -148,5 +146,25 @@ namespace BLL
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public async Task<T> FindAsync(Expression<Func<T, bool>> expression)
+        {
+			T entity;
+			try
+			{
+				entity = await db.Set<T>().Where(expression).FirstOrDefaultAsync();
+				if (entity != null)
+				{
+					if (entity.GetType().BaseType == typeof(CamposEstandar))
+					{
+						if ((entity as CamposEstandar).EsNulo)
+							entity = null;
+					}
+				}
+			}
+			catch (Exception)
+			{ throw; }
+			return entity;
+		}
+    }
 }
