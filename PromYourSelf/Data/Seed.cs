@@ -36,13 +36,12 @@ namespace PromYourSelf.Data
 					ModificadoPor = 0,
 					EsNulo = false,
 					CreadoPor = 0,
-					Posicion = "Administrador",
+					Posicion = Posicion.Normal.GetDescription(),
 					FechaModificacion = DateTime.Now,
 					FechaCreacion = DateTime.Now
 				};
 
 				
-
 				var demouser = new Usuarios
 				{
 					UserName = "demo",
@@ -55,7 +54,7 @@ namespace PromYourSelf.Data
 					ModificadoPor = 0,
 					EsNulo = false,
 					CreadoPor = 0,
-					Posicion = "Normal",
+					Posicion = Posicion.Normal.GetDescription(),
 					FechaModificacion = DateTime.Now,
 					FechaCreacion = DateTime.Now
 				};
@@ -71,8 +70,6 @@ namespace PromYourSelf.Data
 					await SaveUser(userManager, rolManager, demouser);
 				}
 
-				var adminUserExists = await userManager.FindByNameAsync("root");			
-
 			}
 			catch (Exception ex)
 			{
@@ -85,7 +82,7 @@ namespace PromYourSelf.Data
 		public static async Task SaveUser(UserManager<Usuarios> userManager, RoleManager<Roles> rolManager,  Usuarios usuario)
 		{
 			var result = await userManager.CreateAsync(usuario, "1234");
-			string posicion = Posicion.Administrador.GetDescription() == "Administrador" ? "Administrador" : "Normal";
+			string posicion = usuario.Posicion == "Administrador" ? "Administrador" : "Normal";
 			if (result.Succeeded)
 			{
 				await userManager.AddClaimAsync(usuario, new Claim("Nombres", usuario.Nombres));
