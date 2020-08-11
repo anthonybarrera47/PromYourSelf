@@ -7,87 +7,171 @@
     int PageSize = 1;
 }
 
-<h1>Negocios</h1>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cad1LFmApInoTY5wF_qwK_hQHnIOWfo&callback=initMap"
         type="text/javascript"></script>
-<div>
-    <form method="get" asp-action="Index">
-        <div class="form-row justify-content-between">
-            <div class="form-inline">
-                <input name="filter" class="form-control" placeholder="Filtro"
-                       value="@Model.RouteValue["Filter"]" />
-                <button type="submit" class="btn  btn-primary">
-                    <i class="fas fa-search" aria-hidden="true">Buscar</i>
-                </button>
-                 
-            </div>
-            <div class="form-group">
-                <select asp-for="@PageSize" class="form-control">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                </select>
-            </div>
-        </div>
+<div id="app-negocios">
+    <h1>Negocios</h1>
 
-    </form>
-</div>
-<br />
-<h4 class="text-center">Negocios recomendados</h4>
-<hr />
-<div class="card-columns mt-5">
-    @foreach (var item in Model)
-    {
-        <div class="card p-3 text-center border-primary">
+    @*<link href="~/css/switch.css" rel="stylesheet" />*@
+    <div>
+        <form method="get" asp-action="Index">
+            <div class="form-row justify-content-between">
+                <div class="form-inline">
+                    <input name="filter" class="form-control" placeholder="Filtro"
+                           v-model="filtro" />
+                    <button type="button" v-on:click="getAll()" class="btn  btn-primary">
+                        <i class="fas fa-search" aria-hidden="true">{{btn_text}}</i>
+                    </button>
+
+                    <div class="custom-control custom-switch ml-1">
+                        <input name="todo" v-on:change="change($event)" v-model="porTodo" type="checkbox" class="custom-control-input form-control-lg" id="customSwitch1">
+                        <label class="custom-control-label" for="customSwitch1">Todo</label>
+                    </div>
+                    <div class="custom-control custom-switch ml-1">
+                        <input v-on:change="change($event)" v-model="porNegocios" type="checkbox" class="custom-control-input" id="customSwitch2">
+                        <label class="custom-control-label" for="customSwitch2">Negocios</label>
+                    </div>
+                    <div class="custom-control custom-switch ml-1">
+                        <input v-on:change="change($event)" v-model="porProductos" type="checkbox" class="custom-control-input" id="customSwitch3">
+                        <label class="custom-control-label" for="customSwitch3">Servicios</label>
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+                    <select asp-for="@PageSize" class="form-control">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <br />
+    <h4 class="text-center">Negocios recomendados</h4>
+    <hr />
+    <div class="card-columns mt-5">
+        @foreach (var item in Model)
+        {
+            <div class="card p-3 text-center border-primary">
+                <div class="card-header bg-tertiary ">
+                    @* Titulo de la tarjeta *@
+                    <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
+
+                </div>
+                <div class="card-body">
+                    @* Cuerpo de la tarjeta *@
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Direccion)
+                    </p>
+                </div>
+                <div class="card-footer">
+                    @* Footer de la tarjeta *@
+                    <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
+                </div>
+            </div>
+        }
+    </div>
+    <hr />
+    <h4 class="text-center">Productos</h4>
+    <hr />
+    <div class="card-columns">
+        <div class="card p-3 text-center border-primary" v-for="item in productos">
             <div class="card-header bg-tertiary ">
                 @* Titulo de la tarjeta *@
-                <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
+                <h2>{{item.Nombre}} - <span class="text-success"> ${{item.Precio}}</span></h2>
 
             </div>
             <div class="card-body">
                 @* Cuerpo de la tarjeta *@
                 <p>
-                    @Html.DisplayFor(modelItem => item.Direccion)
+                    {{item.Descripcion}}
                 </p>
             </div>
             <div class="card-footer">
                 @* Footer de la tarjeta *@
-                <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
+                <a v-if="item.TipoProductos == 1" class="btn btn-outline-primary btn-block">Reservar Cita</a>
+                <a v-if="item.TipoProductos == 0" v-bind:href="https://localhost:44386/Productos/Details/{{item.ProductoID}}" class="btn btn-outline-primary btn-block">Ver Producto</a>
+                <a class="btn btn-outline-primary btn-block">Ver Negocio</a>
             </div>
         </div>
-    }
-</div>
-<hr />
-<h4 class="text-center">Productos</h4>
-<hr />
-@foreach (var item in Model)
-{
-    <div class="card p-3 text-center border-primary">
-        <div class="card-header bg-tertiary ">
-            @* Titulo de la tarjeta *@
-            <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
+        </div>
 
-        </div>
-        <div class="card-body">
-            @* Cuerpo de la tarjeta *@
-            <p>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </p>
-        </div>
-        <div class="card-footer">
-            @* Footer de la tarjeta *@
-            <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
-        </div>
+
+        <div id="mapa" style="width: 800px;height: 600px;"></div>
+
+
+        @*<div class="card shadow">
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>
+                                    @Html.SortableHeaderFor(model => model.NombreComercial)
+                                </th>
+                                <th>
+                                    @Html.SortableHeaderFor(model => model.Direccion)
+                                </th>
+                                <th>
+                                    @Html.SortableHeaderFor(model => model.Telefono1)
+                                </th>
+                                <th>
+                                    @Html.SortableHeaderFor(model => model.Telefono2)
+                                </th>
+                                <th>
+                                    @Html.SortableHeaderFor(model => model.Latitud)
+                                </th>
+                                <th>
+                                    @Html.SortableHeaderFor(model => model.Longitud)
+                                </th>
+                                <th>Acci&oacute;n</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NombreComercial)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Direccion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Telefono1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Telefono2)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Latitud)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Longitud)
+                                    </td>
+                                    <td>
+                                        <partial name="_ActionsPartialView" model="new Actions() { Key =item.NegocioID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <partial name="_PaginationPartialView" model="this.Model" />
+                </div>
+            </div>
+        </div>*@
     </div>
-}
-
-<div id="mapa" style="width: 800px;height: 600px;"></div>
 
 <script>
     let map, infoWindow;
 
     function initMap() {
+        return;
         map = new google.maps.Map(document.getElementById("mapa"), {
             center: { lat: -34.397, lng: 150.644 },
             zoom: 15
@@ -149,64 +233,84 @@
         infoWindow.open(map);
     }
 </script>
-@*<div class="card shadow">
-        <div class="card-body">
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>
-                                @Html.SortableHeaderFor(model => model.NombreComercial)
-                            </th>
-                            <th>
-                                @Html.SortableHeaderFor(model => model.Direccion)
-                            </th>
-                            <th>
-                                @Html.SortableHeaderFor(model => model.Telefono1)
-                            </th>
-                            <th>
-                                @Html.SortableHeaderFor(model => model.Telefono2)
-                            </th>
-                            <th>
-                                @Html.SortableHeaderFor(model => model.Latitud)
-                            </th>
-                            <th>
-                                @Html.SortableHeaderFor(model => model.Longitud)
-                            </th>
-                            <th>Acci&oacute;n</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NombreComercial)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Direccion)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Telefono1)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Telefono2)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Latitud)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Longitud)
-                                </td>
-                                <td>
-                                    <partial name="_ActionsPartialView" model="new Actions() { Key =item.NegocioID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <partial name="_PaginationPartialView" model="this.Model" />
-            </div>
-        </div>
-    </div>*@
+<script>
+    var app_negocios = new Vue({
+        el: '#app-negocios',
+        data: {
+            negocios: [],
+            productos: [],
+            buscarPor: "todo",
+            filtro: "",
+            porTodo: false,
+            porNegocios: false,
+            porProductos: false,
+            btn_text: "Buscar...."
+        },
+        methods: {
+            getAll: function () {
+                console.log('buscarPor', app_negocios.buscarPor);
+                if (app_negocios.buscarPor == "todo") {
+                    app_negocios.getNegocios();
+                    app_negocios.getProductos();
+                } else if (app_negocios.buscarPor == "negocios") {
+                    app_negocios.getNegocios();
+                } else {
+                    app_negocios.getProductos();
+                }
+            },
+
+            getNegocios: function () {
+                axios.get("https://localhost:44386" + "/Negocios/GetNegocios" + `?filter=${app_negocios.filtro}&buscarpor=${app_negocios.buscarPor}`).then(response => {
+                    app_negocios.negocios = [];
+                    let res = JSON.parse(response.data);
+                    console.log('res', res);
+                    for (let i = 0; i < res.length; i++) {
+                        console.log(res[i].Contenido);
+                        app_negocios.negocios.push(res[i]);
+                    }
+
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                    alert('Ha ocurrido un error');
+                })
+            },
+
+            getProductos: function () {
+                axios.get("https://localhost:44386" + "/Negocios/GetProductos" + `?filter=${app_negocios.filtro}&buscarpor=${app_negocios.buscarPor}`).then(response => {
+                    app_negocios.productos = [];
+                    let res = JSON.parse(response.data);
+                    console.log('res', res);
+                    for (let i = 0; i < res.length; i++) {                        
+                        app_negocios.productos.push(res[i]);
+                    }
+
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                    alert('Ha ocurrido un error');
+                })
+            },
+
+            change(event) {
+                console.log('checkbox changed', app_negocios.porTodo, app_negocios.porNegocios, app_negocios.porProductos);
+                if (app_negocios.porTodo || (app_negocios.porNegocios && app_negocios.porProductos)) {
+                    app_negocios.buscarPor = "todo";
+                    app_negocios.porNegocios = false;
+                    app_negocios.porProductos = false;
+                } else if (app_negocios.porNegocios) {
+                    app_negocios.buscarPor = "negocios";
+                    app_negocios.porTodo = false;
+                    app_negocios.porProductos = false;
+                } else {
+                    app_negocios.buscarPor = "productos";
+                    app_negocios.porTodo = false;
+                    app_negocios.porNegocios = false;
+                }
+            }
+
+        }
+
+    });
+</script>

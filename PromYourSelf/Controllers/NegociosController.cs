@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
 using ReflectionIT.Mvc.Paging;
@@ -24,9 +25,33 @@ namespace PromYourSelf.Controllers
             db = context;
             _Repo = RepoNegocio;
         }
+		// GET: GetNegocios
+		public async Task<IActionResult> GetNegocios(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
+		{
+			if (!string.IsNullOrWhiteSpace(filter))
+				Lista = await _Repo.Negocios.GetListAsync(x => x.NombreComercial.ToUpper().Contains(filter.ToUpper()));
+			else
+				Lista = await _Repo.Negocios.GetListAsync(x => true);
 
-        // GET: Negocios
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
+			return new JsonResult(JsonConvert.SerializeObject(Lista));
+		}
+
+
+		// GET: s
+		public async Task<IActionResult> GetProductos(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
+		{
+			List<Productos> lista = new List<Productos>();
+			if (!string.IsNullOrWhiteSpace(filter))
+				lista = await _Repo.Productos.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+			else
+				lista = await _Repo.Productos.GetListAsync(x => true);
+
+			return new JsonResult(JsonConvert.SerializeObject(lista));
+		}
+
+
+		// GET: Negocios
+		public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
                 Lista = await _Repo.Negocios.GetListAsync(x => x.NombreComercial.ToUpper().Contains(filter.ToUpper()));
