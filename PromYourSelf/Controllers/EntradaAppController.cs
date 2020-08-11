@@ -107,7 +107,6 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO: Agregar posicion como va.
                 Usuarios usuarios = RepositorioUsuario.UserViewModelToUser(model);
                 usuarios.Posicion = Posicion.Normal.GetDescription();
                 var _user = await _userManager.FindByNameAsync(usuarios.UserName);
