@@ -22,12 +22,6 @@ namespace Models
         public TipoContenido Tipo { get; set; }
         //TODO: IMAGEN PA LA PROXIMAAAAA
 
-        public enum TipoContenido
-        {
-            Texto = 0,
-            Base64 = 1,
-            Documento = 2
 
-        }
     }
 }

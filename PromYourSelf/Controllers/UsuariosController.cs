@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
 using PromYourSelf.BLL.Interfaces;
+using PromYourSelf.Models;
 using PromYourSelf.Models.Configuraciones;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
@@ -188,12 +189,13 @@ namespace PromYourSelf.Controllers
             ViewModel.Id = usuarios.Id;
             ViewModel.Foto = usuarios.Foto;
             ViewModel.UserName = usuarios.UserName;
+            ViewModel.Confirmado = usuarios.Confirmado;
             return View(ViewModel);
         }
         //TODO: Perfil Usuario : 3 - Crear un método post en el UsuarioController
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile([Bind("Id, Nombres,Apellidos,Genero,UserName, Email, Foto")] ProfileViewModel modelo, IFormFile logo, string removeLogo)
+        public async Task<IActionResult> Profile([Bind("Id, Nombres,Apellidos,Genero,UserName, Email, Foto,Confirmado")] ProfileViewModel modelo, IFormFile logo, string removeLogo)
         {
             //Valida que si se cambia el correo no exista otro usuario con el mismo asignado.
             var u = await _Repo.Usuarios.GetUserInfoByEmail(modelo.Email); //No se puede registrar el mismo correo en el sistema dos veces
@@ -293,12 +295,6 @@ namespace PromYourSelf.Controllers
         {
             return _Repo.Usuarios.Exists(id);
         }
-        [HttpGet]
-        public IActionResult ConfirmarUsuario(int Id)
-        {
-
-            return View();
-        }
         public async Task<ActionResult> ChangePassword()
         {
             var user = await _userManager.FindByIdAsync(this.User.GetUserID());
@@ -347,6 +343,64 @@ namespace PromYourSelf.Controllers
             }
 
             return View(modelo);
+        }
+        public async Task<ActionResult> ConfirmarUsuario(int? id)
+        {
+
+            if (id == null)
+            {
+                return RedirectToAction("DashBoard", "DashBoard");
+            }
+
+            var usuarios = await _Repo.Usuarios.FindAsync(id);
+            if (usuarios == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await EntradaAppController.SendMail(usuarios, _Repo);
+            }
+
+            var ViewModel = new ConfirmarUsuarioViewModel();
+            ViewModel.UsuarioID = usuarios.Id;
+            return View(ViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmarUsuario([Bind("CodigoConfirmacion")] ConfirmarUsuarioViewModel modelo)
+        {
+            CodeValidation Code = await _Repo.CodeValidation.FindAsync(x => x.Codigo.Equals(modelo.CodigoConfirmacion));
+            Usuarios Usuarios = await _Repo.Usuarios.FindAsync(User.GetUserID().ToInt());
+            string Codigo = modelo.CodigoConfirmacion;
+
+            if (Code.UsuarioID.Equals(User.GetUserID().ToInt()))
+            {
+                if (Code.Codigo.Equals(Codigo))
+                {
+                    double x = (Code.TiempoExpiracion - DateTime.Now).TotalMilliseconds;
+
+                    if (x < 0)
+                    {
+                        await EntradaAppController.SendMail(Usuarios, _Repo);
+                        SweetAlert(TitleType.OperacionFallida, MessageType.CodigoExpirado, IconType.warning);
+                        return View(modelo);
+                    }
+                    else
+                    {
+                        Usuarios.Confirmado = true;
+                        if (await _Repo.Usuarios.ModifiedAsync(Usuarios))
+                            SweetAlert(TitleType.OperacionExitosa, MessageType.UsuarioConfirmado, IconType.success);
+                        else
+                            SweetAlert(TitleType.OperacionFallida, MessageType.UsuarioNoConfirmado, IconType.error);
+
+                        return RedirectToAction("Profile", "Usuarios", new { id = Usuarios.Id });
+                    }
+                }
+            }
+
+
+            return View();
         }
     }
 }

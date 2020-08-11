@@ -20,8 +20,8 @@ namespace PromYourSelf.Controllers
         {
             return View();
         }
-
-		public IActionResult DashBoardEmpresarial()
+        [Authorize]
+        public IActionResult DashBoardEmpresarial()
 		{
 			return View();
 		}

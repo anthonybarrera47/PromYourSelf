@@ -11,11 +11,12 @@ using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
 using PromYourSelf.Models.SweetAlert;
+using PromYourSelf.Utils;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
 {
-    [BreadCrumb(Title = "Empleado", Url = "/Empleados/Index", Order = 0)]
+    [BreadCrumb(Title = "Pagos", Url = "/Pagos/Index", Order = 0)]
     public class PagosController : BaseController
     {
         private readonly IRepoWrapper _Repo;
@@ -26,28 +27,39 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Pagos
-        [BreadCrumb(Title = "Listado de Empelado", Order = 1)]
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Monto", int PageSize = 5)
+        [BreadCrumb(Title = "Listado de Pagos", Order = 1)]
+        public async Task<IActionResult> Index(string filter, string Desde, string Hasta, int page = 1, string sortExpression = "Monto")
         {
-            var Modelo = await FillIndex(filter, page, sortExpression, PageSize);
+            int PageSize = 10;
+            var Modelo = await FillIndex(filter,Desde,Hasta, page, sortExpression, PageSize);
             return View(Modelo);
         }
-        public async Task<ActionResult> PartialIndex(string filter, int page = 1, string sortExpression = "Monto", int PageSize = 5)
+        public async Task<ActionResult> PartialIndex(string filter, string Desde, string Hasta, int page = 1, string sortExpression = "Monto")
         {
-            var Modelo = await FillIndex(filter,page,sortExpression,PageSize);
+            int PageSize = 10;
+            var Modelo = await FillIndex(filter, Desde, Hasta, page, sortExpression,PageSize);
             return PartialView("Index", Modelo);
         }
-        public async Task<PagingList<Pagos>> FillIndex(string filter, int page = 1, string sortExpression = "Monto", int PageSize = 5)
+        public async Task<PagingList<Pagos>> FillIndex(string filter,string Desde,string Hasta, int page = 1, string sortExpression = "Monto", int PageSize = 10)
         {
+            var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+            if (Desde is null)
+                Desde = firstDayOfMonth.ToString("dd/MM/yyyy");
+            if (Hasta is null)
+                Hasta = lastDayOfMonth.ToString("dd/MM/yyyy");
+
             if (!string.IsNullOrWhiteSpace(filter))
                 Lista = await _Repo.Pagos.GetListAsync(x => true);
             else
                 Lista = await _Repo.Pagos.GetListAsync(x => true);
 
-            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Monto");
-            model.RouteValue = new RouteValueDictionary {
-                            { "filter", filter}
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Fecha");
+            var RoutesValues = new RouteValueDictionary {
+                            { "filter", filter},{"Desde",Desde},{"Hasta",Hasta}
             };
+            model.RouteValue = RoutesValues;
             model.Action = "Index";
             return model;
         }

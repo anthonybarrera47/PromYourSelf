@@ -25,8 +25,14 @@ namespace PromYourSelf.Utils
         RegistroInexistente,
         [Description("¡Registro Eliminado Correctamente!")]
         RegistroEliminado,
-        [Description("¡Registro Modificado")]
+        [Description("¡Registro Modificado!")]
         RegistroModificado,
+        [Description("¡Lo sentimos su código ya expiro, le reenviamos un nuevo correo con un código de confirmacion nuevo.!")]
+        CodigoExpirado,
+        [Description("¡Felicidades, su usuario ha sido confirmado.!")]
+        UsuarioConfirmado,
+        [Description("¡Lo sentimos, su usuario no ha sido confirmado.!")]
+        UsuarioNoConfirmado
     }
     public enum IconType
     {

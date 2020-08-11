@@ -4,7 +4,10 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -22,19 +25,21 @@ namespace PromYourSelf.Controllers
         private readonly SignInManager<Usuarios> _signInManager;
         private readonly UserManager<Usuarios> _userManager;
         private readonly IRepoWrapper _repoWrappers;
+        private readonly IHttpContextAccessor _accesor;
         public EntradaAppController(SignInManager<Usuarios> signInManager,
-           UserManager<Usuarios> userManager, IRepoWrapper repoWrappers)
+           UserManager<Usuarios> userManager, IRepoWrapper repoWrappers, IHttpContextAccessor accessor)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _repoWrappers = repoWrappers;
+            _accesor = accessor;
         }
         public IActionResult Index()
         {
-
             return View();
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = "")
         {
             var model = new LoginViewModel { ReturnUrl = returnUrl };
@@ -47,30 +52,35 @@ namespace PromYourSelf.Controllers
         {
             try
             {
+                Usuarios appUser = await _userManager.FindByNameAsync(model.Usuario);
 
-                if (ModelState.IsValid)
+                if (User != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(model.Usuario,
-                       model.Password, false, lockoutOnFailure:false);
-
-                    if (result.Succeeded)
+                    if (ModelState.IsValid)
                     {
-                        if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                        await _signInManager.SignOutAsync();
+                        var result = await _signInManager.PasswordSignInAsync(model.Usuario,
+                           model.Password, model.RememberMe, false);
+
+                        if (result.Succeeded)
                         {
-                            return Redirect(model.ReturnUrl);
-                        }
-                        else
-                        {
-                            var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
-                           
-                            if (user.Posicion == Posicion.Administrador.GetDescription())
+                            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                             {
-                                await SaveDefaultCompany(user);
-                                return RedirectToAction("DashBoardEmpresarial", "DashBoard");
+                                return Redirect(model.ReturnUrl);
                             }
                             else
                             {
-                                return RedirectToAction("DashBoard", "DashBoard");
+                                var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
+
+                                if (user.Posicion == Posicion.Administrador.GetDescription())
+                                {
+                                    await SaveDefaultCompany(user);
+                                    return RedirectToAction("DashBoardEmpresarial", "DashBoard");
+                                }
+                                else
+                                {
+                                    return RedirectToAction("DashBoard", "DashBoard");
+                                }
                             }
                         }
                     }
@@ -97,9 +107,8 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO: Agregar posicion como va.
                 Usuarios usuarios = RepositorioUsuario.UserViewModelToUser(model);
-                usuarios.Posicion = "Administrador";
+                usuarios.Posicion = Posicion.Normal.GetDescription();
                 var _user = await _userManager.FindByNameAsync(usuarios.UserName);
                 if (_user == null)
                 {
@@ -107,7 +116,9 @@ namespace PromYourSelf.Controllers
 
                     if (result.Succeeded)
                     {
-                        await SendMail(usuarios);
+                        await EntradaAppController.SendMail(usuarios, _repoWrappers);
+                        //TODO: LOGIN DIRECTO LUEGO DE REGISTRAR
+
                         return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
                     }
                 }
@@ -121,6 +132,7 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            _accesor.HttpContext.Response.Cookies.Delete(".applicationname");
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
@@ -141,16 +153,33 @@ namespace PromYourSelf.Controllers
                 await _repoWrappers.Negocios.SaveAsync(negocio);
             }
         }
-        public async Task SendMail(Usuarios usuarios)
+        public static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
         {
-
+            bool Paso = false;
             MailMessage mail = new MailMessage();
             CodeValidation Code = new CodeValidation();
             Code.UsuarioID = usuarios.Id;
             Code.Email = usuarios.Email;
             Code.UsuarioID = usuarios.Id;
+            Code.TiempoExpiracion = DateTime.Now.AddDays(1);//24Horas para expirar el codigo.
             Code = _repoWrappers.CodeValidation.GenerarToken(Code);
-            if (await _repoWrappers.CodeValidation.SaveAsync(Code))
+            CodeValidation CodeModificar = await _repoWrappers.CodeValidation.FindAsync(x => x.UsuarioID.Equals(Code.UsuarioID));
+
+            if (CodeModificar == null)
+            {
+                Paso = await _repoWrappers.CodeValidation.SaveAsync(Code);
+            }
+            else
+            {
+                double x = (Code.TiempoExpiracion.Date - DateTime.Now.Date).TotalDays;
+                if (x < 0)
+                {
+                    CodeModificar.TiempoExpiracion = DateTime.Now.AddDays(1);
+                    CodeModificar = _repoWrappers.CodeValidation.GenerarToken(Code);
+                    Paso = await _repoWrappers.CodeValidation.ModifiedAsync(Code);
+                }
+            }
+            if (Paso)
             {
                 mail.From = new MailAddress("proyectoaplicada2@gmail.com");
                 mail.To.Add(usuarios.Email);
@@ -164,6 +193,6 @@ namespace PromYourSelf.Controllers
             }
 
         }
-       
+
     }
 }

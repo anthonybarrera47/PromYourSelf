@@ -31,8 +31,15 @@ namespace PromYourSelf.Utils
         }
         public static DateTime ToDatetime(this object obj)
         {
+            if (obj is null)
+                obj = new DateTime();
             DateTime.TryParse(obj.ToString(), out DateTime value);
             return value;
+        }
+        static readonly string FECHA_FORMAT = "yyyy-MM-dd";
+        public static string ToFormatDate(this DateTime dateTime)
+        {
+            return dateTime.ToString(FECHA_FORMAT);
         }
 
 		public static string GetDescription<T>(this T e) where T : IConvertible

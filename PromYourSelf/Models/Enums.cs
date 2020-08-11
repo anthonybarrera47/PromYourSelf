@@ -39,4 +39,11 @@ namespace Models
 		[Description("Normal")]
 		Normal = 1
 	}
+	public enum TipoContenido
+	{
+		Texto = 0,
+		Base64 = 1,
+		Documento = 2
+
+	}
 }

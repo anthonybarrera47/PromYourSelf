@@ -66,8 +66,6 @@ namespace PromYourSelf
 				options.Cookie.HttpOnly = true; // This must be true to prevent XSS
 				options.Cookie.SameSite = SameSiteMode.None;
 				options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-				options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-				options.SlidingExpiration = true;
 			});
 			// services.ConfigureApplicationCookie(opts => opts.LoginPath = "/EntradaApp/Login");
 
@@ -80,6 +78,7 @@ namespace PromYourSelf
 			//services.AddScoped<IRepositoryUsuarios, RepositorioUsuario>();
 			//services.AddScoped<IRepositoryVentas, RepositorioVenta>();
 			services.AddScoped<IRepoWrapper, RepoWrapper>();
+			services.AddScoped<SignInManager<Usuarios>>();
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //inyecta los datos del usuario conectado a todos los controllers
 
