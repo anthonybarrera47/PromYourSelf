@@ -14,6 +14,7 @@ using System.Data.Common;
 using Models;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PromYourSelf.Utils
 {
@@ -152,6 +153,12 @@ namespace PromYourSelf.Utils
 					}
 				}
 			}
+		}
+		public static void SeedCuidades(MigrationBuilder migrationBuilder)
+        {
+			string Path = Environment.CurrentDirectory;
+			string sql = File.ReadAllText($@"{Path}\Data\Ciudades.sql");
+			migrationBuilder.Sql(sql);
 		}
 	}
 

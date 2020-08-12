@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PromYourSelf.Models;
 using PromYourSelf.Models.ControlUsers;
+using PromYourSelf.Utils;
 
 namespace Models
 {
@@ -44,24 +45,187 @@ namespace Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Negocios>().HasData(
-              new Negocios()
+            modelBuilder.Entity<Usuarios>().HasData(
+             new Usuarios()
+             {
+                 Id = 1,
+                 Nombres = "Luis Felipe",
+                 Apellidos = " Muños Florez",
+                 Email = "ApasLabs@gmail.com",
+                 Posicion = Posicion.Administrador.GetDescription(),
+                 Password = "1234",
+                 Confirmado = true,
+                 ConcurrencyStamp = DateTime.Now.ToString(),
+                 UserName = "ApasLabs"
+             },
+             new Usuarios()
+             {
+                 Id = 2,
+                 Nombres = "William",
+                 Apellidos = "Burgos Hernandez",
+                 Email = "williamelnene@gmail.com",
+                 Posicion = Posicion.Administrador.GetDescription(),
+                 Password = "1234",
+                 Confirmado = true,
+                 ConcurrencyStamp = DateTime.Now.ToString(),
+                 UserName = "williambh98"
+             },
+              new Usuarios()
               {
-                  NegocioID = 1,
-                  NombreComercial = "JuanDupreCompany",
-                  Direccion = "En todas partes , es omnipresente",
-                  Telefono1 = "829-123-4567",
-                  Telefono2 = "809-123-4567",
-                  Latitud = "1000",
-                  CiudadID = 1,
-                  Longitud = "2000",
-                  CreadoPor = 1,
-                  FechaCreacion = DateTime.Now,
-                  ModificadoPor = 1,
-                  FechaModificacion = DateTime.Now
+                  Id = 3,
+                  Nombres = "Usuario",
+                  Apellidos = "Normal",
+                  Email = "usuarionoimai@gmail.com",
+                  Posicion = Posicion.Normal.GetDescription(),
+                  Password = "1234",
+                  Confirmado = true,
+                  ConcurrencyStamp = DateTime.Now.ToString(),
+                  UserName = "usuario"
               }
+             );
 
-              );
+            //2547 ES EL ID DE SFM
+            modelBuilder.Entity<Negocios>().HasData(
+               new Negocios()
+               {
+                   NegocioID = 1,
+                   NombreComercial = "JuanDupreCompany",
+                   Direccion = "En todas partes , es omnipresente",
+                   Telefono1 = "829-123-4567",
+                   Telefono2 = "809-123-4567",
+                   Latitud = "1000",
+                   UsuarioID = 4,
+                   CiudadID = 2547,
+                   Longitud = "2000",
+                   CreadoPor = 4,
+                   FechaCreacion = DateTime.Now,
+                   ModificadoPor = 4,
+                   FechaModificacion = DateTime.Now
+               }
+               ,
+               new Negocios()
+               {
+                   NegocioID = 2,
+                   NombreComercial = "APAS LABS",
+                   Direccion = "Cenovi, SFM",
+                   Telefono1 = "809-754-0319",
+                   Telefono2 = "",
+                   Latitud = "1000",
+                   CiudadID = 2547,
+                   Longitud = "2000",
+                   CreadoPor = 1,
+                   FechaCreacion = DateTime.Now,
+                   ModificadoPor = 1,
+                   FechaModificacion = DateTime.Now,
+                   UsuarioID = 1
+               },
+                new Negocios()
+                {
+                    NegocioID = 3,
+                    NombreComercial = "BHTech",
+                    Direccion = "Centro de la cuidad, SFM",
+                    Telefono1 = "829-935-9510",
+                    Telefono2 = "809-123-4567",
+                    Latitud = "1000",
+                    CiudadID = 2547,
+                    Longitud = "2000",
+                    CreadoPor = 3,
+                    FechaCreacion = DateTime.Now,
+                    ModificadoPor = 3,
+                    FechaModificacion = DateTime.Now,
+                    UsuarioID = 3
+                }
+               );
+            modelBuilder.Entity<Productos>().HasData(
+             new Productos()
+             {
+                 ProductoID = 1,
+                 Nombre = "App Prestamo",
+                 Descripcion = "PrestFast Lite",
+                 Unidad = 1,
+                 Precio = 10,
+                 TipoProductos = TipoProducto.Producto,
+                 NegocioID = 2,
+                 CreadoPor = 3,
+                 FechaCreacion = DateTime.Now,
+                 ModificadoPor = 3,
+                 FechaModificacion = DateTime.Now
+             }
+             ,
+             new Productos()
+             {
+                 ProductoID = 2,
+                 Nombre = "Consultor Informatico",
+                 Descripcion = "Consultoria Informatica",
+                 Unidad = 1,
+                 Precio = 1000,
+                 TipoProductos = TipoProducto.Servicio,
+                 NegocioID = 2,
+                 CreadoPor = 3,
+                 FechaCreacion = DateTime.Now,
+                 ModificadoPor = 3,
+                 FechaModificacion = DateTime.Now
+             }
+             ,
+             new Productos()
+             {
+                 ProductoID = 3,
+                 Nombre = "Laptop",
+                 Descripcion = "ASUS Q503",
+                 Unidad = 1,
+                 Precio = 15000,
+                 TipoProductos = TipoProducto.Producto,
+                 NegocioID = 3,
+                 CreadoPor = 4,
+                 FechaCreacion = DateTime.Now,
+                 ModificadoPor = 4,
+                 FechaModificacion = DateTime.Now
+             },
+             new Productos()
+             {
+                 ProductoID = 4,
+                 Nombre = "Reparación",
+                 Descripcion = "Reparación y Mantenimiento",
+                 Unidad = 1,
+                 Precio = 15000,
+                 TipoProductos = TipoProducto.Servicio,
+                 NegocioID = 3,
+                 CreadoPor = 4,
+                 FechaCreacion = DateTime.Now,
+                 ModificadoPor = 4,
+                 FechaModificacion = DateTime.Now
+             }
+              ,
+             new Productos()
+             {
+                 ProductoID = 5,
+                 Nombre = "Brugal Dupre",
+                 Descripcion = "Brugal Dupre 200mg",
+                 Unidad = 1,
+                 Precio = 15000,
+                 TipoProductos = TipoProducto.Producto,
+                 NegocioID = 3,
+                 CreadoPor = 4,
+                 FechaCreacion = DateTime.Now,
+                 ModificadoPor = 4,
+                 FechaModificacion = DateTime.Now
+             },
+             new Productos()
+             {
+                 ProductoID = 6,
+                 Nombre = "Catador de vinos",
+                 Descripcion = "Catar Vinos",
+                 Unidad = 1,
+                 Precio = 15000,
+                 TipoProductos = TipoProducto.Servicio,
+                 NegocioID = 3,
+                 CreadoPor = 4,
+                 FechaCreacion = DateTime.Now,
+                 ModificadoPor = 4,
+                 FechaModificacion = DateTime.Now
+             }
+                 );
+
             //Application User
             modelBuilder.Entity<Usuarios>(entity =>
             {
@@ -88,7 +252,6 @@ namespace Models
                     .IsRequired();
             });
             //---
-
         }
 
 

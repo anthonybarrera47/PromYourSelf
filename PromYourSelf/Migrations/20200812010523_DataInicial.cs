@@ -115,6 +115,22 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CodeValidation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    Codigo = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    TiempoExpiracion = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CodeValidation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Empleados",
                 columns: table => new
                 {
@@ -139,17 +155,37 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Horarios",
+                columns: table => new
+                {
+                    HorarioID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Lunes = table.Column<string>(nullable: true),
+                    Martes = table.Column<string>(nullable: true),
+                    Miercoles = table.Column<string>(nullable: true),
+                    Jueves = table.Column<string>(nullable: true),
+                    Viernes = table.Column<string>(nullable: true),
+                    Sabado = table.Column<string>(nullable: true),
+                    Domingo = table.Column<string>(nullable: true),
+                    NegociosId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Horarios", x => x.HorarioID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Negocios",
                 columns: table => new
                 {
                     NegocioID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
                     EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     ModificadoPor = table.Column<int>(nullable: false),
                     FechaModificacion = table.Column<DateTime>(nullable: false),
-                    UsuarioID = table.Column<int>(nullable: false),
                     NombreComercial = table.Column<string>(maxLength: 255, nullable: false),
                     Direccion = table.Column<string>(maxLength: 255, nullable: false),
                     Telefono1 = table.Column<string>(maxLength: 20, nullable: false),
@@ -175,11 +211,54 @@ namespace PromYourSelf.Migrations
                     UserName = table.Column<string>(nullable: true),
                     Foto = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
-                    Telefono = table.Column<string>(nullable: true)
+                    Telefono = table.Column<string>(nullable: true),
+                    Confirmado = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProfileViewModel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoClasificacion",
+                columns: table => new
+                {
+                    TipoClasificacionID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Descripcion = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoClasificacion", x => x.TipoClasificacionID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ventas",
+                columns: table => new
+                {
+                    VentaID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    UsuarioClienteID = table.Column<int>(nullable: false),
+                    NegocioID = table.Column<int>(nullable: false),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    Monto = table.Column<decimal>(nullable: false),
+                    CitaID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ventas", x => x.VentaID);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,8 +386,7 @@ namespace PromYourSelf.Migrations
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     ModificadoPor = table.Column<int>(nullable: false),
                     FechaModificacion = table.Column<DateTime>(nullable: false),
-                    ClienteId = table.Column<int>(nullable: true),
-                    NegocioID = table.Column<int>(nullable: false),
+                    ReceptorID = table.Column<int>(nullable: false),
                     Contenido = table.Column<string>(maxLength: 255, nullable: false),
                     Tipo = table.Column<int>(nullable: false)
                 },
@@ -316,40 +394,11 @@ namespace PromYourSelf.Migrations
                 {
                     table.PrimaryKey("PK_Mensaje", x => x.MensajeID);
                     table.ForeignKey(
-                        name: "FK_Mensaje_AspNetUsers_ClienteId",
-                        column: x => x.ClienteId,
+                        name: "FK_Mensaje_AspNetUsers_ReceptorID",
+                        column: x => x.ReceptorID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ventas",
-                columns: table => new
-                {
-                    VentaID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<bool>(nullable: false),
-                    CreadoPor = table.Column<int>(nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    ModificadoPor = table.Column<int>(nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    UsuariosId = table.Column<int>(nullable: true),
-                    NegocioID = table.Column<int>(nullable: false),
-                    Fecha = table.Column<DateTime>(nullable: false),
-                    Monto = table.Column<decimal>(nullable: false),
-                    CitaID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ventas", x => x.VentaID);
-                    table.ForeignKey(
-                        name: "FK_Ventas_AspNetUsers_UsuariosId",
-                        column: x => x.UsuariosId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -408,28 +457,31 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Horarios",
+                name: "Pagos",
                 columns: table => new
                 {
-                    HorarioID = table.Column<int>(nullable: false)
+                    PagoID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Lunes = table.Column<string>(nullable: true),
-                    Martes = table.Column<string>(nullable: true),
-                    Miercoles = table.Column<string>(nullable: true),
-                    Jueves = table.Column<string>(nullable: true),
-                    Viernes = table.Column<string>(nullable: true),
-                    Sabado = table.Column<string>(nullable: true),
-                    Domingo = table.Column<string>(nullable: true),
-                    NegociosNegocioID = table.Column<int>(nullable: true)
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    NegocioID = table.Column<int>(nullable: false),
+                    Monto = table.Column<decimal>(nullable: false),
+                    TipoClasificacionID = table.Column<int>(nullable: true),
+                    Concepto = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Horarios", x => x.HorarioID);
+                    table.PrimaryKey("PK_Pagos", x => x.PagoID);
                     table.ForeignKey(
-                        name: "FK_Horarios_Negocios_NegociosNegocioID",
-                        column: x => x.NegociosNegocioID,
-                        principalTable: "Negocios",
-                        principalColumn: "NegocioID",
+                        name: "FK_Pagos_TipoClasificacion_TipoClasificacionID",
+                        column: x => x.TipoClasificacionID,
+                        principalTable: "TipoClasificacion",
+                        principalColumn: "TipoClasificacionID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -502,9 +554,37 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Apellidos", "ConcurrencyStamp", "Confirmado", "CreadoPor", "Email", "EmailConfirmed", "EsNulo", "Estado", "FechaCreacion", "FechaModificacion", "Foto", "Genero", "LockoutEnabled", "LockoutEnd", "ModificadoPor", "Nombres", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Posicion", "SecurityStamp", "TipoUsuario", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, " Muños Florez", "11/08/2020 9:05:22 PM", true, 0, "ApasLabs@gmail.com", false, false, false, new DateTime(2020, 8, 11, 21, 5, 22, 852, DateTimeKind.Local).AddTicks(6528), new DateTime(2020, 8, 11, 21, 5, 22, 853, DateTimeKind.Local).AddTicks(5461), "", 0, false, null, 0, "Luis Felipe", null, null, "1234", null, null, false, "Administrador", null, 3, false, "ApasLabs" },
+                    { 2, 0, "Burgos Hernandez", "11/08/2020 9:05:22 PM", true, 0, "williamelnene@gmail.com", false, false, false, new DateTime(2020, 8, 11, 21, 5, 22, 855, DateTimeKind.Local).AddTicks(2416), new DateTime(2020, 8, 11, 21, 5, 22, 855, DateTimeKind.Local).AddTicks(2427), "", 0, false, null, 0, "William", null, null, "1234", null, null, false, "Administrador", null, 3, false, "williambh98" },
+                    { 3, 0, "Normal", "11/08/2020 9:05:22 PM", true, 0, "usuarionoimai@gmail.com", false, false, false, new DateTime(2020, 8, 11, 21, 5, 22, 855, DateTimeKind.Local).AddTicks(2856), new DateTime(2020, 8, 11, 21, 5, 22, 855, DateTimeKind.Local).AddTicks(2856), "", 0, false, null, 0, "Usuario", null, null, "1234", null, null, false, "Normal", null, 3, false, "usuario" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
-                values: new object[] { 1, 1, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 7, 25, 16, 1, 48, 643, DateTimeKind.Local).AddTicks(1459), new DateTime(2020, 7, 25, 16, 1, 48, 643, DateTimeKind.Local).AddTicks(9408), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 0 });
+                values: new object[,]
+                {
+                    { 1, 2547, 4, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(1554), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(2502), "1000", "2000", 4, "JuanDupreCompany", "829-123-4567", "809-123-4567", 4 },
+                    { 2, 2547, 1, "Cenovi, SFM", false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(3021), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(3031), "1000", "2000", 1, "APAS LABS", "809-754-0319", "", 1 },
+                    { 3, 2547, 3, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(3041), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(3042), "1000", "2000", 3, "BHTech", "829-935-9510", "809-123-4567", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Productos",
+                columns: new[] { "ProductoID", "CreadoPor", "Descripcion", "EmpleadosEmpleadoID", "EsNulo", "FechaCreacion", "FechaModificacion", "ModificadoPor", "NegocioID", "Nombre", "Precio", "PrecioOferta", "Stock", "TipoProductos", "Unidad", "UsuarioID" },
+                values: new object[,]
+                {
+                    { 1, 3, "PrestFast Lite", null, false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7385), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7389), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 0 },
+                    { 2, 3, "Consultoria Informatica", null, false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7427), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7428), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 0 },
+                    { 3, 4, "ASUS Q503", null, false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7430), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7431), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 0 },
+                    { 4, 4, "Reparación y Mantenimiento", null, false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7433), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7433), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 0 },
+                    { 5, 4, "Brugal Dupre 200mg", null, false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7436), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7436), 4, 3, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 0 },
+                    { 6, 4, "Catar Vinos", null, false, new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7438), new DateTime(2020, 8, 11, 21, 5, 22, 856, DateTimeKind.Local).AddTicks(7438), 4, 3, "Catador de vinos", 15000m, 0m, 0, 1, 1, 0 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -561,14 +641,14 @@ namespace PromYourSelf.Migrations
                 column: "ProductoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Horarios_NegociosNegocioID",
-                table: "Horarios",
-                column: "NegociosNegocioID");
+                name: "IX_Mensaje_ReceptorID",
+                table: "Mensaje",
+                column: "ReceptorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mensaje_ClienteId",
-                table: "Mensaje",
-                column: "ClienteId");
+                name: "IX_Pagos_TipoClasificacionID",
+                table: "Pagos",
+                column: "TipoClasificacionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_EmpleadosEmpleadoID",
@@ -576,14 +656,11 @@ namespace PromYourSelf.Migrations
                 column: "EmpleadosEmpleadoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ventas_UsuariosId",
-                table: "Ventas",
-                column: "UsuariosId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_VentasDetalle_VentaID",
                 table: "VentasDetalle",
                 column: "VentaID");
+
+            Utils.Utils.SeedCuidades(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -610,6 +687,9 @@ namespace PromYourSelf.Migrations
                 name: "Ciudad");
 
             migrationBuilder.DropTable(
+                name: "CodeValidation");
+
+            migrationBuilder.DropTable(
                 name: "Etiquetas");
 
             migrationBuilder.DropTable(
@@ -620,6 +700,12 @@ namespace PromYourSelf.Migrations
 
             migrationBuilder.DropTable(
                 name: "Mensaje");
+
+            migrationBuilder.DropTable(
+                name: "Negocios");
+
+            migrationBuilder.DropTable(
+                name: "Pagos");
 
             migrationBuilder.DropTable(
                 name: "ProfileViewModel");
@@ -637,16 +723,16 @@ namespace PromYourSelf.Migrations
                 name: "Productos");
 
             migrationBuilder.DropTable(
-                name: "Negocios");
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "TipoClasificacion");
 
             migrationBuilder.DropTable(
                 name: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Empleados");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

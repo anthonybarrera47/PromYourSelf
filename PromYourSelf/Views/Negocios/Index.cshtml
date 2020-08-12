@@ -94,7 +94,7 @@
             <div class="card-footer">
                 @* Footer de la tarjeta *@
                 <a v-if="item.TipoProductos == 1" class="btn btn-outline-primary btn-block">Reservar Cita</a>
-                <a v-if="item.TipoProductos == 0" v-bind:href="https://localhost:44386/Productos/Details/{{item.ProductoID}}" class="btn btn-outline-primary btn-block">Ver Producto</a>
+                @*<a v-if="item.TipoProductos == 0" v-bind:href="https://localhost:44386/Productos/Details/'+{{item.ProductoID}}" class="btn btn-outline-primary btn-block">Ver Producto</a>*@
                 <a class="btn btn-outline-primary btn-block">Ver Negocio</a>
             </div>
         </div>

@@ -11,7 +11,6 @@ namespace Models
     {
         [Key]
         public int NegocioID { get; set; }
-        public new int UsuarioID { get; set; }
         [Required(ErrorMessage = "Este esCampo obligatorio")]
         [StringLength(255,
             ErrorMessage = "El descripcion debe ser menor a 255 caracteres.")]

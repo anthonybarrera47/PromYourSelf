@@ -38,7 +38,10 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Prom YourSelf <sup>3</sup></div>
             </a>
-
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -126,23 +129,14 @@
                 </li>
                 <!--FIN DE SUBMENU ventas-->
             }
-            @if (User.GetPosicion() == Models.Posicion.Normal.GetDescription())
-            {
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExplorar" aria-expanded="true" aria-controls="collapseExplorar">
-                        <i class="fas fa-fw fa-business-time"></i>
-                        <span>Explorar</span>
-                    </a>
-                    <div id="collapseExplorar" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            @*<h6 class="collapse-header">Custom Components:</h6>*@
-                            <a class="collapse-item" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">Buscar Servicios</a>
-                            <a class="collapse-item" asp-controller="negocios" asp-action="index">Descubrir Negocios</a>
 
-                        </div>
-                    </div>
-                </li>
-            }
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="negocios" asp-action="index" aria-expanded="true" aria-controls="collapseExplorar">
+                    @*<i class="fas fa-fw fa-business-time"></i>*@
+                    <i class="fas fa-street-view"></i>
+                    <span>Explorar</span>
+                </a>
+            </li>
             <!--FIN DE SUBMENU NEGOCIOS-->
             <!--INICIO DE SUBMENU PRODUCTOS-->
             <li class="nav-item">
@@ -281,10 +275,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -495,14 +486,14 @@
                         </li>
                     </ul>
 
-                </nav>-
+                </nav>
                 <breadcrumb asp-homepage-title="Inicio"
                             asp-homepage-url="@Url.Action("Index","Home")"
                             asp-bootstrap-version="V4"
                             asp-homepage-glyphicon="fas fa-home">
 
                 </breadcrumb>
-                -
+
 
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
@@ -555,11 +546,11 @@
     </form>
 
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - PromYourSelf - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - PromYourSelf - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>*@
 
     <environment include="Development">
         @*<script src="~/lib/jquery/dist/jquery.js"></script>
@@ -619,7 +610,7 @@
     <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
     <script src="~/js/profile-image-manager.js"></script>
     @*<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>*@
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>*@
 
     @if (TempData["SweetAlert"] != null)
     {
