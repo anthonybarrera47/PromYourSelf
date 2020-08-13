@@ -8,7 +8,6 @@ namespace PromYourSelf.BLL.Interfaces
     public interface IRepoWrapper
     {
         IRepositoryCitas Citas { get; }
-        IRepositoryEmpleados Empleados { get; }
         IRepositoryHorarios Horarios { get; }
         IRepositoryMensajes Mensajes { get; }
         IRepositoryNegocios Negocios { get;  }

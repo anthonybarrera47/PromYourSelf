@@ -20,7 +20,6 @@ namespace Models
     {
         public DbSet<Citas> Citas { get; set; }
         public DbSet<Ciudad> Ciudad { get; set; }
-        public DbSet<Empleados> Empleados { get; set; }
         public DbSet<Etiquetas> Etiquetas { get; set; }
         public DbSet<FotosProductos> FotosProductos { get; set; }
         public DbSet<Horarios> Horarios { get; set; }

@@ -28,12 +28,12 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
     <script src="~/js/sweetAlert/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="~/js/sweetAlert/sweetalert2.min.css">
 </head>
-<body>
-
+<body id="page-top">
+     
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -68,7 +68,13 @@
             <div class="sidebar-heading">
                 Menú
             </div>
-
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="negocios" asp-action="index" aria-expanded="true" aria-controls="collapseExplorar">
+                    @*<i class="fas fa-fw fa-business-time"></i>*@
+                    <i class="fas fa-street-view"></i>
+                    <span>Explorar</span>
+                </a>
+            </li>
             <!-- Nav Item - Pages Collapse Menu -->
             <!--INICIO DE SUBMENU USUARIOS-->
             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
@@ -105,22 +111,6 @@
                     </div>
                 </li>
 
-                <!--INICIO DE SUBMENU EMPLEADOS-->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEmpleados" aria-expanded="true" aria-controls="collapseEmpleados">
-                        <i class="fas fa-fw fa-person-booth"></i>
-                        <span>Empleados</span>
-                    </a>
-                    <div id="collapseEmpleados" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            @*<h6 class="collapse-header">Custom Components:</h6>*@
-                            <a class="collapse-item" asp-controller="empleados" asp-action="index">Listado de Empleados</a>
-                            <a class="collapse-item" asp-controller="empleados" asp-action="create">Nuevo Empleado</a>
-                        </div>
-                    </div>
-                </li>
-                <!--FIN DE SUBMENU EMPLEADOS-->
-
                 <!--INICIO DE SUBMENU ventas-->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseventas" aria-expanded="true" aria-controls="collapseventas">
@@ -138,13 +128,6 @@
                 <!--FIN DE SUBMENU ventas-->
             }
 
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="negocios" asp-action="index" aria-expanded="true" aria-controls="collapseExplorar">
-                    @*<i class="fas fa-fw fa-business-time"></i>*@
-                    <i class="fas fa-street-view"></i>
-                    <span>Explorar</span>
-                </a>
-            </li>
             <!--FIN DE SUBMENU NEGOCIOS-->
             <!--INICIO DE SUBMENU PRODUCTOS-->
             <li class="nav-item">
@@ -544,7 +527,6 @@
         <script src="~/js/demo/chart-pie-demo.js"></script>
         @*<script src="~/js/profile-image-manager.js"></script>*@
     </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/sweetAlert/sweetalert2.all.min.js"></script>
     <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
     <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>

@@ -22,7 +22,6 @@ namespace PromYourSelf.BLL
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _accessor;
         private IRepositoryCitas _Citas;
-        private IRepositoryEmpleados _Empleados;
         private IRepositoryHorarios _Horarios;
         private IRepositoryMensajes _Mensajes;
         private IRepositoryNegocios _Negocios;
@@ -61,18 +60,6 @@ namespace PromYourSelf.BLL
             }
         }
 
-        public IRepositoryEmpleados Empleados
-        {
-            get
-            {
-                if (_Empleados == null)
-                {
-                    _Empleados = new RepositorioEmpleado(_RepoContexto, _userManager, _errorMsg, _accessor);
-                }
-
-                return _Empleados;
-            }
-        }
 
         public IRepositoryHorarios Horarios
         {
