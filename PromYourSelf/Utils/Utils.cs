@@ -20,7 +20,7 @@ namespace PromYourSelf.Utils
 {
 	public static class Utils
 	{
-		public static async Task<string> ImageToBase64(IFormFile foto)
+        public static async Task<string> ImageToBase64(IFormFile foto)
 		{
 			if (foto != null)
 			{
@@ -64,19 +64,25 @@ namespace PromYourSelf.Utils
 		{
 			if (principal == null)
 				throw new ArgumentNullException(nameof(principal));
-			return principal.FindFirst(c => c.Type == "Nombres")?.Value;
+			return principal.FindFirst(c => c.Type == TypeClaims.Nombres.ToString("G"))?.Value;
+		}
+		public static string GetEmpresaID(this ClaimsPrincipal principal)
+		{
+			if (principal == null)
+				throw new ArgumentNullException(nameof(principal));
+			return principal.FindFirst(c => c.Type == TypeClaims.Empresa.ToString("G"))?.Value;
 		}
 		public static string GetPosicion(this ClaimsPrincipal principal)
 		{
 			if (principal == null)
 				throw new ArgumentNullException(nameof(principal));
-			return principal.FindFirst(c => c.Type == "Posicion")?.Value;
+			return principal.FindFirst(c => c.Type == TypeClaims.Posicion.ToString("G"))?.Value;
 		}
 		public static string GetFoto(this ClaimsPrincipal principal)
 		{
 			if (principal == null)
 				throw new ArgumentNullException(nameof(principal));
-			return principal.FindFirst(c => c.Type == "Foto")?.Value;
+			return principal.FindFirst(c => c.Type == TypeClaims.Foto.ToString("G"))?.Value;
 		}
 
 		public static bool IsValidEmail(this string email)
@@ -156,6 +162,7 @@ namespace PromYourSelf.Utils
 		}
 		public static void SeedCuidades(MigrationBuilder migrationBuilder)
         {
+			//Utils.Utils.SeedCuidades(migrationBuilder);
 			string Path = Environment.CurrentDirectory;
 			string sql = File.ReadAllText($@"{Path}\Data\Ciudades.sql");
 			migrationBuilder.Sql(sql);

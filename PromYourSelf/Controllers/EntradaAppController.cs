@@ -59,18 +59,18 @@ namespace PromYourSelf.Controllers
                     if (ModelState.IsValid)
                     {
                         await _signInManager.SignOutAsync();
+                        model.Password = RepositorioUsuario.SHA1(model.Password);
                         var result = await _signInManager.PasswordSignInAsync(model.Usuario,
                            model.Password, model.RememberMe, false);
 
                         if (result.Succeeded)
                         {
+                            var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
+                            await _repoWrappers.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
                             if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                            {
                                 return Redirect(model.ReturnUrl);
-                            }
                             else
                             {
-                                var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
 
                                 if (user.Posicion == Posicion.Administrador.GetDescription())
                                 {
@@ -78,9 +78,7 @@ namespace PromYourSelf.Controllers
                                     return RedirectToAction("DashBoardEmpresarial", "DashBoard");
                                 }
                                 else
-                                {
                                     return RedirectToAction("DashBoard", "DashBoard");
-                                }
                             }
                         }
                     }
@@ -131,7 +129,9 @@ namespace PromYourSelf.Controllers
         [Authorize, HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
+            var Usuarios = await _repoWrappers.Usuarios.FindAsync(User.GetUserID().ToInt());
             await _signInManager.SignOutAsync();
+            await _repoWrappers.Usuarios.RemoveClaimsUser(_signInManager, _userManager, Usuarios);
             _accesor.HttpContext.Response.Cookies.Delete(".applicationname");
             return RedirectToAction("Dashboard", "Dashboard");
         }

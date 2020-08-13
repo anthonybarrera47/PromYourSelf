@@ -42,4 +42,11 @@ namespace PromYourSelf.Utils
         info,
         question
     }
+    public enum TypeClaims
+    {
+        Nombres = 0,
+        Foto = 1,
+        Posicion = 2,
+        Empresa = 3
+    }
 }

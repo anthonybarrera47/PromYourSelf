@@ -48,14 +48,14 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "UserName", int PageSize = 5)
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "UserName")
         {
             if (!string.IsNullOrWhiteSpace(filter))
                 Lista = await _Repo.Usuarios.GetListAsync(x => x.UserName.ToUpper().Contains(filter.ToUpper()));
             else
                 Lista = await _Repo.Usuarios.GetListAsync(x => true);
 
-            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "UserName");
+            var model = PagingList.Create(Lista, 7, page, sortExpression, "UserName");
             model.RouteValue = new RouteValueDictionary {
                             { "filter", filter}
             };
@@ -195,7 +195,7 @@ namespace PromYourSelf.Controllers
         //TODO: Perfil Usuario : 3 - Crear un método post en el UsuarioController
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Profile([Bind("Id, Nombres,Apellidos,Genero,UserName, Email, Foto,Confirmado")] ProfileViewModel modelo, IFormFile logo, string removeLogo)
+        public async Task<IActionResult> Profile([Bind("Id, Nombres,Apellidos,Genero,UserName, Email, Foto,Confirmado")] ProfileViewModel modelo, IFormFile logo, bool removeLogo)
         {
             //Valida que si se cambia el correo no exista otro usuario con el mismo asignado.
             var u = await _Repo.Usuarios.GetUserInfoByEmail(modelo.Email); //No se puede registrar el mismo correo en el sistema dos veces
@@ -209,6 +209,7 @@ namespace PromYourSelf.Controllers
             ModelState.Remove("Telefono");
             ModelState.Remove("Nombres");
             ModelState.Remove("Apellidos");
+            ModelState.Remove("removeLogo");
 
             if (ModelState.IsValid)
             {
@@ -216,26 +217,29 @@ namespace PromYourSelf.Controllers
 
                 if (user != null)
                 {
-                    if (removeLogo.Equals("1") || logo != null)
+                    if (removeLogo || logo != null)
                     {
-                        string archivoActual = Path.Combine(webRoot, _appSettings.Value.RutaImagenesUsers, user.Foto);
-                        if (System.IO.File.Exists(archivoActual))
+                        if (user.Foto != null)
                         {
-                            try
+                            string archivoActual = Path.Combine(webRoot, _appSettings.Value.RutaImagenesUsers, user.Foto);
+                            if (System.IO.File.Exists(archivoActual))
                             {
-                                System.GC.Collect(); ///Si no se hace esto dice algunas veces quel archivo esta siendo utilizado por otro proceso
-                                System.GC.WaitForPendingFinalizers();
-                                System.IO.File.Delete(archivoActual);
+                                try
+                                {
+                                    System.GC.Collect(); ///Si no se hace esto dice algunas veces quel archivo esta siendo utilizado por otro proceso
+                                    System.GC.WaitForPendingFinalizers();
+                                    System.IO.File.Delete(archivoActual);
 
-                            }
-                            catch (Exception e)
-                            {
-                                _logger.LogDebug("PerfilUsuario", e);
+                                }
+                                catch (Exception e)
+                                {
+                                    _logger.LogDebug("PerfilUsuario", e);
+                                }
                             }
                         }
                         user.Foto = null;
                     }
-                    if (logo != null && removeLogo.Equals("0"))
+                    if (logo != null && !removeLogo)
                     {
                         string fileExtension = Path.GetExtension(logo.FileName);
                         string fileName = user.Id + fileExtension;
@@ -245,6 +249,7 @@ namespace PromYourSelf.Controllers
                         //user.Foto = await Utils.Utils.ImageToBase64(logo);
                     }
                     user.Nombres = modelo.Nombres;
+                    user.Apellidos = modelo.Apellidos;
                     user.Email = modelo.Email;
                     user.PhoneNumber = modelo.Telefono;
                     user.ModificadoPor = User.GetUserID().ToInt();
@@ -263,19 +268,7 @@ namespace PromYourSelf.Controllers
                 }
                 else
                 {
-                    ///Si todo esta bien colocamos la foto en el claim
-                    var userClaims = await _userManager.GetClaimsAsync(user); //busca todos los claims del usuario modificado
-
-                    ///elimina los claims nombre y posicion, el idOrganizacion no cambia
-                    await _userManager.RemoveClaimsAsync(user, userClaims.Where(x => x.Type.Equals("Foto")));
-                    await _userManager.RemoveClaimsAsync(user, userClaims.Where(x => x.Type.Equals("Nombres")));
-
-                    ///agrega los claims nuevamente
-                    await _userManager.AddClaimAsync(user, new Claim("Nombres", user.Nombres));
-                    if (user.Foto != null && user.Foto != string.Empty && user.Foto.Length > 0)
-                        await _userManager.AddClaimAsync(user, new Claim("Foto", user.Foto));
-
-                    await _signInManager.RefreshSignInAsync(user);
+                    await _Repo.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
                     return RedirectToAction("Profile", "Usuarios");
                 }
 

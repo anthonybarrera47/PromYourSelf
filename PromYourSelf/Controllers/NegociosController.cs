@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ using Models;
 using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
+using PromYourSelf.Utils;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -18,12 +20,16 @@ namespace PromYourSelf.Controllers
     public class NegociosController : BaseController
     {
         private readonly Contexto db;
+        private readonly UserManager<Usuarios> _userManager;
+        private readonly SignInManager<Usuarios> _signInManager;
         private readonly IRepoWrapper _Repo;
         public static List<Negocios> Lista;
-        public NegociosController(Contexto context, IRepoWrapper RepoNegocio)
+        public NegociosController(Contexto context, IRepoWrapper RepoNegocio, SignInManager<Usuarios> signInManager, UserManager<Usuarios> userManager)
         {
             db = context;
             _Repo = RepoNegocio;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 		// GET: GetNegocios
 		public async Task<IActionResult> GetNegocios(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
@@ -113,8 +119,17 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Create(Negocios negocios)
         {
             if (ModelState.IsValid)
-            {				
-                await _Repo.Negocios.SaveAsync(negocios);
+            {
+                int UsuarioId = User.GetUserID().ToInt();
+                negocios.UsuarioID = UsuarioId;
+
+                if (await _Repo.Negocios.SaveAsync(negocios))
+                {
+                    var Usuario = await _Repo.Usuarios.FindAsync(UsuarioId);
+                    Usuario.Posicion = Posicion.Administrador.GetDescription();
+                    await _Repo.Usuarios.UpdateClaimsUser(_signInManager, _userManager, Usuario);
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(negocios);

@@ -26,8 +26,6 @@ namespace Models
         [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Email inválido.")]
         public override string Email { get; set; }
         public bool Confirmado { get; set; }
-        [Display(Name = "Tipo Usuario")]
-        public TiposUsuario TipoUsuario { get; set; }
         [StringLength(40)]
         [Required]
         public string Posicion { get; set; }
@@ -39,7 +37,7 @@ namespace Models
         public DateTime FechaModificacion { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
-        public Usuarios(string password, string nombres, string apellidos, string foto, TipoGenero genero, string email, bool confirmado, TiposUsuario tipoUsuario, string posicion, bool estado, bool esNulo, int creadoPor, DateTime fechaCreacion, int modificadoPor, DateTime fechaModificacion, ICollection<UserRole> userRoles)
+        public Usuarios(string password, string nombres, string apellidos, string foto, TipoGenero genero, string email, bool confirmado, string posicion, bool estado, bool esNulo, int creadoPor, DateTime fechaCreacion, int modificadoPor, DateTime fechaModificacion, ICollection<UserRole> userRoles)
         {
             Password = password ?? throw new ArgumentNullException(nameof(password));
             Nombres = nombres ?? throw new ArgumentNullException(nameof(nombres));
@@ -48,7 +46,6 @@ namespace Models
             Genero = genero;
             Email = email ?? throw new ArgumentNullException(nameof(email));
             Confirmado = confirmado;
-            TipoUsuario = tipoUsuario;
             Posicion = posicion ?? throw new ArgumentNullException(nameof(posicion));
             Estado = estado;
             EsNulo = esNulo;
@@ -68,7 +65,6 @@ namespace Models
             Genero = TipoGenero.Masculino;
             Email = string.Empty;
             Confirmado = false;
-            TipoUsuario = TiposUsuario.Guest;
             Posicion = string.Empty;
             Estado = false;
             EsNulo = false;

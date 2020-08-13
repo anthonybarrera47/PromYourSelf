@@ -29,7 +29,7 @@ namespace PromYourSelf.Data
 					UserName = "root",
 					Email = "root@nose.com",
 					Nombres = "Root",
-					Password = "1234",
+					Password = RepositorioUsuario.SHA1("1234"),
 					Apellidos = "Root ",
 					NormalizedUserName = "root",
 					LockoutEnabled = false,
@@ -47,7 +47,7 @@ namespace PromYourSelf.Data
 					UserName = "demo",
 					Email = "demo@nose.com",
 					Nombres = "Demo",
-					Password = "1234",
+					Password = RepositorioUsuario.SHA1("1234"),
 					Apellidos = "Demo ",
 					NormalizedUserName = "demo",
 					LockoutEnabled = false,
@@ -81,12 +81,12 @@ namespace PromYourSelf.Data
 
 		public static async Task SaveUser(UserManager<Usuarios> userManager, RoleManager<Roles> rolManager,  Usuarios usuario)
 		{
-			var result = await userManager.CreateAsync(usuario, "1234");
-			string posicion = usuario.Posicion == "Administrador" ? "Administrador" : "Normal";
+			var result = await userManager.CreateAsync(usuario, RepositorioUsuario.SHA1("1234"));
+			string posicion = usuario.Posicion == Posicion.Administrador.GetDescription() ? Posicion.Administrador.GetDescription() : Posicion.Normal.GetDescription();
 			if (result.Succeeded)
 			{
-				await userManager.AddClaimAsync(usuario, new Claim("Nombres", usuario.Nombres));
-				await userManager.AddClaimAsync(usuario, new Claim("Posicion", usuario.Posicion));
+				await userManager.AddClaimAsync(usuario, new Claim(TypeClaims.Nombres.ToString("G"), usuario.Nombres));
+				await userManager.AddClaimAsync(usuario, new Claim(TypeClaims.Nombres.ToString("G"), usuario.Posicion));
 				Roles rol = await rolManager.FindByNameAsync(posicion);
 				if (rol == null)
 				{

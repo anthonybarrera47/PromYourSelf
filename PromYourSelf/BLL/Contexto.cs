@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using PromYourSelf.Models;
 using PromYourSelf.Models.ControlUsers;
 using PromYourSelf.Utils;
+using PromYourSelf.BLL;
 
 namespace Models
 {
@@ -50,10 +51,12 @@ namespace Models
              {
                  Id = 1,
                  Nombres = "Luis Felipe",
+                 NormalizedEmail = "ApasLabs@gmail.com".ToUpper(),
+                 NormalizedUserName = "ApasLabs".ToUpper(),
                  Apellidos = " Muños Florez",
                  Email = "ApasLabs@gmail.com",
                  Posicion = Posicion.Administrador.GetDescription(),
-                 Password = "1234",
+                 Password = RepositorioUsuario.SHA1("1234"),
                  Confirmado = true,
                  ConcurrencyStamp = DateTime.Now.ToString(),
                  UserName = "ApasLabs"
@@ -61,11 +64,13 @@ namespace Models
              new Usuarios()
              {
                  Id = 2,
+                 NormalizedEmail = "williamelnene@gmail.com".ToUpper(),
+                 NormalizedUserName = "williambh98".ToUpper(),
                  Nombres = "William",
                  Apellidos = "Burgos Hernandez",
                  Email = "williamelnene@gmail.com",
                  Posicion = Posicion.Administrador.GetDescription(),
-                 Password = "1234",
+                 Password = RepositorioUsuario.SHA1("1234"),
                  Confirmado = true,
                  ConcurrencyStamp = DateTime.Now.ToString(),
                  UserName = "williambh98"
@@ -73,11 +78,13 @@ namespace Models
               new Usuarios()
               {
                   Id = 3,
+                  NormalizedEmail = "usuarionoimai@gmail.com".ToUpper(),
+                  NormalizedUserName = "usuario".ToUpper(),
                   Nombres = "Usuario",
                   Apellidos = "Normal",
                   Email = "usuarionoimai@gmail.com",
                   Posicion = Posicion.Normal.GetDescription(),
-                  Password = "1234",
+                  Password = RepositorioUsuario.SHA1("1234"),
                   Confirmado = true,
                   ConcurrencyStamp = DateTime.Now.ToString(),
                   UserName = "usuario"

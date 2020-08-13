@@ -21,7 +21,7 @@ namespace Models
         public string Contenido { get; set; }
         public TipoContenido Tipo { get; set; }
         //TODO: IMAGEN PA LA PROXIMAAAAA
-
+        public EstadoMensaje EstadoMensaje { get; set; }
 
     }
 }

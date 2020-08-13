@@ -12,13 +12,6 @@ namespace Models
 		Femenino = 1,
 		Otros = 2
 	}
-	public enum TiposUsuario
-	{
-		Cliente = 0,
-		Administrador = 1,
-		Empleado = 2,
-		Guest = 3
-	}
 	public enum EstadoCita
 	{
 		Solicitado = 0,
@@ -44,6 +37,10 @@ namespace Models
 		Texto = 0,
 		Base64 = 1,
 		Documento = 2
-
 	}
+	public enum EstadoMensaje
+    {
+		Enviado  = 0,
+		Leido = 1
+    }
 }
