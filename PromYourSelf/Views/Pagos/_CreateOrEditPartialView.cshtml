@@ -11,7 +11,7 @@
     ViewData["Title"] = cardHeader.Text;
 }
 
-
+<link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
 <form class="form" asp-action="@Action" method="post" id="registrationForm">
     <div class="card shadow mb-4 col-6">
         <partial name="_CardHeaderPartialView" model="cardHeader" />
@@ -55,14 +55,3 @@
         <partial name="_ButtonsCardFooterPartialView" model="Button" />
     </div>
 </form>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/vendor/select2/js/select2.full.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.select2').select2({ width: 'resolve', theme: "classic" });
-        });
-    </script>
-}
