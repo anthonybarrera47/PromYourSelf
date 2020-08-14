@@ -541,24 +541,24 @@
         </script>
 
     }
+<script type="text/javascript">
+    function ToastSweetAlert(Type, Titulo) {
 
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        Toast.fire({
+            type: Type,
+            title: Titulo
+        });
+    }
+</script>
     @if (ViewBag.ToastSweetAlert != null)
     {
-        <script type="text/javascript">
-            function ToastSweetAlert(Type, Titulo) {
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-                Toast.fire({
-                    type: Type,
-                    title: Titulo
-                });
-            }
-        </script>
+        
     }
 
     @RenderSection("Scripts", required: false)
