@@ -153,6 +153,32 @@ namespace PromYourSelf.Controllers
                 await _repoWrappers.Negocios.SaveAsync(negocio);
             }
         }
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string Email)
+        {
+            var Usuario = await _userManager.FindByEmailAsync(Email);
+
+            if (Usuario != null)
+            {
+                PasswordGenerator password = new PasswordGenerator();
+                password.Email = Email;
+                password.UsuarioID = Usuario.Id;
+                password.TimeExpire = DateTime.Now.AddDays(1);
+                password.FakePassWord = _repoWrappers.PasswordGenerator.GenerarToken();
+                if(await _repoWrappers.PasswordGenerator.SaveAsync(password))
+                    SweetAlert(TitleType.OperacionExitosa, MessageType.PasswordSend, IconType.success);
+                else
+                    SweetAlert(TitleType.OperacionFallida, MessageType.PasswordExpired, IconType.success);
+            }
+            else
+                SweetAlert(TitleType.OperacionFallida, MessageType.PasswordExpired, IconType.success);
+
+            return View();
+        }
         public static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
         {
             bool Paso = false;

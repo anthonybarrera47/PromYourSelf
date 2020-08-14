@@ -85,7 +85,7 @@ namespace PromYourSelf.Controllers
         // GET: Pagos/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
+            ViewBag.TipoClasificacion = await _Repo.TiposClasficacion.GetListAsync(x => true);
             return View(new Pagos());
         }
 

@@ -53,7 +53,7 @@
                         <img id="preview" class="rounded" src="@Url.Content(fotoUrl)" width="250" height="230" />
                         <br />
                         <input type="file" id="logo" name="logo" style="display: none;" />
-                        <hr/>
+                        <hr />
                         <a class="btn btn-primary" href="javascript:changeLogo();">Cambiar</a>
                         <a class="ml-2 btn btn-danger" href="javascript:removeImage('@Url.Content(_appSettings.Value.UserSinFoto)');">Eliminar</a>
                         <input type="hidden" style="display: none" value="0" name="removeLogo" id="removeLogo">
@@ -84,9 +84,14 @@
                     <div class="form-row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label for="UserName" class="control-label">Nombre de Usuario</label>
-                                <input asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario.">
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                <label asp-for="UserName" class="control-label">Nombre de Usuario</label>
+                                <label asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario."></label>                              
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label">Correo Electr&oacute;nico</label>
+                                <label asp-for="Email" type="email" name="Email" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -103,13 +108,7 @@
                                 <span asp-validation-for="Genero" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label asp-for="Email" class="control-label">Correo Electr&oacute;nico</label>
-                                <input asp-for="Email" type="email" name="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                        </div>
+
                     </div>
                     @if (Model != null)
                     {
@@ -149,12 +148,10 @@
 
     <script type="text/javascript">
 
-        function changeLogo()
-        {
+        function changeLogo() {
             $('#logo').click();
         }
-        $('#logo').change(function ()
-        {
+        $('#logo').change(function () {
             var imgPath = this.value;
             var ext = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
             if (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg" || ext == "gif")
@@ -162,8 +159,7 @@
             else
                 alert("Por favor seleccione una imagen (jpg, jpeg, png, gif).")
         });
-        function readURL(input)
-        {
+        function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.readAsDataURL(input.files[0]);
@@ -179,54 +175,54 @@
         }
 
 
-        //function ShowMyImage(fileInput) {
-        //    console.log('Estableciendo imagen or defecto');
-        //    let file = fileInput.files[0];
-        //    console.log('file', file);
-        //    let imageType = /image.*/;
-        //    if (!file.type.match(imageType)) {
-        //        alert("Formato de archivo incorrecto! Seleccione una imagen");
-        //        return;
-        //    }
+            //function ShowMyImage(fileInput) {
+            //    console.log('Estableciendo imagen or defecto');
+            //    let file = fileInput.files[0];
+            //    console.log('file', file);
+            //    let imageType = /image.*/;
+            //    if (!file.type.match(imageType)) {
+            //        alert("Formato de archivo incorrecto! Seleccione una imagen");
+            //        return;
+            //    }
 
-        //    var img = document.getElementById("FotoResources");
-        //    document.getElementById("inputFotoFile").files = fileInput.files;
-        //    console.log('fotoEl', img);
-        //    img.file = file;
-        //    var reader = new FileReader();
+            //    var img = document.getElementById("FotoResources");
+            //    document.getElementById("inputFotoFile").files = fileInput.files;
+            //    console.log('fotoEl', img);
+            //    img.file = file;
+            //    var reader = new FileReader();
 
-        //    reader.onload = (function (aImg) {
+            //    reader.onload = (function (aImg) {
 
-        //        return function (e) {
-        //            aImg.src = e.target.result;
-        //            $("InputFoto").val(' ');
-        //        };
-        //    })(img);
-        //    $("#removeLogo").val(0);
-        //    reader.readAsDataURL(file);
-        //    //thumbnil.style.display = 'block';
-        //    console.log('fotoEl', img);
+            //        return function (e) {
+            //            aImg.src = e.target.result;
+            //            $("InputFoto").val(' ');
+            //        };
+            //    })(img);
+            //    $("#removeLogo").val(0);
+            //    reader.readAsDataURL(file);
+            //    //thumbnil.style.display = 'block';
+            //    console.log('fotoEl', img);
 
-        //    for (var i = 0; i < files.length; i++) {
-        //        let fileInterna = files[i];
-        //        console.log(fileInterna.name);
-        //        let imageType = /image.*/;
-        //        if (!fileInterna.type.match(imageType)) {
-        //            continue;
-        //        }
-        //        var img = document.getElementById("FotoResources");
-        //        img.file = fileInterna;
-        //        var reader = new FileReader();
-        //        reader.onload = (function (aImg) {
-        //            return function (e) {
-        //                aImg.src = e.target.result;
-        //            };
-        //        })(img);
-        //        reader.readAsDataURL(fileInterna);
-        //        thumbnil.style.display = 'block';
-        //        //$("#banner_name").text(fileInterna.name);
-        //        console.log('Hola');
-        //    }
+            //    for (var i = 0; i < files.length; i++) {
+            //        let fileInterna = files[i];
+            //        console.log(fileInterna.name);
+            //        let imageType = /image.*/;
+            //        if (!fileInterna.type.match(imageType)) {
+            //            continue;
+            //        }
+            //        var img = document.getElementById("FotoResources");
+            //        img.file = fileInterna;
+            //        var reader = new FileReader();
+            //        reader.onload = (function (aImg) {
+            //            return function (e) {
+            //                aImg.src = e.target.result;
+            //            };
+            //        })(img);
+            //        reader.readAsDataURL(fileInterna);
+            //        thumbnil.style.display = 'block';
+            //        //$("#banner_name").text(fileInterna.name);
+            //        console.log('Hola');
+            //    }
 
     </script>
 }

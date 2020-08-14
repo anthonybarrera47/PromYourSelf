@@ -30,6 +30,7 @@ namespace Models
         public DbSet<Ventas> Ventas { get; set; }
         public DbSet<CodeValidation> CodeValidation { get; set; }
         public DbSet<Pagos> Pagos { get; set; }
+        public DbSet<PasswordGenerator> PasswordGenerators { get; set; }
 
         public Contexto()
         { }

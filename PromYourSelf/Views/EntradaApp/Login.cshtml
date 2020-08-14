@@ -21,36 +21,29 @@
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
                                 <div class="form-group">
-                                    <input asp-for="Usuario" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                    <input asp-for="Usuario" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Ingrese su Email...">
                                     <span asp-validation-for="Usuario" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input asp-for="Password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                                    <input asp-for="Password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Contraseña">
                                     <span asp-validation-for="Password" class="text-danger"></span><span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox small">
                                         <input asp-for="RememberMe" type="checkbox" class="custom-control-input" id="customCheck">
-                                        <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                        <label class="custom-control-label" for="customCheck">Recuerdame</label>
                                     </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Login
+                                    Iniciar Seci&oacute;n
                                 </button>
                                 <hr>
-                                <a href="index.html" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Login with Google
-                                </a>
-                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                </a>
-                                <hr>
                                 <div class="text-center">
-                                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                    <a class="small" asp-controller="EntradaApp" asp-action="ForgotPassword">¿Olvidaste tu contrase&ntilde;a?</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="@Url.Action("Register", "EntradaApp")">Create an Account!</a>
+                                    <a class="small" href="@Url.Action("Register", "EntradaApp")">¡Crear una cuenta!</a>
                                 </div>
                             </div>
                         </div>

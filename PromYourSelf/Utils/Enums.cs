@@ -32,7 +32,11 @@ namespace PromYourSelf.Utils
         [Description("¡Felicidades, su usuario ha sido confirmado.!")]
         UsuarioConfirmado,
         [Description("¡Lo sentimos, su usuario no ha sido confirmado.!")]
-        UsuarioNoConfirmado
+        UsuarioNoConfirmado,
+        [Description("¡Lo sentimos, esta contraseña provisional ya expiro , solicite un nuevo reestablecimiento de contraseña!")]
+        PasswordExpired,
+        [Description("¡La contraseña temporal ha sido enviada, tiene 24Horas para reestrablecer su contraseña !")]
+        PasswordSend
     }
     public enum IconType
     {
