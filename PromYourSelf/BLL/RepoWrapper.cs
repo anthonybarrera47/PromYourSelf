@@ -187,7 +187,7 @@ namespace PromYourSelf.BLL
                 return _RepositoryTipoClasificacion;
             }
         }
-        public IRepositoryPasswordGenerator RepositoryPassword
+        public IRepositoryPasswordGenerator PasswordGenerator
         {
             get
             {
