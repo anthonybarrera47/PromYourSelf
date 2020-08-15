@@ -53,26 +53,37 @@ namespace PromYourSelf.Controllers
             try
             {
                 Usuarios appUser = await _userManager.FindByNameAsync(model.Usuario);
-
+                bool isTemporalyPassword = false;
                 if (User != null)
                 {
                     if (ModelState.IsValid)
                     {
                         await _signInManager.SignOutAsync();
+                        var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
                         model.Password = RepositorioUsuario.SHA1(model.Password);
-                        var result = await _signInManager.PasswordSignInAsync(model.Usuario,
-                           model.Password, model.RememberMe, false);
 
+                        isTemporalyPassword = await VerifiedPasswordRecovery(user, model.Password);
+
+
+                        if (isTemporalyPassword)
+                        {
+                            user.Password = model.Password;
+                            await _userManager.UpdateAsync(user);
+                            SweetAlert(TitleType.Informacion, MessageType.PasswordReset, IconType.info);
+                        }
+
+                        var result = await _signInManager.PasswordSignInAsync(model.Usuario,
+                                                   model.Password, model.RememberMe, false);
                         if (result.Succeeded)
                         {
-                            var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
                             await _repoWrappers.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
 
-                            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                            if(isTemporalyPassword)
+                                return RedirectToAction("ChangePassword", "Usuarios");
+                            else if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                                 return Redirect(model.ReturnUrl);
                             else
                             {
-
                                 if (user.Posicion == Posicion.Administrador.GetDescription())
                                 {
                                     await SaveDefaultCompany(user);
@@ -227,6 +238,22 @@ namespace PromYourSelf.Controllers
             }
 
         }
+        public async Task<bool> VerifiedPasswordRecovery(Usuarios usuarios, string FakePassword)
+        {
+            var Lista = await _repoWrappers.PasswordGenerator.GetListAsync(x => x.TimeExpire >= DateTime.Now && x.Email == usuarios.Email && x.IsUsed == false);
+            bool paso = false;
+            if (Lista.Count > 0)
+            {
+                var item = Lista.FirstOrDefault();
+                if (item.FakePassWord == RepositorioUsuario.SHA1(FakePassword))
+                {
+                    item.IsUsed = true;
+                    await _repoWrappers.PasswordGenerator.ModifiedAsync(item);
+                    paso = true;
+                }
+            }
+            return paso;
+        }
         public static async Task SendMailWithFakePassword(Usuarios usuarios, IRepoWrapper _repoWrappers, PasswordGenerator FakePassword)
         {
             bool Paso = false;
@@ -249,7 +276,7 @@ namespace PromYourSelf.Controllers
                 }
             }
 
-            if (Paso)
+            if (Paso || FakePasswordExist != null)
             {
                 mail.From = new MailAddress("proyectoaplicada2@gmail.com");
                 mail.To.Add(usuarios.Email);

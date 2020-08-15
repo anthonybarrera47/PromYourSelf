@@ -39,7 +39,7 @@ namespace PromYourSelf.BLL
 
             usuarios.Nombres = viewModel.Name;
             usuarios.Apellidos = viewModel.LastName;
-            usuarios.Password = viewModel.Password;
+            usuarios.Password = RepositorioUsuario.SHA1(viewModel.Password);
             usuarios.Email = viewModel.Email;
             usuarios.UserName = viewModel.Email;
             return usuarios;
