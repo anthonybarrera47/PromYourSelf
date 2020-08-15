@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-footer">
                             @* Footer de la tarjeta *@
-                            <a v-if="item.TipoProductos == 1" class="btn btn-outline-warning btn-block">Reservar Cita</a>
+                            <a v-if="item.TipoProductos == 1" class="btn btn-outline-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
 
                         </div>
                     </div>

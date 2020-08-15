@@ -52,29 +52,54 @@
     </div>
     <br />
     <h4 class="text-center">Negocios recomendados</h4>
-    <hr />
+    @*<hr />
     <div class="card-columns mt-5">
         @foreach (var item in Model)
         {
             <div class="card p-3 text-center border-primary">
-                <div class="card-header bg-tertiary ">
-                    @* Titulo de la tarjeta *@
+                <div class="card-header bg-tertiary ">                    
                     <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
 
                 </div>
-                <div class="card-body">
-                    @* Cuerpo de la tarjeta *@
+                <div class="card-body">                    
                     <p>
                         @Html.DisplayFor(modelItem => item.Direccion)
                     </p>
                 </div>
-                <div class="card-footer">
-                    @* Footer de la tarjeta *@
+                <div class="card-footer">                    
                     <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
                 </div>
             </div>
         }
+    </div>*@
+    <hr />
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-nowrap overflow-auto card-columns">
+            @foreach (var item in Model)
+            {
+                <div class="col-12">
+                    <div class="card card-block">
+                        <div class="card-header bg-tertiary ">
+                            @* Titulo de la tarjeta *@
+                            <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
+
+                        </div>
+                        <div class="card-body">
+                            @* Cuerpo de la tarjeta *@
+                            <p>
+                                @Html.DisplayFor(modelItem => item.Direccion)
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            @* Footer de la tarjeta *@
+                            <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
+                        </div>
+                    </div>
+                </div>
+            }           
+        </div>
     </div>
+<hr />
     <hr />
     <h4 class="text-center">Productos</h4>
     <hr />
@@ -93,9 +118,9 @@
             </div>
             <div class="card-footer">
                 @* Footer de la tarjeta *@
-                <a v-if="item.TipoProductos == 1" class="btn btn-outline-primary btn-block">Reservar Cita</a>
+                <a v-if="item.TipoProductos == 1" class="btn btn-outline-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
                 @*<a v-if="item.TipoProductos == 0" v-bind:href="https://localhost:44386/Productos/Details/'+{{item.ProductoID}}" class="btn btn-outline-primary btn-block">Ver Producto</a>*@
-                <a class="btn btn-outline-primary btn-block">Ver Negocio</a>
+                <a class="btn btn-outline-primary btn-block" v-bind:href="'https://localhost:44386/Negocios/Details/'+ item.NegocioID">Ver Negocio</a>
             </div>
         </div>
         </div>

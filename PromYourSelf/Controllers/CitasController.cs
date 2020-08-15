@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
+using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -62,9 +63,12 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Citas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int servicio)
         {
-            return View();
+			Productos producto = await _Repo.Productos.FindAsync(x => x.ProductoID == servicio);
+			Negocios negocio = await _Repo.Negocios.FindAsync(x => x.NegocioID == producto.NegocioID);
+			CitasViewModel model = new CitasViewModel(producto, negocio, new Citas());
+            return View(model);
         }
 
         // POST: Citas/Create
