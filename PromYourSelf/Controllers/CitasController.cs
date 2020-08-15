@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
+using PromYourSelf.Utils;
 using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
@@ -19,12 +21,12 @@ namespace PromYourSelf.Controllers
     {
         private readonly Contexto db; 
         private readonly IRepoWrapper _Repo;
-        public static List<Citas> Lista;
+        public static List<Citas> Lista;		
        
         public CitasController(Contexto context, IRepoWrapper RepoCita)
         {
             db = context;
-            _Repo = RepoCita;
+            _Repo = RepoCita;			
         }
 
         // GET: Citas
@@ -67,7 +69,8 @@ namespace PromYourSelf.Controllers
         {
 			Productos producto = await _Repo.Productos.FindAsync(x => x.ProductoID == servicio);
 			Negocios negocio = await _Repo.Negocios.FindAsync(x => x.NegocioID == producto.NegocioID);
-			CitasViewModel model = new CitasViewModel(producto, negocio, new Citas());
+			Citas cita = new Citas() { NegocioID = negocio.NegocioID, ProductoID = producto.ProductoID };
+			CitasViewModel model = new CitasViewModel(producto.Nombre, producto.Precio, producto.Descripcion, producto.Etiquetas, negocio.NombreComercial, negocio.NegocioID, producto.ProductoID);
             return View(model);
         }
 
@@ -76,14 +79,28 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Citas citas)
+        public async Task<IActionResult> Create(CitasViewModel cvm)
         {
-            if (ModelState.IsValid)
+			ModelState.Remove("CodigoComprobacion");			
+			if (ModelState.IsValid)
             {
-                await _Repo.Citas.SaveAsync(citas);
-                return RedirectToAction(nameof(Index));
+				Citas cita = new Citas()
+				{
+					Notas = cvm.Notas,
+					CodigoComprobacion = _Repo.PasswordGenerator.GenerarToken(),
+					UsuarioID = User.GetUserID().ToInt(),
+					ProductoID = cvm.ProductoID,
+					NegocioID = cvm.NegocioID,
+					FechaInicio = cvm.FechaInicio
+
+
+
+				};	
+                await _Repo.Citas.SaveAsync(cita);
+				//return RedirectToAction("Details", new { cvm.Cita.CitaID});
+				return await Details(cita.CitaID);
             }
-            return View(citas);
+            return View(cvm);
         }
 
         // GET: Citas/Edit/5

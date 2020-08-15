@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Models;
 
 namespace PromYourSelf.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20200815200520_cita_eliminando_fechafin")]
+    partial class cita_eliminando_fechafin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,13 +83,32 @@ namespace PromYourSelf.Migrations
 
                     b.Property<string>("Notas");
 
-                    b.Property<int>("ProductoID");
-
                     b.Property<int>("UsuarioID");
 
                     b.HasKey("CitaID");
 
                     b.ToTable("Citas");
+                });
+
+            modelBuilder.Entity("Models.CitasDetalle", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Cantidad");
+
+                    b.Property<int?>("CitaID");
+
+                    b.Property<decimal>("Precio");
+
+                    b.Property<int>("ProductoID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CitaID");
+
+                    b.ToTable("CitasDetalle");
                 });
 
             modelBuilder.Entity("Models.Ciudad", b =>
@@ -278,8 +299,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(3820),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(4275),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(1607),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(1986),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 4,
@@ -295,8 +316,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "Cenovi, SFM",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(4515),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(4522),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(2198),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(2204),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 1,
@@ -312,8 +333,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Direccion = "Centro de la cuidad, SFM",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(4528),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(4529),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(2210),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(2211),
                             Latitud = "1000",
                             Longitud = "2000",
                             ModificadoPor = 3,
@@ -406,8 +427,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Descripcion = "PrestFast Lite",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6294),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6296),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4020),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4022),
                             ModificadoPor = 3,
                             NegocioID = 2,
                             Nombre = "App Prestamo",
@@ -424,8 +445,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Descripcion = "Consultoria Informatica",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6321),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6322),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4051),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4052),
                             ModificadoPor = 3,
                             NegocioID = 2,
                             Nombre = "Consultor Informatico",
@@ -442,8 +463,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "ASUS Q503",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6323),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6324),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4053),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4054),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Laptop",
@@ -460,8 +481,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "Reparación y Mantenimiento",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6325),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6325),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4055),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4055),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Reparación",
@@ -478,8 +499,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "Brugal Dupre 200mg",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6326),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6327),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4056),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4057),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Brugal Dupre",
@@ -496,8 +517,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "Catar Vinos",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6328),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(6328),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4058),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 861, DateTimeKind.Local).AddTicks(4058),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Catador de vinos",
@@ -601,15 +622,15 @@ namespace PromYourSelf.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             Apellidos = " Muños Florez",
-                            ConcurrencyStamp = "8/15/2020 4:16:11 PM",
+                            ConcurrencyStamp = "8/15/2020 4:05:19 PM",
                             Confirmado = true,
                             CreadoPor = 0,
                             Email = "ApasLabs@gmail.com",
                             EmailConfirmed = false,
                             EsNulo = false,
                             Estado = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 132, DateTimeKind.Local).AddTicks(209),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 132, DateTimeKind.Local).AddTicks(4871),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 856, DateTimeKind.Local).AddTicks(8264),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 857, DateTimeKind.Local).AddTicks(2866),
                             Foto = "",
                             Genero = 0,
                             LockoutEnabled = false,
@@ -628,15 +649,15 @@ namespace PromYourSelf.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             Apellidos = "Burgos Hernandez",
-                            ConcurrencyStamp = "8/15/2020 4:16:11 PM",
+                            ConcurrencyStamp = "8/15/2020 4:05:19 PM",
                             Confirmado = true,
                             CreadoPor = 0,
                             Email = "williamelnene@gmail.com",
                             EmailConfirmed = false,
                             EsNulo = false,
                             Estado = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 135, DateTimeKind.Local).AddTicks(9443),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 135, DateTimeKind.Local).AddTicks(9451),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 860, DateTimeKind.Local).AddTicks(7265),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 860, DateTimeKind.Local).AddTicks(7271),
                             Foto = "",
                             Genero = 0,
                             LockoutEnabled = false,
@@ -655,15 +676,15 @@ namespace PromYourSelf.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             Apellidos = "Normal",
-                            ConcurrencyStamp = "8/15/2020 4:16:11 PM",
+                            ConcurrencyStamp = "8/15/2020 4:05:19 PM",
                             Confirmado = true,
                             CreadoPor = 0,
                             Email = "usuarionoimai@gmail.com",
                             EmailConfirmed = false,
                             EsNulo = false,
                             Estado = false,
-                            FechaCreacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(8),
-                            FechaModificacion = new DateTime(2020, 8, 15, 16, 16, 11, 136, DateTimeKind.Local).AddTicks(8),
+                            FechaCreacion = new DateTime(2020, 8, 15, 16, 5, 19, 860, DateTimeKind.Local).AddTicks(7809),
+                            FechaModificacion = new DateTime(2020, 8, 15, 16, 5, 19, 860, DateTimeKind.Local).AddTicks(7809),
                             Foto = "",
                             Genero = 0,
                             LockoutEnabled = false,
@@ -952,6 +973,13 @@ namespace PromYourSelf.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Models.CitasDetalle", b =>
+                {
+                    b.HasOne("Models.Citas", "Cita")
+                        .WithMany("Details")
+                        .HasForeignKey("CitaID");
                 });
 
             modelBuilder.Entity("Models.Etiquetas", b =>

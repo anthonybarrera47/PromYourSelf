@@ -21,6 +21,10 @@
     <Compile Include="Migrations\20200813235913_DataInicial.Designer.cs" />
     <Compile Include="Migrations\20200815010544_AgregandoForgotPassword.cs" />
     <Compile Include="Migrations\20200815010544_AgregandoForgotPassword.Designer.cs" />
+    <Compile Include="Migrations\20200815200520_cita_eliminando_fechafin.cs" />
+    <Compile Include="Migrations\20200815200520_cita_eliminando_fechafin.Designer.cs" />
+    <Compile Include="Migrations\20200815201611_cita_productoid.cs" />
+    <Compile Include="Migrations\20200815201611_cita_productoid.Designer.cs" />
     <Compile Include="Migrations\ContextoModelSnapshot.cs" />
   </ItemGroup>
 

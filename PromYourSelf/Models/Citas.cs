@@ -18,11 +18,7 @@ namespace Models
         [Display(Name = "Fecha Inicio")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
-        public DateTime FechaInicio { get; set; }
-        [Display(Name = "Fecha Fin")]
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
-        public DateTime FechaFin { get; set; }
+        public DateTime FechaInicio { get; set; }  
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [StringLength(15,
             ErrorMessage = "Máximo 65 caracteres.")]
@@ -30,19 +26,18 @@ namespace Models
         public string CodigoComprobacion { get; set; }
         public string Notas { get; set; }
         public EstadoCita Estado { get; set; } 
-        public virtual ICollection<CitasDetalle> Details { get; set; }
+        public int ProductoID { get; set; }
 
         public Citas()
         {
             CitaID = 0;
             NegocioID = 0;
             EmpleadoAsignado = 0;
-            FechaInicio = DateTime.Now;
-            FechaFin = DateTime.Now.AddDays(1);
+            FechaInicio = DateTime.Now;            
             CodigoComprobacion = string.Empty;
             Notas = string.Empty;
             Estado = EstadoCita.Solicitado;
-            Details = new Collection<CitasDetalle>();
+			ProductoID = 0;
         }
     }
 }

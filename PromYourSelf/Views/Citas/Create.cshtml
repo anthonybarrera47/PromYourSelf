@@ -15,7 +15,10 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card shadow mb-4">
         @*<div class="card-header"><h1 class="m-0 font-weight-bold text-primary">o</h1></div>*@
-
+        @*<input type="hidden" asp-for="Producto.ProductoID"  />
+        <input type="hidden" asp-for="Negocio.NegocioID"/>*@
+        <input type="hidden" asp-for="ProductoID" />
+        <input type="hidden" asp-for="NegocioID" />
         <div class="card-body">
             <div class="card text-center" >                              
                
@@ -53,10 +56,11 @@
                         <h4 class="card-title text-center">Información del Servicio</h4>
                         <hr class="text-black-50" style="font-weight: bold;font-size: 2px;" />
                         <p class="card-text">
-                            <h3 style="font-weight: bold;">@Html.DisplayFor(model => model.Negocio.NombreComercial)</h3>
-                            <h3>@Html.DisplayFor(model => model.Producto.Nombre)</h3>
-                            <p>@Html.DisplayFor(model => model.Producto.Descripcion)</p>
-                            <h3 class="text-success">$@Html.DisplayFor(model => model.Producto.Precio)</h3>
+                            <h3 style="font-weight: bold;">@Html.DisplayFor(model => model.NombreComercial)</h3>
+                            <h3>@Html.DisplayFor(model => model.Nombre)</h3>
+                            <p>@Html.DisplayFor(model => model.Descripcion)</p>
+                            @*@foreach (var etiqueta in Model.Etiquetas) {<span class="badge badge-pill badge-primary">@etiqueta</span>}*@
+                            <h3 class="text-success">$@Html.DisplayFor(model => model.Precio)</h3>
 
                         </p>
                     </div>
@@ -67,9 +71,9 @@
                         <div class="col-lg-2"></div>
                         <div class="col-lg-8">
                             <div class="form-group text-center">
-                                <label style="font-weight: bold;" asp-for="Cita.FechaInicio" type="" class="control-label h3">Fecha de Reserva</label>
-                                <input asp-for="Cita.FechaInicio" class="form-control" />
-                                <span asp-validation-for="Cita.FechaInicio" class="text-danger"></span>
+                                <label style="font-weight: bold;" asp-for="FechaInicio" type="" class="control-label h3">Fecha de Reserva</label>
+                                <input asp-for="FechaInicio" class="form-control" />
+                                <span asp-validation-for="FechaInicio" class="text-danger"></span>
                             </div>
                         </div>
 <div class="col-lg-2"></div>
@@ -85,9 +89,9 @@
                         <div class="col-lg-2"></div>
                         <div class="col-lg-8">
                             <div class="form-group">
-                                <label asp-for="Cita.Notas" class="control-label"></label>
-                                <textarea asp-for="Cita.Notas" class="form-control" rows="6"></textarea>
-                                <span asp-validation-for="Cita.Notas" class="text-danger"></span>
+                                <label asp-for="Notas" class="control-label"></label>
+                                <textarea asp-for="Notas" class="form-control" rows="6"></textarea>
+                                <span asp-validation-for="Notas" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-2"></div>
