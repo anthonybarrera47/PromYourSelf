@@ -19,6 +19,8 @@
   <ItemGroup>
     <Compile Include="Migrations\20200813235913_DataInicial.cs" />
     <Compile Include="Migrations\20200813235913_DataInicial.Designer.cs" />
+    <Compile Include="Migrations\20200815010544_AgregandoForgotPassword.cs" />
+    <Compile Include="Migrations\20200815010544_AgregandoForgotPassword.Designer.cs" />
     <Compile Include="Migrations\ContextoModelSnapshot.cs" />
   </ItemGroup>
 
