@@ -128,8 +128,10 @@ namespace PromYourSelf.Controllers
                     {
                         await EntradaAppController.SendMail(usuarios, _repoWrappers);
                         //TODO: LOGIN DIRECTO LUEGO DE REGISTRAR
-
-                        return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
+                        var result2 = await _signInManager.PasswordSignInAsync(usuarios.UserName,
+                                                   usuarios.Password, false, false);
+                        if(result2.Succeeded)
+                            return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
                     }
                 }
 

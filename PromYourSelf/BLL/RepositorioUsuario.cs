@@ -1,6 +1,7 @@
 ﻿using BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,12 +76,16 @@ namespace PromYourSelf.BLL
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Empresa.ToString("G"))));
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Posicion.ToString("G"))));
 
+            var Negocio = await _context.Negocios.Where(x => x.UsuarioID == usuarios.Id).FirstOrDefaultAsync() ?? new Negocios();
+
             ///agrega los claims nuevamente
             await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Nombres.ToString("G"), $"{usuarios.Nombres} {usuarios.Apellidos}"));
-            await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Posicion.ToString("G"), $"{Posicion.Administrador.GetDescription()}"));
+            await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Posicion.ToString("G"), $"{usuarios.Posicion}"));
+
+            await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Empresa.ToString("G"), $"{Negocio.NegocioID}"));
 
             if (usuarios.Foto != null && usuarios.Foto != string.Empty && usuarios.Foto.Length > 0)
-                await userManager.AddClaimAsync(usuarios, new Claim("Foto", usuarios.Foto));
+                await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Foto.ToString("G"), usuarios.Foto));
 
             await signInManager.RefreshSignInAsync(usuarios);
         }
