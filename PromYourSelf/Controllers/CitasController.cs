@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
@@ -46,22 +47,47 @@ namespace PromYourSelf.Controllers
             return View(model);
         }
 
-        // GET: Citas/Details/5
-        public async Task<IActionResult> Details(int? id)
+		// GET: GetCitas
+		public async Task<IActionResult> GetCitas()
+		{
+			List<object> lista_anonima = new List<object>();
+				List<Citas> lista_citas = await _Repo.Citas.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt());
+				foreach(Citas cita in lista_citas)
+			{
+				Productos producto = await _Repo.Productos.FindAsync(cita.ProductoID);
+				Negocios negocio = await _Repo.Negocios.FindAsync(cita.NegocioID);
+				lista_anonima.Add(new { cita, producto, negocio });
+			}
+
+			return new JsonResult(JsonConvert.SerializeObject(lista_anonima));
+		}
+
+		// GET: Citas/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var citas = await _Repo.Citas.FindAsync(id);
-
-            if (citas == null)
+            Citas cita = await _Repo.Citas.FindAsync(id);
+			Productos producto = await _Repo.Productos.FindAsync(cita.ProductoID);
+			Negocios negocio = await _Repo.Negocios.FindAsync(cita.NegocioID);
+			CitasViewModel cvm = new CitasViewModel()
+			{
+				Nombre = producto.Nombre,
+				Descripcion = producto.Descripcion,
+				Notas = cita.Notas,
+				Precio = producto.Precio,
+				NombreComercial = negocio.NombreComercial,
+				CodigoComprobacion = cita.CodigoComprobacion,
+				FechaInicio = cita.FechaInicio
+			};
+			if (cita == null)
             {
                 return NotFound();
-            }
-
-            return View(citas);
+            }			
+            return View(cvm);
         }
 
         // GET: Citas/Create
@@ -92,13 +118,9 @@ namespace PromYourSelf.Controllers
 					ProductoID = cvm.ProductoID,
 					NegocioID = cvm.NegocioID,
 					FechaInicio = cvm.FechaInicio
-
-
-
 				};	
                 await _Repo.Citas.SaveAsync(cita);
-				//return RedirectToAction("Details", new { cvm.Cita.CitaID});
-				return await Details(cita.CitaID);
+				return RedirectToAction("Details", "Citas", new { cita.CitaID});				
             }
             return View(cvm);
         }

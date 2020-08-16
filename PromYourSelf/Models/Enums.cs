@@ -15,9 +15,10 @@ namespace Models
 	public enum EstadoCita
 	{
 		Solicitado = 0,
-		EnProceso = 1,
-		Finalizado = 2,
-		Cancelada = 3
+		Aceptada = 1,
+		EnProceso = 2,
+		Finalizado = 3,
+		Cancelada = 4
 	}
 	public enum TipoProducto
 	{

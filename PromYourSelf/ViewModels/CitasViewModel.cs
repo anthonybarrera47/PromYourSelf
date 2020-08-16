@@ -20,6 +20,7 @@ namespace PromYourSelf.ViewModels
 		public string Notas { get; set; }
 		public EstadoCita Estado { get; set; }
 		public int ProductoID { get; set; }
+		public int CitaID { get; set; }
 
 
 		public CitasViewModel(string nombre, decimal precio, string descripcion, List<Etiquetas> etiquetas, string nombre_comercial, int negocioId, int productoId)
@@ -32,7 +33,7 @@ namespace PromYourSelf.ViewModels
 			this.FechaInicio = new DateTime();
 			this.CodigoComprobacion = "";
 			this.Notas = "";
-			this.ProductoID = productoId;
+			this.ProductoID = productoId;			
 
 					
 		}
