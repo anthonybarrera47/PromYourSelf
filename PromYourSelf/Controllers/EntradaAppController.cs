@@ -54,6 +54,8 @@ namespace PromYourSelf.Controllers
             {
                 Usuarios appUser = await _userManager.FindByNameAsync(model.Usuario);
                 bool isTemporalyPassword = false;
+                Microsoft.AspNetCore.Identity.SignInResult result = Microsoft.AspNetCore.Identity.SignInResult.Failed;
+                string Password = string.Empty;
                 if (User != null)
                 {
                     if (ModelState.IsValid)
@@ -61,24 +63,26 @@ namespace PromYourSelf.Controllers
                         await _signInManager.SignOutAsync();
                         var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
                         model.Password = RepositorioUsuario.SHA1(model.Password);
+                        Password = user.Password;
 
                         isTemporalyPassword = await VerifiedPasswordRecovery(user, model.Password);
 
-
                         if (isTemporalyPassword)
                         {
-                            user.Password = model.Password;
-                            await _userManager.UpdateAsync(user);
+                            result = await _signInManager.PasswordSignInAsync(model.Usuario,
+                                                 Password, model.RememberMe, false); 
                             SweetAlert(TitleType.Informacion, MessageType.PasswordReset, IconType.info);
-                        }
 
-                        var result = await _signInManager.PasswordSignInAsync(model.Usuario,
-                                                   model.Password, model.RememberMe, false);
+                        }
+                        else
+                            result = await _signInManager.PasswordSignInAsync(model.Usuario,
+                                                  model.Password, model.RememberMe, false);
+
                         if (result.Succeeded)
                         {
                             await _repoWrappers.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
 
-                            if(isTemporalyPassword)
+                            if (isTemporalyPassword)
                                 return RedirectToAction("ChangePassword", "Usuarios");
                             else if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                                 return Redirect(model.ReturnUrl);
@@ -130,7 +134,7 @@ namespace PromYourSelf.Controllers
                         //TODO: LOGIN DIRECTO LUEGO DE REGISTRAR
                         var result2 = await _signInManager.PasswordSignInAsync(usuarios.UserName,
                                                    usuarios.Password, false, false);
-                        if(result2.Succeeded)
+                        if (result2.Succeeded)
                             return RedirectToAction("DashBoard", "DashBoard"); // la página donde debe ir después de verificar al usuario.
                     }
                 }
@@ -178,17 +182,18 @@ namespace PromYourSelf.Controllers
 
             if (Usuario != null)
             {
+                string Token = _repoWrappers.PasswordGenerator.GenerarToken();
                 PasswordGenerator password = new PasswordGenerator
                 {
                     Email = Email,
                     UsuarioID = Usuario.Id,
                     TimeExpire = DateTime.Now.AddDays(1),
-                    FakePassWord = RepositorioUsuario.SHA1(_repoWrappers.PasswordGenerator.GenerarToken())
+                    FakePassWord = RepositorioUsuario.SHA1(Token)
                 };
 
                 if (await _repoWrappers.PasswordGenerator.SaveAsync(password))
                 {
-                    await SendMailWithFakePassword(Usuario, _repoWrappers, password);
+                    await SendMailWithFakePassword(Usuario, _repoWrappers, password, Token);
                     SweetAlert(TitleType.OperacionExitosa, MessageType.PasswordSend, IconType.success);
                 }
 
@@ -246,22 +251,20 @@ namespace PromYourSelf.Controllers
             bool paso = false;
             if (Lista.Count > 0)
             {
-                var item = Lista.FirstOrDefault();
-                if (item.FakePassWord == RepositorioUsuario.SHA1(FakePassword))
+                var item = Lista.LastOrDefault();
+                if (item.FakePassWord.Equals(FakePassword))
                 {
                     item.IsUsed = true;
-                    await _repoWrappers.PasswordGenerator.ModifiedAsync(item);
-                    paso = true;
+                    paso = await _repoWrappers.PasswordGenerator.ModifiedAsync(item);
                 }
             }
             return paso;
         }
-        public static async Task SendMailWithFakePassword(Usuarios usuarios, IRepoWrapper _repoWrappers, PasswordGenerator FakePassword)
+        public static async Task SendMailWithFakePassword(Usuarios usuarios, IRepoWrapper _repoWrappers, PasswordGenerator FakePassword, string OriginalPassword)
         {
             bool Paso = false;
             MailMessage mail = new MailMessage();
             FakePassword.Email = usuarios.Email;
-            FakePassword.FakePassWord = _repoWrappers.PasswordGenerator.GenerarToken();
             FakePassword.TimeExpire = DateTime.Now.AddDays(1);
             PasswordGenerator FakePasswordExist = await _repoWrappers.PasswordGenerator.FindAsync(x => x.Email.Equals(usuarios.Email));
 
@@ -283,7 +286,7 @@ namespace PromYourSelf.Controllers
                 mail.From = new MailAddress("proyectoaplicada2@gmail.com");
                 mail.To.Add(usuarios.Email);
                 mail.Subject = "Contraseña temporal";
-                mail.Body = $"Su Contraseña temporal es : {FakePassword.FakePassWord}";
+                mail.Body = $"Su Contraseña temporal es : {OriginalPassword}";
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                 SmtpServer.Port = 587;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("proyectoaplicada2@gmail.com", "@P123456");
