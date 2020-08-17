@@ -25,6 +25,8 @@
     <Compile Include="Migrations\20200815200520_cita_eliminando_fechafin.Designer.cs" />
     <Compile Include="Migrations\20200815201611_cita_productoid.cs" />
     <Compile Include="Migrations\20200815201611_cita_productoid.Designer.cs" />
+    <Compile Include="Migrations\20200817225150_QuitandoGenerador.cs" />
+    <Compile Include="Migrations\20200817225150_QuitandoGenerador.Designer.cs" />
     <Compile Include="Migrations\ContextoModelSnapshot.cs" />
   </ItemGroup>
 

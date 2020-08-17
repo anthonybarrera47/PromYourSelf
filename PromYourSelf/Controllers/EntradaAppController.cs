@@ -245,7 +245,7 @@ namespace PromYourSelf.Controllers
             }
 
         }
-        public static async Task SendMailWithFakePassword(Usuarios usuarios, IRepoWrapper _repoWrappers, PasswordGenerator FakePassword, string OriginalPassword)
+        public static async Task SendMailWithFakePassword(Usuarios usuarios, IRepoWrapper _repoWrappers, string FakePassword, string OriginalPassword)
         {
             bool Paso = false;
             //MailMessage mail = new MailMessage();
