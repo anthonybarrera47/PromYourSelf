@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace Models
         [StringLength(40)]
         [Required]
         public string Posicion { get; set; }
+        public string PasswordRecovery { get; set; }
+        public DateTime TimeExpired { get; set; }
         public bool Estado { get; set; }
         public bool EsNulo { get; set; }
         public int CreadoPor { get; set; }
@@ -37,7 +40,7 @@ namespace Models
         public DateTime FechaModificacion { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
-        public Usuarios(string password, string nombres, string apellidos, string foto, TipoGenero genero, string email, bool confirmado, string posicion, bool estado, bool esNulo, int creadoPor, DateTime fechaCreacion, int modificadoPor, DateTime fechaModificacion, ICollection<UserRole> userRoles)
+        public Usuarios(string password, string nombres, string apellidos, string foto, TipoGenero genero, string email, bool confirmado, string posicion, string passwordRecovery, DateTime timeExpired, bool estado, bool esNulo, int creadoPor, DateTime fechaCreacion, int modificadoPor, DateTime fechaModificacion, ICollection<UserRole> userRoles)
         {
             Password = password ?? throw new ArgumentNullException(nameof(password));
             Nombres = nombres ?? throw new ArgumentNullException(nameof(nombres));
@@ -47,6 +50,8 @@ namespace Models
             Email = email ?? throw new ArgumentNullException(nameof(email));
             Confirmado = confirmado;
             Posicion = posicion ?? throw new ArgumentNullException(nameof(posicion));
+            PasswordRecovery = passwordRecovery ?? throw new ArgumentNullException(nameof(passwordRecovery));
+            TimeExpired = timeExpired;
             Estado = estado;
             EsNulo = esNulo;
             CreadoPor = creadoPor;
@@ -66,6 +71,8 @@ namespace Models
             Email = string.Empty;
             Confirmado = false;
             Posicion = string.Empty;
+            PasswordRecovery = string.Empty;
+            TimeExpired = DateTime.Now;
             Estado = false;
             EsNulo = false;
             CreadoPor = 0;

@@ -167,6 +167,16 @@ namespace PromYourSelf.Utils
 			string sql = File.ReadAllText($@"{Path}\Data\Ciudades.sql");
 			migrationBuilder.Sql(sql);
 		}
+		public static string GenerarToken()
+		{
+			int longitud = 8;
+			string str = string.Empty;
+			Guid miGuid = Guid.NewGuid();
+			string token = Convert.ToBase64String(miGuid.ToByteArray());
+			token = token.Replace("=", "").Replace("+", "");
+			str = token.Substring(0, longitud);
+			return str;
+		}
 	}
 
 

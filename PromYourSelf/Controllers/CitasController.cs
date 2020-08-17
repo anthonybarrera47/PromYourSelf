@@ -113,7 +113,7 @@ namespace PromYourSelf.Controllers
 				Citas cita = new Citas()
 				{
 					Notas = cvm.Notas,
-					CodigoComprobacion = _Repo.PasswordGenerator.GenerarToken(),
+					CodigoComprobacion = Utils.Utils.GenerarToken(),
 					UsuarioID = User.GetUserID().ToInt(),
 					ProductoID = cvm.ProductoID,
 					NegocioID = cvm.NegocioID,

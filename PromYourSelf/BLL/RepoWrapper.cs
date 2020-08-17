@@ -32,7 +32,6 @@ namespace PromYourSelf.BLL
         private IRepositoryCodeValidation _CodeValidation;
         private IRepositoryPagos _RepositoryPagos;
         private IRepositoryTipoClasificacion _RepositoryTipoClasificacion;
-        private IRepositoryPasswordGenerator _RepositoryPasswordGenerators;
 
         public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
                 RoleManager<Roles> rolManager,
@@ -185,18 +184,6 @@ namespace PromYourSelf.BLL
                 }
 
                 return _RepositoryTipoClasificacion;
-            }
-        }
-        public IRepositoryPasswordGenerator PasswordGenerator
-        {
-            get
-            {
-                if (_RepositoryPasswordGenerators == null)
-                {
-                    _RepositoryPasswordGenerators = new RepositorioPasswordGenerator(_RepoContexto, _accessor);
-                }
-
-                return _RepositoryPasswordGenerators;
             }
         }
     }

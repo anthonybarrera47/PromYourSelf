@@ -18,7 +18,6 @@ namespace PromYourSelf.BLL.Interfaces
         IRepositoryCodeValidation CodeValidation { get; }
         IRepositoryPagos Pagos{ get; }
         IRepositoryTipoClasificacion TiposClasficacion{ get; }
-        IRepositoryPasswordGenerator PasswordGenerator{ get; }
 
     }
 }

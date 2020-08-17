@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="~/js/sweetAlert/sweetalert2.min.css">
 </head>
 <body id="page-top">
-     
+
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -257,8 +257,8 @@
                                     <a v-for="cita in citas" class="dropdown-item d-flex align-items-center" v-bind:href="'https://localhost:44386/Citas/Details/'+ cita.cita.CitaID">
                                         <div class="mr-3">
                                             @*<div class="icon-circle bg-primary">
-            <i class="fas fa-file-alt text-white"></i>
-        </div>*@
+                                                    <i class="fas fa-file-alt text-white"></i>
+                                                </div>*@
                                             <div class="icon-circle bg-warning">
                                                 <i class="fas fa-exclamation-triangle text-white"></i>
                                             </div>
@@ -270,27 +270,27 @@
                                         </div>
                                     </a>
                                     @*<a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-success">
-                                                <i class="fas fa-donate text-white"></i>
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-success">
+                                                    <i class="fas fa-donate text-white"></i>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 7, 2019</div>
-                                            $290.29 has been deposited into your account!
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-warning">
-                                                <i class="fas fa-exclamation-triangle text-white"></i>
+                                            <div>
+                                                <div class="small text-gray-500">December 7, 2019</div>
+                                                $290.29 has been deposited into your account!
                                             </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 2, 2019</div>
-                                            Spending Alert: We've noticed unusually high spending for your account.
-                                        </div>
-                                    </a>*@
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="mr-3">
+                                                <div class="icon-circle bg-warning">
+                                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="small text-gray-500">December 2, 2019</div>
+                                                Spending Alert: We've noticed unusually high spending for your account.
+                                            </div>
+                                        </a>*@
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Ver Historial de Citas</a>
                                 </div>
                             </li>
@@ -600,106 +600,106 @@
         </script>
 
     }
-<script type="text/javascript">
-    function ToastSweetAlert(Type, Titulo) {
+    <script type="text/javascript">
+        function ToastSweetAlert(Type, Titulo) {
 
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-        });
-        Toast.fire({
-            type: Type,
-            title: Titulo
-        });
-    }
-</script>
-
-<script>
-   var app_topbar = new Vue({
-        el: '#app-topbar',
-        data: {
-            citas: [],
-            
-        },
-        methods: {            
-            getCitas: function () {
-                axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
-                    app_topbar.citas = [];
-                    let res = JSON.parse(response.data);
-                    console.log('res', res);
-                    for (let i = 0; i < res.length; i++) {                        
-                        app_topbar.citas.push(res[i]);
-                    }
-
-                }).catch(err => {
-                    console.log('ha ocurrido un error', err);
-                    alert('Ha ocurrido un error');
-                })
-           }         
-
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                type: Type,
+                title: Titulo
+            });
         }
-   });
-    app_topbar.getCitas();    
-</script>
+    </script>
 
-<script>
-function toggleMenu() {
-  // Start of use strict
+    <script>
+        var app_topbar = new Vue({
+            el: '#app-topbar',
+            data: {
+                citas: [],
 
-  // Toggle the side navigation
-  $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-    $("body").toggleClass("sidebar-toggled");
-    $(".sidebar").toggleClass("toggled");
-    if ($(".sidebar").hasClass("toggled")) {
-      $('.sidebar .collapse').collapse('hide');
-    };
-  });
+            },
+            methods: {
+                getCitas: function () {
+                    axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
+                        app_topbar.citas = [];
+                        let res = JSON.parse(response.data);
+                        console.log('res', res);
+                        for (let i = 0; i < res.length; i++) {
+                            app_topbar.citas.push(res[i]);
+                        }
 
-  // Close any open menu accordions when window is resized below 768px
-  $(window).resize(function() {
-    if ($(window).width() < 768) {
-      $('.sidebar .collapse').collapse('hide');
-    };
-  });
+                    }).catch(err => {
+                        console.log('ha ocurrido un error', err);
+                        alert('Ha ocurrido un error');
+                    })
+                }
 
-  // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
-    if ($(window).width() > 768) {
-      var e0 = e.originalEvent,
-        delta = e0.wheelDelta || -e0.detail;
-      this.scrollTop += (delta < 0 ? 1 : -1) * 30;
-      e.preventDefault();
-    }
-  });
+            }
+        });
+        app_topbar.getCitas();
+    </script>
 
-  // Scroll to top button appear
-  $(document).on('scroll', function() {
-    var scrollDistance = $(this).scrollTop();
-    if (scrollDistance > 100) {
-      $('.scroll-to-top').fadeIn();
-    } else {
-      $('.scroll-to-top').fadeOut();
-    }
-  });
+    <script>
+        function toggleMenu() {
+            "use strict";
+            // Start of use strict
 
-  // Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function(e) {
-    var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: ($($anchor.attr('href')).offset().top)
-    }, 1000, 'easeInOutExpo');
-    e.preventDefault();
-  });
+            // Toggle the side navigation
+            $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
+                $("body").toggleClass("sidebar-toggled");
+                $(".sidebar").toggleClass("toggled");
+                if ($(".sidebar").hasClass("toggled")) {
+                    $('.sidebar .collapse').collapse('hide');
+                };
+            });
 
-    } // End of use strict
+            // Close any open menu accordions when window is resized below 768px
+            $(window).resize(function () {
+                if ($(window).width() < 768) {
+                    $('.sidebar .collapse').collapse('hide');
+                };
+            });
 
-    toggleMenu();
-</script>
+            // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+            $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function (e) {
+                if ($(window).width() > 768) {
+                    var e0 = e.originalEvent,
+                        delta = e0.wheelDelta || -e0.detail;
+                    this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+                    e.preventDefault();
+                }
+            });
+
+            // Scroll to top button appear
+            $(document).on('scroll', function () {
+                var scrollDistance = $(this).scrollTop();
+                if (scrollDistance > 100) {
+                    $('.scroll-to-top').fadeIn();
+                } else {
+                    $('.scroll-to-top').fadeOut();
+                }
+            });
+
+            // Smooth scrolling using jQuery easing
+            $(document).on('click', 'a.scroll-to-top', function (e) {
+                var $anchor = $(this);
+                $('html, body').stop().animate({
+                    scrollTop: ($($anchor.attr('href')).offset().top)
+                }, 1000, 'easeInOutExpo');
+                e.preventDefault();
+            });
+
+        } // End of use strict
+
+    </script>
     @if (ViewBag.ToastSweetAlert != null)
     {
-        
+
     }
 
     @RenderSection("Scripts", required: false)

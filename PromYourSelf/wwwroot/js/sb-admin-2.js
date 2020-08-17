@@ -1,4 +1,5 @@
 function toggleMenu() {
+    "use strict";
   // Start of use strict
 
   // Toggle the side navigation
