@@ -47,6 +47,23 @@ namespace PromYourSelf.Controllers
             return View(model);
         }
 
+		// GET: Historial
+		public async Task<IActionResult> Historial(string filter, int page = 1, string sortExpression = "FechaInicio", int PageSize = 5)
+		{
+			if (!string.IsNullOrWhiteSpace(filter))
+				Lista = await _Repo.Citas.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt() && x.FechaInicio.ToString().Contains(filter.ToUpper()));
+			else
+				Lista = await _Repo.Citas.GetListAsync(x => true && x.UsuarioID == User.GetUserID().ToInt());
+
+			var model = PagingList.Create(Lista, PageSize, page, sortExpression, "FechaInicio");
+			model.RouteValue = new RouteValueDictionary {
+							{ "filter", filter}
+			};
+			model.Action = "Index";
+
+			return View(model);
+		}
+
 		// GET: GetCitas
 		public async Task<IActionResult> GetCitas()
 		{

@@ -51,7 +51,9 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
             <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+            @if (User.GetPosicion().GetDescription() == "Administrador")
+            {
+                <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
@@ -63,7 +65,7 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            }
             <!-- Heading -->
             <div class="sidebar-heading">
                 Menú
@@ -73,6 +75,13 @@
                     @*<i class="fas fa-fw fa-business-time"></i>*@
                     <i class="fas fa-street-view"></i>
                     <span>Explorar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="citas" asp-action="historial" aria-expanded="true" aria-controls="collapseExplorar">
+                    @*<i class="fas fa-fw fa-business-time"></i>*@
+                    <i class="fas fa-street-view"></i>
+                    <span>Historial de Citas</span>
                 </a>
             </li>
             <!-- Nav Item - Pages Collapse Menu -->
@@ -130,33 +139,36 @@
 
             <!--FIN DE SUBMENU NEGOCIOS-->
             <!--INICIO DE SUBMENU PRODUCTOS-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos" aria-expanded="true" aria-controls="collapseproductos">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Productos</span>
-                </a>
-                <div id="collapseproductos" class="collapse" aria-labelledby="collapseproductos" data-parent="#collapseproductos">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@
-                        <a class="collapse-item" asp-controller="productos" asp-action="index">Listado de productos</a>
-                        <a class="collapse-item" asp-controller="productos" asp-action="create">Nuevo producto</a>
+            @if (User.GetPosicion().GetDescription() == "Administrador")
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos" aria-expanded="true" aria-controls="collapseproductos">
+                        <i class="fas fa-fw fa-book"></i>
+                        <span>Productos</span>
+                    </a>
+                    <div id="collapseproductos" class="collapse" aria-labelledby="collapseproductos" data-parent="#collapseproductos">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" asp-controller="productos" asp-action="index">Listado de productos</a>
+                            <a class="collapse-item" asp-controller="productos" asp-action="create">Nuevo producto</a>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <!--INICIO DE SUBMENU PAGOS-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsepagos" aria-expanded="true" aria-controls="collapsepagos">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Pagos</span>
-                </a>
-                <div id="collapsepagos" class="collapse" aria-labelledby="collapsepagos" data-parent="#collapsepagos">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @*<h6 class="collapse-header">Custom Components:</h6>*@
-                        <a class="collapse-item" asp-controller="pagos" asp-action="index">Listado de Pagos</a>
-                        <a class="collapse-item" asp-controller="pagos" asp-action="create">Nuevo Pago</a>
+                </li>
+                <!--INICIO DE SUBMENU PAGOS-->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsepagos" aria-expanded="true" aria-controls="collapsepagos">
+                        <i class="fas fa-fw fa-book"></i>
+                        <span>Pagos</span>
+                    </a>
+                    <div id="collapsepagos" class="collapse" aria-labelledby="collapsepagos" data-parent="#collapsepagos">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" asp-controller="pagos" asp-action="index">Listado de Pagos</a>
+                            <a class="collapse-item" asp-controller="pagos" asp-action="create">Nuevo Pago</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+
             <!--FIN DE SUBMENU PRODUCTOS-->
             <!--INICIO DE SUBMENU citaS-->
             <li class="nav-item">
@@ -172,6 +184,7 @@
                     </div>
                 </div>
             </li>
+            }
             <!--FIN DE SUBMENU citaS-->
             <!--INICIO DE SUBMENU mensajes-->
             <li class="nav-item">
@@ -291,7 +304,7 @@
                                                 Spending Alert: We've noticed unusually high spending for your account.
                                             </div>
                                         </a>*@
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Ver Historial de Citas</a>
+                                    <a class="dropdown-item text-center small text-gray-500"  asp-controller="citas" asp-action="historial">Ver Historial de Citas</a>
                                 </div>
                             </li>
                             <!-- ========================================= -->
