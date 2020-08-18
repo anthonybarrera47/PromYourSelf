@@ -291,15 +291,14 @@ namespace PromYourSelf.Controllers
         public async Task<ActionResult> ChangePassword()
         {
             var user = await _userManager.FindByIdAsync(this.User.GetUserID());
-            ChangePasswordViewModel model = new ChangePasswordViewModel
+            ChangePasswordViewModel model = new ChangePasswordViewModel();
+            if (user != null)
             {
-                Nombre = user.Nombres,
-                UserID = this.User.GetUserID().ToInt()
-            };
+                model.Nombre = user.Nombres;
+                model.UserID = this.User.GetUserID().ToInt();
+            }
             return View(model);
         }
-
-
 
         //TODO: Cambiar Password: 2 - Agregar el método CambiarPassword GET y POST en el Controller y luego el View
 
@@ -394,6 +393,43 @@ namespace PromYourSelf.Controllers
 
 
             return View();
+        }
+        public async Task<ActionResult> ResetPassword()
+        {
+            var user = await _userManager.FindByIdAsync(this.User.GetUserID());
+            ResetPasswordViewModel model = new ResetPasswordViewModel
+            {
+                UserID = this.User.GetUserID().ToInt()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword([Bind("UserID, Password, ConfirmarPassword")] ResetPasswordViewModel modelo)
+        {
+            var user = await _userManager.FindByIdAsync(this.User.GetUserID());
+
+            if (!modelo.Password.Equals(modelo.ConfirmarPassword))
+                ModelState.AddModelError("", "Las contraseñas con coinciden.");
+
+            if (ModelState.IsValid)
+            {
+                //TODO: Cambiar Password: 2 - Validar el modelo , usar el userManager para resetear el password en el POST de CambiarPassword
+                user.PasswordRecovery = string.Empty;
+                user.TimeExpired = DateTime.MinValue;
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, modelo.Password);
+                if (result.Succeeded)
+                {
+                    SweetAlert(TitleType.OperacionExitosa, MessageType.RegistroGuardado, IconType.success);
+                    return RedirectToAction("Profile", new RouteValueDictionary(
+                                                                    new { controller = "Usuarios", action = "Profile", Id = modelo.UserID }));
+                }
+                else
+                    ModelState.AddModelError("", result.Errors.FirstOrDefault().ToString());
+            }
+
+            return View(modelo);
         }
     }
 }

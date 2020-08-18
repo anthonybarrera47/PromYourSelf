@@ -38,6 +38,15 @@ namespace PromYourSelf.Controllers
         {
             return View();
         }
+        public bool VerifiedPasswordRecovery(Usuarios user, string Password)
+        {
+            bool Paso = false;
+            double Time = (user.TimeExpired - DateTime.Now).TotalMilliseconds;
+            if (user.PasswordRecovery != null && user.PasswordRecovery.Length > 0)
+                if (Time >= 0 || user.PasswordRecovery.Equals(Password))
+                    Paso = true;
+            return Paso;
+        }
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = "")
@@ -61,16 +70,15 @@ namespace PromYourSelf.Controllers
                     if (ModelState.IsValid)
                     {
                         await _signInManager.SignOutAsync();
-                        var user = (await _repoWrappers.Usuarios.GetListAsync(m => m.UserName == model.Usuario)).FirstOrDefault();
+                        var user = await _userManager.FindByEmailAsync(model.Usuario);
                         model.Password = RepositorioUsuario.SHA1(model.Password);
                         Password = user.Password;
 
-                        //isTemporalyPassword = await VerifiedPasswordRecovery(user, model.Password);
+                        isTemporalyPassword = VerifiedPasswordRecovery(user, model.Password);
 
                         if (isTemporalyPassword)
                         {
-                            result = await _signInManager.PasswordSignInAsync(model.Usuario,
-                                                 Password, model.RememberMe, false); 
+                            await _signInManager.SignInAsync(user,false);
                             SweetAlert(TitleType.Informacion, MessageType.PasswordReset, IconType.info);
 
                         }
@@ -78,12 +86,12 @@ namespace PromYourSelf.Controllers
                             result = await _signInManager.PasswordSignInAsync(model.Usuario,
                                                   model.Password, model.RememberMe, false);
 
-                        if (result.Succeeded)
+                        if (result.Succeeded || isTemporalyPassword)
                         {
                             await _repoWrappers.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
 
                             if (isTemporalyPassword)
-                                return RedirectToAction("ChangePassword", "Usuarios");
+                                return RedirectToAction("ResetPassword", "Usuarios",new { user.Id});
                             else if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                                 return Redirect(model.ReturnUrl);
                             else
@@ -180,28 +188,25 @@ namespace PromYourSelf.Controllers
         {
             var Usuario = await _userManager.FindByEmailAsync(Email);
 
-            //if (Usuario != null)
-            //{
-            //    string Token = _repoWrappers.PasswordGenerator.GenerarToken();
-            //    PasswordGenerator password = new PasswordGenerator
-            //    {
-            //        Email = Email,
-            //        UsuarioID = Usuario.Id,
-            //        TimeExpire = DateTime.Now.AddDays(1),
-            //        FakePassWord = RepositorioUsuario.SHA1(Token)
-            //    };
+            if (Usuario != null)
+            {
+                string PassWord = Utils.Utils.GenerarToken();
+                Usuario.PasswordRecovery = RepositorioUsuario.SHA1(PassWord);
+                Usuario.TimeExpired = DateTime.Now.AddDays(1);
 
-            //    if (await _repoWrappers.PasswordGenerator.SaveAsync(password))
-            //    {
-            //        await SendMailWithFakePassword(Usuario, _repoWrappers, password, Token);
-            //        SweetAlert(TitleType.OperacionExitosa, MessageType.PasswordSend, IconType.success);
-            //    }
+                var result = await _userManager.UpdateAsync(Usuario);
+                if (result.Succeeded)
+                {
+                    await SendMailWithFakePassword(Usuario, PassWord);
+                    SweetAlert(TitleType.OperacionExitosa, MessageType.PasswordSend, IconType.success);
+                }
+                else
+                    SweetAlert(TitleType.OperacionFallida, MessageType.PasswordSend, IconType.error);
 
-            //    else
-            //        SweetAlert(TitleType.OperacionFallida, MessageType.PasswordExpired, IconType.warning);
-            //}
-            //else
-            //    SweetAlert(TitleType.OperacionFallida, MessageType.PasswordExpired, IconType.warning);
+
+            }
+            else
+                SweetAlert(TitleType.OperacionFallida, MessageType.PasswordExpired, IconType.warning);
 
             return View();
         }
@@ -237,48 +242,20 @@ namespace PromYourSelf.Controllers
                 mail.To.Add(usuarios.Email);
                 mail.Subject = "Código de verificacion";
                 mail.Body = $"Su codigo es : {Code.Codigo}";
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("proyectoaplicada2@gmail.com", "@P123456");
-                SmtpServer.EnableSsl = true;
-                await SmtpServer.SendMailAsync(mail);
+                await Utils.Utils.SendMail(mail);
             }
 
         }
-        public static async Task SendMailWithFakePassword(Usuarios usuarios, IRepoWrapper _repoWrappers, string FakePassword, string OriginalPassword)
+        public static async Task SendMailWithFakePassword(Usuarios usuarios,string Password)
         {
-            bool Paso = false;
-            //MailMessage mail = new MailMessage();
-            //FakePassword.Email = usuarios.Email;
-            //FakePassword.TimeExpire = DateTime.Now.AddDays(1);
-            //PasswordGenerator FakePasswordExist = await _repoWrappers.PasswordGenerator.FindAsync(x => x.Email.Equals(usuarios.Email));
-
-            //if (FakePasswordExist == null)
-            //    Paso = await _repoWrappers.PasswordGenerator.SaveAsync(FakePassword);
-            //else
-            //{
-            //    double x = (FakePassword.TimeExpire - DateTime.Now).TotalMilliseconds;
-            //    if (x < 0)
-            //    {
-            //        FakePassword.TimeExpire = DateTime.Now.AddDays(1);
-            //        FakePassword.FakePassWord = _repoWrappers.PasswordGenerator.GenerarToken();
-            //        Paso = await _repoWrappers.PasswordGenerator.ModifiedAsync(FakePassword);
-            //    }
-            //}
-
-            //if (Paso || FakePasswordExist != null)
-            //{
-            //    mail.From = new MailAddress("proyectoaplicada2@gmail.com");
-            //    mail.To.Add(usuarios.Email);
-            //    mail.Subject = "Contraseña temporal";
-            //    mail.Body = $"Su Contraseña temporal es : {OriginalPassword}";
-            //    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            //    SmtpServer.Port = 587;
-            //    SmtpServer.Credentials = new System.Net.NetworkCredential("proyectoaplicada2@gmail.com", "@P123456");
-            //    SmtpServer.EnableSsl = true;
-            //    await SmtpServer.SendMailAsync(mail);
-            //}
-
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress("proyectoaplicada2@gmail.com")
+            };
+            mail.To.Add(usuarios.Email);
+            mail.Subject = "Contraseña temporal";
+            mail.Body = $"Su Contraseña temporal es : {Password}";
+            await Utils.Utils.SendMail(mail);
         }
 
     }

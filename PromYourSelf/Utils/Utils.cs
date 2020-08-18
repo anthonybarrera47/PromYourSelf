@@ -15,6 +15,7 @@ using Models;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System.Net.Mail;
 
 namespace PromYourSelf.Utils
 {
@@ -167,15 +168,23 @@ namespace PromYourSelf.Utils
 			string sql = File.ReadAllText($@"{Path}\Data\Ciudades.sql");
 			migrationBuilder.Sql(sql);
 		}
-		public static string GenerarToken()
+		public static string GenerarToken(int longitud = 8)
 		{
-			int longitud = 8;
-			string str = string.Empty;
-			Guid miGuid = Guid.NewGuid();
+            Guid miGuid = Guid.NewGuid();
 			string token = Convert.ToBase64String(miGuid.ToByteArray());
 			token = token.Replace("=", "").Replace("+", "");
-			str = token.Substring(0, longitud);
-			return str;
+            string str = token.Substring(0, longitud);
+            return str;
+		}
+		public static async Task SendMail(MailMessage Mail)
+        {
+			SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com")
+			{
+				Port = 587,
+				Credentials = new System.Net.NetworkCredential("proyectoaplicada2@gmail.com", "@P123456"),
+				EnableSsl = true
+			};
+			await SmtpServer.SendMailAsync(Mail);
 		}
 	}
 
