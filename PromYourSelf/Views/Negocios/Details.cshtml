@@ -4,7 +4,7 @@
     string Titulo = "Mi Negocio";
     ViewData["Title"] = Titulo;
 }
-
+<link rel='stylesheet prefetch' href='~/css/float-button.css'>
 <div id="app">
     <form class="form">
         <input type="hidden" name="negocioId" id="negocioId" value="@Model.NegocioID" />
@@ -14,7 +14,7 @@
             <div class="card-header">
                 <h1 class="m-0 font-weight-bold text-primary">@Html.DisplayFor(model => model.NombreComercial)</h1>
                 @Html.DisplayFor(model => model.Direccion) <br /><span class="text-success"> <span v-on:click="copiarTelefono(1)"> <li class="fa fa-phone"> &nbsp;</li>@Html.DisplayFor(model => model.Telefono1)</span>  <span v-if="telefono2" v-on:click="copiarTelefono(2)"> <li class="fa fa-phone"> </li>&nbsp;@Html.DisplayFor(model => model.Telefono1)</span>
-</div>
+            </div>
             <div class="card-body">
                 <div class="card-columns">
                     <div class="card p-3 text-center border-primary" v-for="item in productos">
@@ -39,75 +39,22 @@
             </div>
         </div>
     </form>
+    @*<a href="#" class="float">
+        <i class="fas fa-sms my-float"></i>
+    </a>*@
+<li class="nav-item dropdown no-arrow mx-1">
 
-    <h1>Details</h1>
-
-    <div>
-        <h4>Negocios</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.NombreComercial)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.NombreComercial)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Direccion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Direccion)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Telefono1)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Telefono1)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Telefono2)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Telefono2)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Latitud)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Latitud)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Longitud)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Longitud)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreadoPor)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CreadoPor)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.FechaCreacion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FechaCreacion)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ModificadoPor)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ModificadoPor)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.FechaModificacion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FechaModificacion)
-            </dd>
-        </dl>
+    <a href="#" class="float  dropdown-toggle" id="enviarMensajeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-sms my-float"></i>
+    </a>
+    <!-- Dropdown - Messages animated--grow-in-->
+    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow" aria-labelledby="enviarMensajeDropdown">
+        <h6 class="dropdown-header">
+            Message Center
+        </h6>
+        @await Component.InvokeAsync("Chat", new { usuarioId = User.GetUserID().ToInt(), Model.NegocioID })
     </div>
+</li>
     <div>
         <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
         <a asp-action="Index">Back to List</a>
@@ -121,8 +68,8 @@
     var app = new Vue({
         el: '#app',
         data: {
-            negocio: {},            
-            productos: [],  
+            negocio: {},
+            productos: [],
             telefono2: "",
             buscarPor: "todo",
             filtro: "",

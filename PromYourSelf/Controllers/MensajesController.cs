@@ -87,7 +87,25 @@ namespace PromYourSelf.Controllers
 		public async Task<JsonResult> GetMessages(int receptorId)
 		{
 			int userId = User.GetUserID().ToInt();
-			List<Mensajes> mensajes = await _Repo.Mensajes.GetListAsync(x => x.ReceptorID == receptorId || x.UsuarioID == userId || x.ReceptorID == userId);
+			List<Mensajes> mensajes = new List<Mensajes>();
+
+			if (receptorId.ToInt() <= 0)
+			{
+				//var mensajes2 = (from mensaje in await _Repo.Mensajes.GetListAsync(x => x.UsuarioID == userId || x.ReceptorID == userId)
+				// join negocio in await  _Repo.Negocios.GetListAsync(x => true)
+				// on 1 equals 1			
+				// select new
+				// {
+				//	 Contenido = mensaje.Contenido,
+				//	 NombreComercial = negocio.NombreComercial
+				// }).ToList();
+				//return new JsonResult(JsonConvert.SerializeObject(mensajes2));
+				mensajes = await _Repo.Mensajes.GetListAsync(x => x.UsuarioID == userId || x.ReceptorID == userId);
+			} else
+			{
+				mensajes = await _Repo.Mensajes.GetListAsync(x => x.ReceptorID == receptorId || x.UsuarioID == userId || x.ReceptorID == userId);
+			}
+			
 			return new JsonResult(JsonConvert.SerializeObject(mensajes));
 		}
 

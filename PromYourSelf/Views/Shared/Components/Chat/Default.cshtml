@@ -13,128 +13,211 @@
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 
-<div id="app">
-    {{ message }}
-    <button v-on:click="getMessages(1)" class="btn btn-primary"><i class="fa fa-search"></i></button>
-    <h2>Lista de mensajes</h2>
-    @*<ol>
-            <li v-for="(item, index) in mensajes" v-bind:key="item.MensajeID">{{item.Contenido}} - {{item.FechaCreacion.replace('T', " ")}}</li>
-        </ol>*@
-    <hr />
-    <div id="frame">
-        <div id="sidepanel">
-            <div id="profile">
-                <div class="wrap">
-                    <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
-                    <p>@User.GetNombre()</p>
-                    <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                    <div id="status-options">
-                        <ul>
-                            <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
-                            <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
-                            <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
-                            <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
-                        </ul>
-                    </div>
-                    <div id="expanded">
-                        <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mikeross" />
-                        <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="ross81" />
-                        <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mike.ross" />
+<div id="app_chat">
+
+    <div class="container">
+
+        <!-- Page header start -->
+        <div class="page-title">
+            <div class="row gutters">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <h5 class="title">Mensajes</h5>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="daterange-container">
+                        <div class="date-range">
+                            <div id="reportrange" class="form-inline">
+                                @*<i class="fa fa-calendar cal"></i>
+        <span class="range-text">
+
+        <i class="fa fa-chevron-down arrow"></i>*@
+                                <input name="Desde" type="date" class="form-control bg-light border-0 small col-6" value="@DateTime.Now" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                 <input name="Desde" type="date" class="form-control bg-light border-0 small col-6" value="@DateTime.Now" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            </div>
+                        </div>                     
                     </div>
                 </div>
             </div>
-            <div id="search">
-                <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
-            </div>
-            <div id="contacts">
-                <ul>
-                    @{
-                        foreach (var negocio in Model.negocios)
-                        {
-                            <li class="contact" v-on:click="getMessages(@negocio.NegocioID, '@negocio.NombreComercial')">
-                                <div class="wrap">
-                                    <span class="contact-status online"></span>
-                                    <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
-                                    <div class="meta">
-                                        <p class="name">@negocio.NombreComercial</p>
+        </div>
+        <!-- Page header end -->
+        <!-- Content wrapp_chater start -->
+        <div class="content-wrapp_chater" >
+
+            <!-- Row start -->
+            <div class="row gutters">
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                    <div class="card m-0">
+
+                        <!-- Row start -->
+                        <div class="row no-gutters">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+                                <div class="users-container">
+                                    <div class="chat-search-box">
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="Search">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-info">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="users">
+                                        @{
+                                            foreach (var negocio in Model.negocios)
+                                            {
+
+                                                <li class="person active-user" data-chat="@negocio.NegocioID" v-on:click="getMessages(@negocio.NegocioID, '@negocio.NombreComercial')">
+                                                    <div class="user">
+                                                        <img src="https://www.bootdey.com/img/Content/avatar/avatar2.png" alt="Retail Admin">
+                                                        <span class="status away"></span>
+                                                    </div>
+                                                    <p class="name-time">
+                                                        <span class="name">@negocio.NombreComercial</span>
+                                                        <span class="time">12/02/2019</span>
+                                                    </p>
+                                                </li>
+
+                                            } }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                                <div class="selected-user">
+                                    <span>To: <span class="name">{{negocio}}</span></span>
+                                </div>
+                                <div class="chat-container">
+                                    <ul class="chat-box chatContainerScroll">
+                                        <li v-for="(item, index) in mensajes" v-bind:key="item.MensajeID" v-bind:class="{ 'chat-right': item.ReceptorID == @User.GetUserID().ToInt(), 'chat-left': item.UsuarioID == @User.GetUserID().ToInt() }" class="chat-left">
+                                            <div class="chat-avatar">
+                                                <img src="~/img/avatar.png" alt="Retail Admin">
+                                                <div class="chat-name">{{negocio}}</div>
+                                            </div>
+                                            <div class="chat-text">
+                                                {{item.Contenido}}
+                                            </div>
+                                            <div class="chat-hour">08:55 <span class="fa fa-check-circle"></span></div>
+                                        </li>                                       
+                                    </ul>
+                                    <div class="form-group mt-3 mb-0">
+                                        <textarea class="form-control" rows="3" placeholder="Escriba un nuevo mensaje..."></textarea>
                                     </div>
                                 </div>
-                            </li>
-                        }
-                    }
+                            </div>
+                        </div>
+                        <!-- Row end -->
+                    </div>
 
+                </div>
 
-                </ul>
             </div>
-            <div id="bottom-bar">
-                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-            </div>
+            <!-- Row end -->
+
         </div>
-        <div class="content">
-            <div class="contact-profile">
-                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                <p id="pChatR">{{negocio}}</p>
-                <div class="social-media">
-                    <i class="fa fa-facebook" aria-hidden="true"></i>
-                    <i class="fa fa-twitter" aria-hidden="true"></i>
-                    <i class="fa fa-instagram" aria-hidden="true"></i>
-                </div>
-            </div>
-            <div class="messages">
-                <ul>
-                    <li v-for="(item, index) in mensajes" v-bind:key="item.MensajeID" v-bind:class="{ 'sent': item.ReceptorID == @User.GetUserID().ToInt(), 'replies': item.UsuarioID == @User.GetUserID().ToInt() }">
-                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                        <p>{{item.Contenido}}</p>
-                    </li>
-                    @*<li class="replies">
-                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                            <p>When you're backed against the wall, break the god damn thing down.</p>
-                        </li>
-                        <li class="replies">
-                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                            <p>Excuses don't win championships.</p>
-                        </li>
-                        <li class="sent">
-                            <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                            <p>Oh yeah, did Michael Jordan tell you that?</p>
-                        </li>
-                        <li class="replies">
-                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                            <p>No, I told him that.</p>
-                        </li>
-                        <li class="replies">
-                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                            <p>What are your choices when someone puts a gun to your head?</p>
-                        </li>
-                        <li class="sent">
-                            <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                            <p>What are you talking about? You do what they say or they shoot you.</p>
-                        </li>
-                        <li class="replies">
-                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                            <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-                        </li>*@
-                </ul>
-            </div>
-            <div class="message-input">
-                <div class="wrap">
-                    <input type="text" v-model="mensaje" placeholder="Write your message..." />
-                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                    <button v-on:click="enviarMensaje()" class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </div>
+        <h2 v-if="mensajes.length <= 0">No hay mensajes recientes!</h2>
+        <!-- Content wrapp_chater end -->
+
     </div>
+
+
+    @*<div class="row">
+        <div class="col">
+            <div id="frame">
+                <div id="sidepanel">
+                    <div id="profile">
+                        <div class="wrap">
+                            <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
+                            <p>@User.GetNombre()</p>
+                            <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                            <div id="status-options">
+                                <ul>
+                                    <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
+                                    <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+                                    <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
+                                    <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+                                </ul>
+                            </div>
+                            <div id="expanded">
+                                <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
+                                <input name="twitter" type="text" value="mikeross" />
+                                <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
+                                <input name="twitter" type="text" value="ross81" />
+                                <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
+                                <input name="twitter" type="text" value="mike.ross" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="search">
+                        <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+                        <input type="text" placeholder="Search contacts..." />
+                    </div>
+                    <div id="contacts">
+                        <ul>
+                            @{
+                                foreach (var negocio in Model.negocios)
+                                {
+                                    <li class="contact" v-on:click="getMessages(@negocio.NegocioID, '@negocio.NombreComercial')">
+                                        <div class="wrap">
+                                            <span class="contact-status online"></span>
+                                            <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">@negocio.NombreComercial</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+
+
+                        </ul>
+                    </div>
+                    <div id="bottom-bar">
+                        <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+                        <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="contact-profile">
+                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <p id="pChatR">{{negocio}}</p>
+                        <div class="social-media">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                            <i class="fa fa-instagram" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="messages">
+                        <ul>
+                            <li v-for="(item, index) in mensajes" v-bind:key="item.MensajeID" v-bind:class="{ 'sent': item.ReceptorID == @User.GetUserID().ToInt(), 'replies': item.UsuarioID == @User.GetUserID().ToInt() }">
+                                <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                                <p>{{item.Contenido}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="message-input">
+                        <div class="wrap">
+                            <input type="text" v-model="mensaje" placeholder="Write your message..." />
+                            <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                            <button v-on:click="enviarMensaje()" class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>*@
+
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
-
+<style>
+    .sendNewMessage:hover {
+        background-color: cornflowerblue;
+    }
+</style>
 
 
 <script>
@@ -143,36 +226,37 @@
         console.error("Error intantendo conectar el chat", err);
     });
     //Escribir funcion para invocar envio de mensaje
-    
     connection.on("newMessage", (mensaje) => {
-        app.getMessages();
+        app_chat.getMessages();
     });
-    var app = new Vue({
-        el: '#app',
+    var app_chat = new Vue({
+        el: '#app_chat',
         data: {
             message: 'Hello Vue!',
             mensajes: [],
+            negocios: [],
             negocio: "",
+            negocio_obj: {},
             negocioId: 0,
             mensaje: ""
         },
         methods: {
             notificarMensajes(receptorId, mensaje) {
                 console.log('receptorid', receptorId);
-                connection.invoke("Send", receptorId, mensaje).catch(err => { console.error('Ha ocurrido un error al intentar notificar'); alert('Error intentando modificar');})
+                connection.invoke("Send", receptorId, mensaje).catch(err => { console.error('Ha ocurrido un error al intentar notificar'); alert('Error intentando modificar'); })
             },
             getMessages: function (receptorId, nombre) {
-                app.negocio = nombre;
-                app.receptorId = receptorId;
+                app_chat.negocio = nombre;
+                app_chat.receptorId = receptorId;
                 axios.get("https://localhost:44386/Mensajes" + "/GetMessages?" + "receptorId=" + receptorId).then(response => {
-                    app.mensajes = [];
+                    app_chat.mensajes = [];
                     let res = JSON.parse(response.data);
-                    console.log('res', res);
+                    console.log('res mensajes', res);
                     for (let i = 0; i < res.length; i++) {
                         console.log(res[i].Contenido);
-                        app.mensajes.push(res[i]);
+                        app_chat.mensajes.push(res[i]);
                     }
-                    console.log('mensajes', app.mensajes);
+                    console.log('mensajes', app_chat.mensajes);
                     // alert('datos obtenidos correctamente');
 
                 }).catch(err => {
@@ -181,21 +265,43 @@
                 })
             },
 
+            getNegocios: function () {
+                axios.get("https://localhost:44386/Negocios" + "/GetNegocios").then(response => {
+                    app_chat.negocios = [];
+                    let res = JSON.parse(response.data);
+                    console.log('Negocios obtenidos', res);
+                    for (let i = 0; i < res.length; i++) {
+                        app_chat.negocios.push(res[i]);
+                    }
+                    if (app_chat.negocios.length > 0) {
+                        app_chat.negocio = app_chat.negocios[0].NombreComercial;
+                    }
+
+                }).catch(err => {
+                    console.log('ha ocurrido un error intentando obtener negocios', err);
+                    alert('Ha ocurrido un error');
+                })
+            },
+
             enviarMensaje: function () {
-                console.log('enviando mensaje : ', app.mensaje, " a negocio: ", app.receptorId);
+                console.log('enviando mensaje : ', app_chat.mensaje, " a negocio: ", app_chat.receptorId);
                 axios.post("https://localhost:44386/Mensajes" + "/EnviarMensaje", {
-                    ReceptorID: app.receptorId,
-                    Contenido: app.mensaje
+                    ReceptorID: app_chat.receptorId,
+                    Contenido: app_chat.mensaje
                 }).then(response => {
                     alert('mensaje enviado correctamente');
-                    app.notificarMensajes(app.receptorId, app.mensaje);
-                    app.getMessages(app.receptorId, app.negocio);
-                    
+                    app_chat.notificarMensajes(app_chat.receptorId, app_chat.mensaje);
+                    app_chat.getMessages(app_chat.receptorId, app_chat.negocio);
+
                 }).catch(err => { console.log('ha ocurrido un error enviando el mensaje', err); alert('Error enviando mensaje'); });
             }
         }
 
     });
+
+    app_chat.getNegocios();
+    app_chat.getMessages();
+     
 </script>
 
 

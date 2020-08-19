@@ -41,7 +41,7 @@ namespace PromYourSelf.Controllers
 
 			return new JsonResult(JsonConvert.SerializeObject(Lista));
 		}
-
+		
 
 		public async Task<IActionResult> GetProductosByNegocio(int negocioId, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
 		{

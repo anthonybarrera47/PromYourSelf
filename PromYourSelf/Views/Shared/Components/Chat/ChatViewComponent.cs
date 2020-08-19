@@ -24,14 +24,41 @@ namespace PromYourSelf.Views.Shared.Components.Chat
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync(
-		int usuarioId)
-		{			
-			this.mensajes = await this.db.Mensaje.Where<Mensajes>(x => x.UsuarioID == usuarioId).ToListAsync();
+		int usuarioId, int negocioId = 0)
+		{
+			Negocios NuevoChat = await this.db.Negocios.Where<Negocios>(x => x.NegocioID == negocioId).FirstOrDefaultAsync();
+			if (negocioId > 0)
+			{
+				//Negocios NuevoChat = await this.db.Negocios.Where<Negocios>(x => x.NegocioID == negocioId).FirstOrDefaultAsync();
+				if(NuevoChat != null)
+				{
+					Mensajes MensajeInicial = new Mensajes()
+					{
+						Contenido = "Bienvenido a " + NuevoChat.NombreComercial,
+						UsuarioID = NuevoChat.UsuarioID,
+						ReceptorID = usuarioId,
+						Tipo = TipoContenido.Texto,
+						EstadoMensaje = EstadoMensaje.Leido,
+
+					};
+					await this.db.Mensaje.AddAsync(MensajeInicial);
+					bool guardado = await this.db.SaveChangesAsync() > 0;
+				}
+			}
+			this.mensajes = await this.db.Mensaje.Where<Mensajes>(x => x.UsuarioID == usuarioId || x.ReceptorID == usuarioId).ToListAsync();
 
 			List<int> ids = this.mensajes.Select(x => x.ReceptorID).Distinct().ToList();
 
-
-			this.negocios = this.db.Negocios.Where<Negocios>(c => ids.Any(x => x == c.NegocioID)).ToList();
+			if(negocioId > 0)
+			{
+				this.negocios = new List<Negocios>();
+				this.negocios.Add(NuevoChat);
+			} else
+			{
+				this.negocios = this.db.Negocios.Where<Negocios>(c => ids.Any(x => x == c.NegocioID)).ToList();
+			}
+			
+			
 
 			return View(new ChatViewModel(negocios));
 		}

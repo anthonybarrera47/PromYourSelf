@@ -70,9 +70,8 @@ namespace PromYourSelf.Controllers
                     if (ModelState.IsValid)
                     {
                         await _signInManager.SignOutAsync();
-                        var user = await _userManager.FindByEmailAsync(model.Usuario);
-                        model.Password = RepositorioUsuario.SHA1(model.Password);
-                        Password = user.Password;
+                        var user = await _userManager.FindByNameAsync(model.Usuario);
+                        model.Password = RepositorioUsuario.SHA1(model.Password);                        
 
                         isTemporalyPassword = VerifiedPasswordRecovery(user, model.Password);
 
