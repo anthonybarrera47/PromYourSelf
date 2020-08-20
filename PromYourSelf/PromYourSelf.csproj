@@ -6,28 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\**" />
     <Compile Remove="Views\Empleados\**" />
-    <Content Remove="Migrations\**" />
     <Content Remove="Views\Empleados\**" />
-    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="Views\Empleados\**" />
-    <None Remove="Migrations\**" />
     <None Remove="Views\Empleados\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Migrations\20200813235913_DataInicial.cs" />
-    <Compile Include="Migrations\20200813235913_DataInicial.Designer.cs" />
-    <Compile Include="Migrations\20200815010544_AgregandoForgotPassword.cs" />
-    <Compile Include="Migrations\20200815010544_AgregandoForgotPassword.Designer.cs" />
-    <Compile Include="Migrations\20200815200520_cita_eliminando_fechafin.cs" />
-    <Compile Include="Migrations\20200815200520_cita_eliminando_fechafin.Designer.cs" />
-    <Compile Include="Migrations\20200815201611_cita_productoid.cs" />
-    <Compile Include="Migrations\20200815201611_cita_productoid.Designer.cs" />
-    <Compile Include="Migrations\20200817225150_QuitandoGenerador.cs" />
-    <Compile Include="Migrations\20200817225150_QuitandoGenerador.Designer.cs" />
-    <Compile Include="Migrations\ContextoModelSnapshot.cs" />
   </ItemGroup>
 
 
