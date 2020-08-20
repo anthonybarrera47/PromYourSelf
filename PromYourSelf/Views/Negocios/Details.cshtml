@@ -13,7 +13,7 @@
         <div class="card shadow mb-4">
             <div class="card-header">
                 <h1 class="m-0 font-weight-bold text-primary">@Html.DisplayFor(model => model.NombreComercial)</h1>
-                @Html.DisplayFor(model => model.Direccion) <br /><span class="text-success"> <span v-on:click="copiarTelefono(1)"> <li class="fa fa-phone"> &nbsp;</li>@Html.DisplayFor(model => model.Telefono1)</span>  <span v-if="telefono2" v-on:click="copiarTelefono(2)"> <li class="fa fa-phone"> </li>&nbsp;@Html.DisplayFor(model => model.Telefono1)</span>
+                @Html.DisplayFor(model => model.Direccion) <br /><span class="text-success"> <span v-on:click="copiarTelefono(1)"> <li class="fa fa-phone"></li> &nbsp;@Html.DisplayFor(model => model.Telefono1)</span>  <span v-if="telefono2" v-on:click="copiarTelefono(2)"> <li class="fa fa-phone"> </li>&nbsp;@Html.DisplayFor(model => model.Telefono1)</span>
             </div>
             <div class="card-body">
                 <div class="card-columns">
@@ -40,31 +40,48 @@
         </div>
     </form>
     @*<a href="#" class="float">
-        <i class="fas fa-sms my-float"></i>
-    </a>*@
-<li class="nav-item dropdown no-arrow mx-1">
+            <i class="fas fa-sms my-float"></i>
+        </a>*@
 
-    <a href="#" class="float  dropdown-toggle" id="enviarMensajeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-sms my-float"></i>
-    </a>
-    <!-- Dropdown - Messages animated--grow-in-->
-    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow" aria-labelledby="enviarMensajeDropdown">
-        <h6 class="dropdown-header">
-            Message Center
-        </h6>
-        @await Component.InvokeAsync("Chat", new { usuarioId = User.GetUserID().ToInt(), Model.NegocioID })
-    </div>
-</li>
     <div>
         <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
 
+<li class="nav-item dropdown no-arrow mx-1">
+
+    <a onclick="openMessage()" href="#" class="float  dropdown-toggle" data-toggle="dropdown" id="enviarMensajeDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-sms my-float"></i>
+    </a>
+    <!-- Dropdown - Messages animated--grow-in-->
+    <div id="menumensaje" class="dropdown-list dropdown-menu dropdown-menu-right shadow" aria-labelledby="enviarMensajeDropdown">
+        <h6 class="dropdown-header">
+            Message Center
+        </h6>
+        @await Component.InvokeAsync("Chat", new { usuarioId = User.GetUserID().ToInt(), Model.NegocioID })
+    </div>
+</li>
+
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="~/vendor/jquery/jquery.min.js"></script>
 
 <script>
+$( document ).ready(function() {
+    console.log("ready!");
+ $("#menumensaje").click(function (e) {
+        console.log('menumensaje clicked', e);
+        e.stopPropagation();
+    });
+});
+   
+    function openMessage() {
+
+        $(this).parent().toggleClass('open');
+
+    };
+
     var app = new Vue({
         el: '#app',
         data: {
@@ -89,8 +106,7 @@
                 } else {
                     app.getProductos();
                 }
-            },
-
+            },        
             copiarTelefono(idx) {
                 let telefono = "";
                 if (idx == 1) {
