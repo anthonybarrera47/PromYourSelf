@@ -8,6 +8,7 @@ namespace PromYourSelf.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -55,6 +56,8 @@ namespace PromYourSelf.Migrations
                     Email = table.Column<string>(type: "varchar(50)", maxLength: 256, nullable: false),
                     Confirmado = table.Column<bool>(nullable: false),
                     Posicion = table.Column<string>(maxLength: 40, nullable: false),
+                    PasswordRecovery = table.Column<string>(nullable: true),
+                    TimeExpired = table.Column<DateTime>(nullable: false),
                     Estado = table.Column<bool>(nullable: false),
                     EsNulo = table.Column<bool>(nullable: false),
                     CreadoPor = table.Column<int>(nullable: false),
@@ -82,10 +85,10 @@ namespace PromYourSelf.Migrations
                     NegocioID = table.Column<int>(nullable: false),
                     EmpleadoAsignado = table.Column<int>(nullable: false),
                     FechaInicio = table.Column<DateTime>(nullable: false),
-                    FechaFin = table.Column<DateTime>(nullable: false),
                     CodigoComprobacion = table.Column<string>(maxLength: 15, nullable: false),
                     Notas = table.Column<string>(nullable: true),
-                    Estado = table.Column<int>(nullable: false)
+                    Estado = table.Column<int>(nullable: false),
+                    ProductoID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -404,28 +407,6 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CitasDetalle",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CitaID = table.Column<int>(nullable: true),
-                    ProductoID = table.Column<int>(nullable: false),
-                    Cantidad = table.Column<int>(nullable: false),
-                    Precio = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CitasDetalle", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_CitasDetalle_Citas_CitaID",
-                        column: x => x.CitaID,
-                        principalTable: "Citas",
-                        principalColumn: "CitaID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Etiquetas",
                 columns: table => new
                 {
@@ -523,23 +504,13 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Apellidos", "ConcurrencyStamp", "Confirmado", "CreadoPor", "Email", "EmailConfirmed", "EsNulo", "Estado", "FechaCreacion", "FechaModificacion", "Foto", "Genero", "LockoutEnabled", "LockoutEnd", "ModificadoPor", "Nombres", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Posicion", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { 1, 0, " Muños Florez", "13/08/2020 7:59:12 PM", true, 0, "ApasLabs@gmail.com", false, false, false, new DateTime(2020, 8, 13, 19, 59, 12, 523, DateTimeKind.Local).AddTicks(4210), new DateTime(2020, 8, 13, 19, 59, 12, 525, DateTimeKind.Local).AddTicks(2924), "", 0, false, null, 0, "Luis Felipe", "APASLABS@GMAIL.COM", "APASLABS", "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220", null, null, false, "Administrador", null, false, "ApasLabs" },
-                    { 2, 0, "Burgos Hernandez", "13/08/2020 7:59:12 PM", true, 0, "williamelnene@gmail.com", false, false, false, new DateTime(2020, 8, 13, 19, 59, 12, 533, DateTimeKind.Local).AddTicks(8234), new DateTime(2020, 8, 13, 19, 59, 12, 533, DateTimeKind.Local).AddTicks(8245), "", 0, false, null, 0, "William", "WILLIAMELNENE@GMAIL.COM", "WILLIAMBH98", "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220", null, null, false, "Administrador", null, false, "williambh98" },
-                    { 3, 0, "Normal", "13/08/2020 7:59:12 PM", true, 0, "usuarionoimai@gmail.com", false, false, false, new DateTime(2020, 8, 13, 19, 59, 12, 533, DateTimeKind.Local).AddTicks(9264), new DateTime(2020, 8, 13, 19, 59, 12, 533, DateTimeKind.Local).AddTicks(9265), "", 0, false, null, 0, "Usuario", "USUARIONOIMAI@GMAIL.COM", "USUARIO", "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220", null, null, false, "Normal", null, false, "usuario" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Negocios",
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 2547, 4, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 13, 19, 59, 12, 534, DateTimeKind.Local).AddTicks(9843), new DateTime(2020, 8, 13, 19, 59, 12, 535, DateTimeKind.Local).AddTicks(992), "1000", "2000", 4, "JuanDupreCompany", "829-123-4567", "809-123-4567", 4 },
-                    { 2, 2547, 1, "Cenovi, SFM", false, new DateTime(2020, 8, 13, 19, 59, 12, 535, DateTimeKind.Local).AddTicks(1934), new DateTime(2020, 8, 13, 19, 59, 12, 535, DateTimeKind.Local).AddTicks(1946), "1000", "2000", 1, "APAS LABS", "809-754-0319", "", 1 },
-                    { 3, 2547, 3, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 13, 19, 59, 12, 535, DateTimeKind.Local).AddTicks(1957), new DateTime(2020, 8, 13, 19, 59, 12, 535, DateTimeKind.Local).AddTicks(1958), "1000", "2000", 3, "BHTech", "829-935-9510", "809-123-4567", 3 }
+                    { 1, 2547, 4, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 19, 23, 59, 38, 301, DateTimeKind.Local).AddTicks(6699), new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(6787), "1000", "2000", 4, "JuanDupreCompany", "829-123-4567", "809-123-4567", 4 },
+                    { 2, 2547, 1, "Cenovi, SFM", false, new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8609), new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8647), "1000", "2000", 1, "APAS LABS", "809-754-0319", "", 1 },
+                    { 3, 2547, 3, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8672), new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8675), "1000", "2000", 3, "BHTech", "829-935-9510", "809-123-4567", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -547,12 +518,12 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "ProductoID", "CreadoPor", "Descripcion", "EsNulo", "FechaCreacion", "FechaModificacion", "ModificadoPor", "NegocioID", "Nombre", "Precio", "PrecioOferta", "Stock", "TipoProductos", "Unidad", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(106), new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(113), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 0 },
-                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(164), new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(165), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 0 },
-                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(168), new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(169), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 0 },
-                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(171), new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(171), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 0 },
-                    { 5, 4, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(173), new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(174), 4, 3, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 0 },
-                    { 6, 4, "Catar Vinos", false, new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(177), new DateTime(2020, 8, 13, 19, 59, 12, 536, DateTimeKind.Local).AddTicks(178), 4, 3, "Catador de vinos", 15000m, 0m, 0, 1, 1, 0 }
+                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6783), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6797), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 0 },
+                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6911), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6915), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 0 },
+                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6919), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6920), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 0 },
+                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6923), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6925), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 0 },
+                    { 5, 4, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6928), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6929), 4, 3, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 0 },
+                    { 6, 4, "Catar Vinos", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6932), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6934), 4, 3, "Catador de vinos", 15000m, 0m, 0, 1, 1, 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -593,11 +564,6 @@ namespace PromYourSelf.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CitasDetalle_CitaID",
-                table: "CitasDetalle",
-                column: "CitaID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Etiquetas_ProductosProductoID",
@@ -644,7 +610,7 @@ namespace PromYourSelf.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CitasDetalle");
+                name: "Citas");
 
             migrationBuilder.DropTable(
                 name: "Ciudad");
@@ -678,9 +644,6 @@ namespace PromYourSelf.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Citas");
 
             migrationBuilder.DropTable(
                 name: "Productos");

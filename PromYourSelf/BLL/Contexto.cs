@@ -45,51 +45,6 @@ namespace Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Usuarios>().HasData(
-             new Usuarios()
-             {
-                 Id = 1,
-                 Nombres = "Luis Felipe",
-                 NormalizedEmail = "ApasLabs@gmail.com".ToUpper(),
-                 NormalizedUserName = "ApasLabs".ToUpper(),
-                 Apellidos = " Muños Florez",
-                 Email = "ApasLabs@gmail.com",
-                 Posicion = Posicion.Administrador.GetDescription(),
-                 Password = RepositorioUsuario.SHA1("1234"),
-                 Confirmado = true,
-                 ConcurrencyStamp = DateTime.Now.ToString(),
-                 UserName = "ApasLabs"
-             },
-             new Usuarios()
-             {
-                 Id = 2,
-                 NormalizedEmail = "williamelnene@gmail.com".ToUpper(),
-                 NormalizedUserName = "williambh98".ToUpper(),
-                 Nombres = "William",
-                 Apellidos = "Burgos Hernandez",
-                 Email = "williamelnene@gmail.com",
-                 Posicion = Posicion.Administrador.GetDescription(),
-                 Password = RepositorioUsuario.SHA1("1234"),
-                 Confirmado = true,
-                 ConcurrencyStamp = DateTime.Now.ToString(),
-                 UserName = "williambh98"
-             },
-              new Usuarios()
-              {
-                  Id = 3,
-                  NormalizedEmail = "usuarionoimai@gmail.com".ToUpper(),
-                  NormalizedUserName = "usuario".ToUpper(),
-                  Nombres = "Usuario",
-                  Apellidos = "Normal",
-                  Email = "usuarionoimai@gmail.com",
-                  Posicion = Posicion.Normal.GetDescription(),
-                  Password = RepositorioUsuario.SHA1("1234"),
-                  Confirmado = true,
-                  ConcurrencyStamp = DateTime.Now.ToString(),
-                  UserName = "usuario"
-              }
-             );
-
             //2547 ES EL ID DE SFM
             modelBuilder.Entity<Negocios>().HasData(
                new Negocios()

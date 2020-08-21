@@ -40,8 +40,6 @@ namespace PromYourSelf.Data
 					FechaModificacion = DateTime.Now,
 					FechaCreacion = DateTime.Now
 				};
-
-				
 				var demouser = new Usuarios
 				{
 					UserName = "demo",
@@ -58,49 +56,74 @@ namespace PromYourSelf.Data
 					FechaModificacion = DateTime.Now,
 					FechaCreacion = DateTime.Now
 				};
+				var Usuario1 = new Usuarios
+				{
+					Nombres = "Luis Felipe",
+					NormalizedEmail = "ApasLabs@gmail.com".ToUpper(),
+					NormalizedUserName = "ApasLabs".ToUpper(),
+					Apellidos = " Muños Florez",
+					Email = "ApasLabs@gmail.com",
+					LockoutEnabled = false,
+					Posicion = Posicion.Administrador.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "ApasLabs",
+					EsNulo = false
+				};
+				var Usuario2 = new Usuarios
+				{
+					NormalizedEmail = "williamelnene@gmail.com".ToUpper(),
+					NormalizedUserName = "williambh98".ToUpper(),
+					Nombres = "William",
+					Apellidos = "Burgos Hernandez",
+					LockoutEnabled = false,
+					Email = "williamelnene@gmail.com",
+					Posicion = Posicion.Administrador.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "williambh98",
+					EsNulo = false
+				};
+				var Usuario3 = new Usuarios
+				{
+					NormalizedEmail = "usuarionoimai@gmail.com".ToUpper(),
+					NormalizedUserName = "usuario".ToUpper(),
+					Nombres = "Usuario",
+					Apellidos = "Normal",
+					LockoutEnabled = false,
+					Email = "usuarionoimai@gmail.com",
+					Posicion = Posicion.Normal.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "usuario",
+					EsNulo = false
+				};
+
 				var _userAdminExists = await userManager.FindByNameAsync(poweruser.UserName);
 				var _userDemoExists = await userManager.FindByNameAsync(demouser.UserName);
-				if (_userAdminExists == null)
-				{
-					await SaveUser(userManager, rolManager, poweruser);
-				}
+				var _Usuario1Exists = await userManager.FindByNameAsync(Usuario1.UserName);
+				var _Usuario2Exists = await userManager.FindByNameAsync(Usuario2.UserName);
+				var _Usuario3Exists = await userManager.FindByNameAsync(Usuario3.UserName);
 
+				if (_userAdminExists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, poweruser);
 				if(_userDemoExists == null)
-				{
-					await SaveUser(userManager, rolManager, demouser);
-				}
+					await Utils.Utils.SaveUser(userManager, rolManager, demouser);
+				if (_Usuario1Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario1);
+				if (_Usuario2Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario2);
+				if (_Usuario3Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario3);
 
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
 			}
-		}
-
-		
-
-		public static async Task SaveUser(UserManager<Usuarios> userManager, RoleManager<Roles> rolManager,  Usuarios usuario)
-		{
-			var result = await userManager.CreateAsync(usuario, RepositorioUsuario.SHA1("1234"));
-			string posicion = usuario.Posicion == Posicion.Administrador.GetDescription() ? Posicion.Administrador.GetDescription() : Posicion.Normal.GetDescription();
-			if (result.Succeeded)
-			{
-				await userManager.AddClaimAsync(usuario, new Claim(TypeClaims.Nombres.ToString("G"), usuario.Nombres));
-				await userManager.AddClaimAsync(usuario, new Claim(TypeClaims.Nombres.ToString("G"), usuario.Posicion));
-				Roles rol = await rolManager.FindByNameAsync(posicion);
-				if (rol == null)
-				{
-					
-					rol = new Roles() { Name = posicion };
-				}
-				var r = await rolManager.CreateAsync(rol);
-				if (r.Succeeded)
-				{
-					await userManager.AddToRoleAsync(usuario, posicion);
-				}
-				Console.WriteLine("Todo Bien.");
-			}
-
 		}
 	}
 }

@@ -65,7 +65,7 @@ namespace PromYourSelf.Controllers
                 bool isTemporalyPassword = false;
                 Microsoft.AspNetCore.Identity.SignInResult result = Microsoft.AspNetCore.Identity.SignInResult.Failed;
                 string Password = string.Empty;
-                if (User != null)
+                if (appUser != null)
                 {
                     if (ModelState.IsValid)
                     {
