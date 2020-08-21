@@ -17,7 +17,7 @@ namespace PromYourSelf.BLL.Interfaces
         IRepositoryRol Rol { get; }
         IRepositoryCodeValidation CodeValidation { get; }
         IRepositoryPagos Pagos{ get; }
-        IRepositoryTipoClasificacion TiposClasficacion{ get; }
+        IRepositoryTipoClasificacion TiposClasificacion{ get; }
 
     }
 }

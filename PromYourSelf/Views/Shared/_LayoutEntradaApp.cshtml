@@ -31,6 +31,9 @@
 
     <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="~/js/sweetAlert/sweetalert2.min.js"></script>
+
+    <link rel="stylesheet" href="~/js/sweetAlert/sweetalert2.min.css">
 </head>
 <body class="bg-gradient-primary">
     <div class="container">
@@ -46,5 +49,13 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
+    <script src="~/js/sweetAlert/sweetalert2.all.min.js"></script>
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script type="text/javascript">
+            @Html.Raw(TempData["SweetAlert"])
+        </script>
+
+    }
 </body>
 </html>

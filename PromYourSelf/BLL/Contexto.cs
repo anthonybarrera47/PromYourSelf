@@ -268,6 +268,7 @@ namespace Models
             return base.SaveChangesAsync(cancellationToken);
         }
         public DbSet<PromYourSelf.ViewModels.ProfileViewModel> ProfileViewModel { get; set; }
+        public DbSet<PromYourSelf.Models.TipoClasificacion> TipoClasificacion { get; set; }
     }
 }
 //https://entityframeworkcore.com/knowledge-base/50862525/seed-entity-with-owned-property

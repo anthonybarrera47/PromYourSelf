@@ -90,7 +90,9 @@ namespace PromYourSelf.Controllers
                             await _repoWrappers.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
 
                             if (isTemporalyPassword)
-                                return RedirectToAction("ResetPassword", "Usuarios",new { user.Id});
+                                return RedirectToAction("ResetPassword", "Usuarios", new { user.Id });
+                            else if (model.ReturnUrl.Equals("/"))
+                                return RedirectToAction("DashBoard", "DashBoard");
                             else if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                                 return Redirect(model.ReturnUrl);
                             else
@@ -104,9 +106,14 @@ namespace PromYourSelf.Controllers
                                     return RedirectToAction("DashBoard", "DashBoard");
                             }
                         }
+                        else
+                            SweetAlert(TitleType.Informacion, MessageType.CredencialesInvalidas, IconType.error);
                     }
+                    else
+                        SweetAlert(TitleType.Informacion, MessageType.CredencialesInvalidas, IconType.error);
                 }
-                ModelState.AddModelError("", "Usuario/Contraseña Inválidos");
+                else
+                    SweetAlert(TitleType.Informacion, MessageType.CredencialesInvalidas, IconType.error);
 
             }
             catch (Exception)

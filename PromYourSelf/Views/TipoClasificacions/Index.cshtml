@@ -1,16 +1,17 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<Models.Pagos>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<PromYourSelf.Models.TipoClasificacion>
 
 @{
-    string Titulo = "Listado  de Pagos";
+    ValuesCardHeader cardHeader = new ValuesCardHeader();
+    string Titulo = "Listado de Tipo de Clasificaciones";
     string Edit = "Edit";
     string Delete = "Delete";
     string Details = "Details";
+    cardHeader.Text = Titulo;
     ViewData["Title"] = Titulo;
-    //int PageSize = 1;
 }
 
-
 <div class="card shadow">
+    <partial name="_CardHeaderPartialView" model="cardHeader" />
     <div class="card-body">
         <div class="row">
             <form method="get" asp-action="Index">
@@ -41,16 +42,38 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row mr-auto ml-md-3 my-2 my-md-0 mw-100">
                     <div class="form-group">
-                        <a asp-action="Create" class="btn btn-secondary fa-pull-right">Create New</a>
+                        <a asp-action="Create" class="btn btn-secondary">Crear Nuevo</a>
                     </div>
                 </div>
-
-
             </form>
         </div>
-        <hr />
-        <partial name="_Index" model="Model" />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descripcion)
+                    </th>
+                    <th>Acci&oacute;n</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descripcion)
+                        </td>
+                        <partial name="_ActionsPartialView" model="new Actions() { Key =item.TipoClasificacionID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <partial name="_PaginationPartialView" model="this.Model" />
     </div>
 </div>
+
+
 

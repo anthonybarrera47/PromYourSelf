@@ -1,0 +1,37 @@
+﻿@model PromYourSelf.Models.TipoClasificacion
+@{
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    ValuesCardHeader cardHeader = new ValuesCardHeader();
+    string Action = (Model.TipoClasificacionID == 0) ? "Create" : "Edit";
+    string Texto = (Model.TipoClasificacionID == 0) ? "Guardar" : "Editar";
+    Button.ActionButtonSaveOrEdit = Action;
+    Button.TextButtonSaveOrEdit = Texto;
+    cardHeader.Text = (Model.TipoClasificacionID == 0) ? "Crear Horarios" : "Modificar Horarios";
+    ViewData["Title"] = cardHeader.Text;
+}
+
+<form class="form" asp-action="@Action" id="registrationForm">
+    <div class="card shadow mb-4">
+        <partial name="_CardHeaderPartialView" model="cardHeader" />
+        <div class="card-body">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                @if (Model.TipoClasificacionID != 0)
+                {
+                    <input type="hidden" asp-for="TipoClasificacionID" />
+                }
+
+                <div class="row col-12">
+                    <div class="form-group">
+                        <label class="control-label">Descripci&oacute;n</label>
+                        <input type="time" asp-for="Descripcion" class="form-control" />
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_ButtonsCardFooterPartialView" model="Button" />
+    </div>
+</form>
+

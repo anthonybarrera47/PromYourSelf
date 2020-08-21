@@ -39,6 +39,8 @@ namespace PromYourSelf.Utils
         PasswordSend,
         [Description("¡Su contraseña ha sido reestablecida temporalmente recuerde por favor cambiar sus credenciales!")]
         PasswordReset,
+        [Description("¡Su contraseña o usuario son inválidas, verifique su información!")]
+        CredencialesInvalidas,
 
     }
     public enum IconType

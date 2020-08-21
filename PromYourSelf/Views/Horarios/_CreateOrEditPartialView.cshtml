@@ -6,7 +6,7 @@
     string Texto = (Model.Id == 0) ? "Guardar" : "Editar";
     Button.ActionButtonSaveOrEdit = Action;
     Button.TextButtonSaveOrEdit = Texto;
-    cardHeader.Text = (Model.Id == 0) ? "Crear Horarios" : "Modificar Horarios";
+    cardHeader.Text = (Model.Id == 0) ? "Crear Tipos Clasificaciones" : "Modificar Tipos Clasificaciones";
     ViewData["Title"] = cardHeader.Text;
 }
 
@@ -140,8 +140,8 @@
                     </div>
                 </div>
             </div>
-            <partial name="_ButtonsCardFooterPartialView" model="Button" />
         </div>
+        <partial name="_ButtonsCardFooterPartialView" model="Button" />
     </div>
 </form>
 

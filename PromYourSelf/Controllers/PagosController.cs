@@ -86,7 +86,7 @@ namespace PromYourSelf.Controllers
         // GET: Pagos/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.TipoClasificacion = await _Repo.TiposClasficacion.GetListAsync(x => true);
+            ViewBag.TipoClasificacion = await _Repo.TiposClasificacion.GetListAsync(x => true);
             return View(new Pagos());
         }
 
@@ -99,6 +99,7 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
+                pagos.NegocioID = User.GetEmpresaID().ToInt();
                 await _Repo.Pagos.SaveAsync(pagos);
                 return RedirectToAction(nameof(Index));
             }
@@ -193,11 +194,11 @@ namespace PromYourSelf.Controllers
             {
                 Descripcion = TipoClasificacion
             };
-            await _Repo.TiposClasficacion.SaveAsync(tipo);
+            await _Repo.TiposClasificacion.SaveAsync(tipo);
         }
         public async Task<JsonResult> GetClasificaciones()
         {
-            var Lista = await _Repo.TiposClasficacion.GetListAsync(x => true);   
+            var Lista = await _Repo.TiposClasificacion.GetListAsync(x => true);   
             return new JsonResult(JsonConvert.SerializeObject(Lista));
         }
     }

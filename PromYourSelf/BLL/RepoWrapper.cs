@@ -174,7 +174,7 @@ namespace PromYourSelf.BLL
                 return _RepositoryPagos;
             }
         }
-        public IRepositoryTipoClasificacion TiposClasficacion
+        public IRepositoryTipoClasificacion TiposClasificacion
         {
             get
             {

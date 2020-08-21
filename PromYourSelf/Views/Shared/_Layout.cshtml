@@ -94,17 +94,17 @@
             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
                 @*<li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
-                            <i class="fas fa-fw fa-user-plus"></i>
-                            <span>Usuarios</span>
-                        </a>
-                        <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
-                                <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
-                            </div>
-                        </div>
-                    </li>*@
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
+                    <i class="fas fa-fw fa-user-plus"></i>
+                    <span>Usuarios</span>
+                </a>
+                <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
+                        <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
+                    </div>
+                </div>
+            </li>*@
                 <!--FIN DE SUBMENU USUARIOS-->
                 <!--INICIO DE SUBMENU NEGOCIOS-->
 
@@ -166,6 +166,24 @@
                 </li>
 
                 <!--FIN DE SUBMENU PRODUCTOS-->
+            }
+            <!--INICIO DE SUBMENU TIPOS CLASIFICACIONES-->
+            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsetipoclasificaciones" aria-expanded="true" aria-controls="collapsetipoclasificaciones">
+                        <i class="fas fa-fw fa-book"></i>
+                        <span>Tipo Clasificaciones</span>
+                    </a>
+                    <div id="collapsetipoclasificaciones" class="collapse" aria-labelledby="collapsetipoclasificaciones" data-parent="#collapsetipoclasificaciones">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
+                            <a class="collapse-item" asp-controller="TipoClasificacions" asp-action="index">Listado de Tipo de Clasificaciones</a>
+                            <a class="collapse-item" asp-controller="TipoClasificacions" asp-action="create">Nuevo Tipo de clasificaci&oacute;n</a>
+                        </div>
+                    </div>
+                </li>
+                <!--FIN DE SUBMENU CLASIFICACIONES-->
             }
             <!--INICIO DE SUBMENU mensajes-->
             <li class="nav-item">
