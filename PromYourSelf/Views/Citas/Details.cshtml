@@ -66,6 +66,12 @@
                         <div class="form-group text-center">
                             <label style="font-weight: bold;" class="control-label h3">Código de Comprobación <br /><span class="text-primary">@Html.DisplayFor(model => model.CodigoComprobacion)</span></label>
                         </div>
+                        <div class="text-center">
+                            @if (ViewBag.imageBytes != null)
+                            {
+                                <img style="max-width: 300px;max-height: 300px" src="@String.Format("data:image/png;base64,{0}", Convert.ToBase64String(ViewBag.imageBytes))" />
+                            }
+                        </div>
                     </div>
                     <div class="col-lg-2"></div>                  
                 </div>

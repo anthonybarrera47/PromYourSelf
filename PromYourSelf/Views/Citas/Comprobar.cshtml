@@ -1,0 +1,14 @@
+﻿<div class="card">
+    <div class="card-body">
+        @{
+            if (ViewBag.Comprobado == true)
+            {
+                <h1 class="text-center text-success">Comprobación exitosa!</h1>
+            }
+            else
+            {
+                <h1 class="text-center text-danger">Codigo de comprobación invalido!</h1>
+            }
+        }
+    </div>
+</div>

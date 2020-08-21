@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
@@ -14,6 +16,7 @@ using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
 using PromYourSelf.ViewModels;
+using QRCoder;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -100,6 +103,23 @@ namespace PromYourSelf.Controllers
 				CodigoComprobacion = cita.CodigoComprobacion,
 				FechaInicio = cita.FechaInicio
 			};
+			string url = "https://localhost:44386/Citas/Comprobar?codigo=" + cvm.CodigoComprobacion;
+			ViewBag.txtQRCode = url;
+			QRCodeGenerator qrGenerator = new QRCodeGenerator();
+			QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+			QRCode qrCode = new QRCode(qrCodeData);
+			//System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
+			//imgBarCode.Height = 150;
+			//imgBarCode.Width = 150;
+			using (Bitmap bitMap = qrCode.GetGraphic(20))
+			{
+				using (MemoryStream ms = new MemoryStream())
+				{
+					bitMap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+					ViewBag.imageBytes = ms.ToArray();
+					//imgBarCode.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(byteImage);
+				}
+			}
 			if (cita == null)
             {
                 return NotFound();
@@ -107,8 +127,18 @@ namespace PromYourSelf.Controllers
             return View(cvm);
         }
 
-        // GET: Citas/Create
-        public async Task<IActionResult> Create(int servicio)
+
+		public async Task<IActionResult> Comprobar(string codigo)
+		{
+			bool comprobado = (await _Repo.Citas.GetListAsync(x => x.CodigoComprobacion == codigo && x.NegocioID == User.GetUserID().ToInt())).ToList().Count() > 0;
+			ViewBag.Comprobado = comprobado;
+			return View();
+		}
+
+
+
+		// GET: Citas/Create
+		public async Task<IActionResult> Create(int servicio)
         {
 			Productos producto = await _Repo.Productos.FindAsync(x => x.ProductoID == servicio);
 			Negocios negocio = await _Repo.Negocios.FindAsync(x => x.NegocioID == producto.NegocioID);
@@ -137,7 +167,7 @@ namespace PromYourSelf.Controllers
 					FechaInicio = cvm.FechaInicio
 				};	
                 await _Repo.Citas.SaveAsync(cita);
-				return RedirectToAction("Details", "Citas", new { cita.CitaID});				
+				return RedirectToAction("Details", "Citas", new {id =  cita.CitaID});				
             }
             return View(cvm);
         }
