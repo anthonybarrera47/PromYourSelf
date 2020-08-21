@@ -55,12 +55,12 @@ namespace Models
                    Telefono1 = "829-123-4567",
                    Telefono2 = "809-123-4567",
                    Latitud = "1000",
-                   UsuarioID = 4,
+                   UsuarioID = 1,
                    CiudadID = 2547,
                    Longitud = "2000",
-                   CreadoPor = 4,
+                   CreadoPor = 1,
                    FechaCreacion = DateTime.Now,
-                   ModificadoPor = 4,
+                   ModificadoPor = 1,
                    FechaModificacion = DateTime.Now
                }
                ,
@@ -74,11 +74,11 @@ namespace Models
                    Latitud = "1000",
                    CiudadID = 2547,
                    Longitud = "2000",
-                   CreadoPor = 1,
+                   CreadoPor = 3,
                    FechaCreacion = DateTime.Now,
-                   ModificadoPor = 1,
+                   ModificadoPor = 3,
                    FechaModificacion = DateTime.Now,
-                   UsuarioID = 1
+                   UsuarioID = 3
                },
                 new Negocios()
                 {
@@ -90,11 +90,11 @@ namespace Models
                     Latitud = "1000",
                     CiudadID = 2547,
                     Longitud = "2000",
-                    CreadoPor = 3,
+                    CreadoPor = 4,
                     FechaCreacion = DateTime.Now,
-                    ModificadoPor = 3,
+                    ModificadoPor = 4,
                     FechaModificacion = DateTime.Now,
-                    UsuarioID = 3
+                    UsuarioID = 4
                 }
                );
             modelBuilder.Entity<Productos>().HasData(
@@ -107,6 +107,7 @@ namespace Models
                  Precio = 10,
                  TipoProductos = TipoProducto.Producto,
                  NegocioID = 2,
+                 UsuarioID = 3,
                  CreadoPor = 3,
                  FechaCreacion = DateTime.Now,
                  ModificadoPor = 3,
@@ -122,6 +123,7 @@ namespace Models
                  Precio = 1000,
                  TipoProductos = TipoProducto.Servicio,
                  NegocioID = 2,
+                 UsuarioID = 3,
                  CreadoPor = 3,
                  FechaCreacion = DateTime.Now,
                  ModificadoPor = 3,
@@ -137,6 +139,7 @@ namespace Models
                  Precio = 15000,
                  TipoProductos = TipoProducto.Producto,
                  NegocioID = 3,
+                 UsuarioID = 4,
                  CreadoPor = 4,
                  FechaCreacion = DateTime.Now,
                  ModificadoPor = 4,
@@ -151,6 +154,7 @@ namespace Models
                  Precio = 15000,
                  TipoProductos = TipoProducto.Servicio,
                  NegocioID = 3,
+                 UsuarioID = 4,
                  CreadoPor = 4,
                  FechaCreacion = DateTime.Now,
                  ModificadoPor = 4,
@@ -166,9 +170,10 @@ namespace Models
                  Precio = 15000,
                  TipoProductos = TipoProducto.Producto,
                  NegocioID = 3,
-                 CreadoPor = 4,
+                 UsuarioID = 1,
+                 CreadoPor = 1,
                  FechaCreacion = DateTime.Now,
-                 ModificadoPor = 4,
+                 ModificadoPor = 1,
                  FechaModificacion = DateTime.Now
              },
              new Productos()
@@ -180,9 +185,10 @@ namespace Models
                  Precio = 15000,
                  TipoProductos = TipoProducto.Servicio,
                  NegocioID = 3,
-                 CreadoPor = 4,
+                 UsuarioID = 1,
+                 CreadoPor = 1,
                  FechaCreacion = DateTime.Now,
-                 ModificadoPor = 4,
+                 ModificadoPor = 1,
                  FechaModificacion = DateTime.Now
              }
                  );

@@ -36,7 +36,7 @@ namespace PromYourSelf.Data
 					ModificadoPor = 0,
 					EsNulo = false,
 					CreadoPor = 0,
-					Posicion = Posicion.Normal.GetDescription(),
+					Posicion = Posicion.Administrador.GetDescription(),
 					FechaModificacion = DateTime.Now,
 					FechaCreacion = DateTime.Now
 				};

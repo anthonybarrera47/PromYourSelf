@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Design;
 
 namespace PromYourSelf.Migrations
 {
@@ -8,7 +9,6 @@ namespace PromYourSelf.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -508,9 +508,9 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 2547, 4, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 19, 23, 59, 38, 301, DateTimeKind.Local).AddTicks(6699), new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(6787), "1000", "2000", 4, "JuanDupreCompany", "829-123-4567", "809-123-4567", 4 },
-                    { 2, 2547, 1, "Cenovi, SFM", false, new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8609), new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8647), "1000", "2000", 1, "APAS LABS", "809-754-0319", "", 1 },
-                    { 3, 2547, 3, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8672), new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8675), "1000", "2000", 3, "BHTech", "829-935-9510", "809-123-4567", 3 }
+                    { 1, 2547, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 20, 23, 7, 2, 317, DateTimeKind.Local).AddTicks(2277), new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(2849), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 1 },
+                    { 2, 2547, 3, "Cenovi, SFM", false, new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3456), new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3465), "1000", "2000", 3, "APAS LABS", "809-754-0319", "", 3 },
+                    { 3, 2547, 4, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3475), new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3476), "1000", "2000", 4, "BHTech", "829-935-9510", "809-123-4567", 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -518,12 +518,12 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "ProductoID", "CreadoPor", "Descripcion", "EsNulo", "FechaCreacion", "FechaModificacion", "ModificadoPor", "NegocioID", "Nombre", "Precio", "PrecioOferta", "Stock", "TipoProductos", "Unidad", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6783), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6797), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 0 },
-                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6911), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6915), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 0 },
-                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6919), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6920), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 0 },
-                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6923), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6925), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 0 },
-                    { 5, 4, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6928), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6929), 4, 3, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 0 },
-                    { 6, 4, "Catar Vinos", false, new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6932), new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6934), 4, 3, "Catador de vinos", 15000m, 0m, 0, 1, 1, 0 }
+                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1667), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1671), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 3 },
+                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1711), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1712), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 3 },
+                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1714), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1715), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 4 },
+                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 4 },
+                    { 5, 1, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1719), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1720), 1, 3, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 1 },
+                    { 6, 1, "Catar Vinos", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1721), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1722), 1, 3, "Catador de vinos", 15000m, 0m, 0, 1, 1, 1 }
                 });
 
             migrationBuilder.CreateIndex(

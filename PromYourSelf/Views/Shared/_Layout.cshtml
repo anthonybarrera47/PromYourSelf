@@ -141,7 +141,7 @@
 
             <!--FIN DE SUBMENU NEGOCIOS-->
             <!--INICIO DE SUBMENU PRODUCTOS-->
-            @if (User.GetPosicion().GetDescription() == "Administrador")
+            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos" aria-expanded="true" aria-controls="collapseproductos">

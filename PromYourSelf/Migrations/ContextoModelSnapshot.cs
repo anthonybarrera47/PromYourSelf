@@ -275,52 +275,52 @@ namespace PromYourSelf.Migrations
                         {
                             NegocioID = 1,
                             CiudadID = 2547,
-                            CreadoPor = 4,
+                            CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 301, DateTimeKind.Local).AddTicks(6699),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(6787),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 317, DateTimeKind.Local).AddTicks(2277),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(2849),
                             Latitud = "1000",
                             Longitud = "2000",
-                            ModificadoPor = 4,
+                            ModificadoPor = 1,
                             NombreComercial = "JuanDupreCompany",
                             Telefono1 = "829-123-4567",
                             Telefono2 = "809-123-4567",
-                            UsuarioID = 4
+                            UsuarioID = 1
                         },
                         new
                         {
                             NegocioID = 2,
                             CiudadID = 2547,
-                            CreadoPor = 1,
+                            CreadoPor = 3,
                             Direccion = "Cenovi, SFM",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8609),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8647),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3456),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3465),
                             Latitud = "1000",
                             Longitud = "2000",
-                            ModificadoPor = 1,
+                            ModificadoPor = 3,
                             NombreComercial = "APAS LABS",
                             Telefono1 = "809-754-0319",
                             Telefono2 = "",
-                            UsuarioID = 1
+                            UsuarioID = 3
                         },
                         new
                         {
                             NegocioID = 3,
                             CiudadID = 2547,
-                            CreadoPor = 3,
+                            CreadoPor = 4,
                             Direccion = "Centro de la cuidad, SFM",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8672),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 307, DateTimeKind.Local).AddTicks(8675),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3475),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3476),
                             Latitud = "1000",
                             Longitud = "2000",
-                            ModificadoPor = 3,
+                            ModificadoPor = 4,
                             NombreComercial = "BHTech",
                             Telefono1 = "829-935-9510",
                             Telefono2 = "809-123-4567",
-                            UsuarioID = 3
+                            UsuarioID = 4
                         });
                 });
 
@@ -406,8 +406,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Descripcion = "PrestFast Lite",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6783),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6797),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1667),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1671),
                             ModificadoPor = 3,
                             NegocioID = 2,
                             Nombre = "App Prestamo",
@@ -416,7 +416,7 @@ namespace PromYourSelf.Migrations
                             Stock = 0,
                             TipoProductos = 0,
                             Unidad = 1,
-                            UsuarioID = 0
+                            UsuarioID = 3
                         },
                         new
                         {
@@ -424,8 +424,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Descripcion = "Consultoria Informatica",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6911),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6915),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1711),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1712),
                             ModificadoPor = 3,
                             NegocioID = 2,
                             Nombre = "Consultor Informatico",
@@ -434,7 +434,7 @@ namespace PromYourSelf.Migrations
                             Stock = 0,
                             TipoProductos = 1,
                             Unidad = 1,
-                            UsuarioID = 0
+                            UsuarioID = 3
                         },
                         new
                         {
@@ -442,8 +442,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "ASUS Q503",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6919),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6920),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1714),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1715),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Laptop",
@@ -452,7 +452,7 @@ namespace PromYourSelf.Migrations
                             Stock = 0,
                             TipoProductos = 0,
                             Unidad = 1,
-                            UsuarioID = 0
+                            UsuarioID = 4
                         },
                         new
                         {
@@ -460,8 +460,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "Reparación y Mantenimiento",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6923),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6925),
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Reparación",
@@ -470,17 +470,17 @@ namespace PromYourSelf.Migrations
                             Stock = 0,
                             TipoProductos = 1,
                             Unidad = 1,
-                            UsuarioID = 0
+                            UsuarioID = 4
                         },
                         new
                         {
                             ProductoID = 5,
-                            CreadoPor = 4,
+                            CreadoPor = 1,
                             Descripcion = "Brugal Dupre 200mg",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6928),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6929),
-                            ModificadoPor = 4,
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1719),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1720),
+                            ModificadoPor = 1,
                             NegocioID = 3,
                             Nombre = "Brugal Dupre",
                             Precio = 15000m,
@@ -488,17 +488,17 @@ namespace PromYourSelf.Migrations
                             Stock = 0,
                             TipoProductos = 0,
                             Unidad = 1,
-                            UsuarioID = 0
+                            UsuarioID = 1
                         },
                         new
                         {
                             ProductoID = 6,
-                            CreadoPor = 4,
+                            CreadoPor = 1,
                             Descripcion = "Catar Vinos",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6932),
-                            FechaModificacion = new DateTime(2020, 8, 19, 23, 59, 38, 309, DateTimeKind.Local).AddTicks(6934),
-                            ModificadoPor = 4,
+                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1721),
+                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1722),
+                            ModificadoPor = 1,
                             NegocioID = 3,
                             Nombre = "Catador de vinos",
                             Precio = 15000m,
@@ -506,7 +506,7 @@ namespace PromYourSelf.Migrations
                             Stock = 0,
                             TipoProductos = 1,
                             Unidad = 1,
-                            UsuarioID = 0
+                            UsuarioID = 1
                         });
                 });
 
