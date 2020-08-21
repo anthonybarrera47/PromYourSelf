@@ -90,36 +90,27 @@
             <!--INICIO DE SUBMENU USUARIOS-->
             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
-                        <i class="fas fa-fw fa-user-plus"></i>
-                        <span>Usuarios</span>
-                    </a>
-                    <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            @*<h6 class="collapse-header">Custom Components:</h6>*@
-                            <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
-                            <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
-                        </div>
+                @*<li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
+                    <i class="fas fa-fw fa-user-plus"></i>
+                    <span>Usuarios</span>
+                </a>
+                <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
+                        <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
                     </div>
-                </li>
+                </div>
+            </li>*@
                 <!--FIN DE SUBMENU USUARIOS-->
                 <!--INICIO DE SUBMENU NEGOCIOS-->
+                
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsNegocios" aria-expanded="true" aria-controls="collapseNegocios">
-                        <i class="fas fa-fw fa-business-time"></i>
-                        <span>Negocios</span>
+                    <a class="nav-link" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">
+                        <i class="fas fa-home"></i>
+                        <span>Mi Negocio</span>
                     </a>
-                    <div id="collapsNegocios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            @*<h6 class="collapse-header">Custom Components:</h6>*@
-                            @if (User.GetPosicion() == Models.Posicion.Normal.GetDescription())
-                            {<a class="collapse-item" asp-controller="negocios" asp-action="index">Listado de Negocios</a>}
-                            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                            {<a class="collapse-item" href="@Url.Action("MiNegocio", "negocios", new { Id = User.GetUserID() })">Mi Negocio</a>}
-                        </div>
-                    </div>
                 </li>
 
                 <!--INICIO DE SUBMENU ventas-->
@@ -171,23 +162,8 @@
                     </div>
                 </li>
 
-                <!--FIN DE SUBMENU PRODUCTOS-->
-                <!--INICIO DE SUBMENU citaS-->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecitas" aria-expanded="true" aria-controls="collapsecitas">
-                        <i class="fas fa-fw fa-list-alt"></i>
-                        <span>citas</span>
-                    </a>
-                    <div id="collapsecitas" class="collapse" aria-labelledby="collapsecitas" data-parent="#collapsecitas">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            @*<h6 class="collapse-header">Custom Components:</h6>*@
-                            <a class="collapse-item" asp-controller="citas" asp-action="index">Listado de citas</a>
-                            <a class="collapse-item" asp-controller="citas" asp-action="create">Nuevo cita</a>
-                        </div>
-                    </div>
-                </li>
-            }
-            <!--FIN DE SUBMENU citaS-->
+                <!--FIN DE SUBMENU PRODUCTOS-->               
+            }        
             <!--INICIO DE SUBMENU mensajes-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsemensajes" aria-expanded="true" aria-controls="collapsemensajes">
@@ -269,8 +245,8 @@
                                     <h6 class="dropdown-header">
                                         Citas Pendientes
                                     </h6>
-                                    <a v-for="cita in citas" class="dropdown-item d-flex align-items-center" v-bind:href="'https://localhost:44386/Citas/Details/'+ cita.cita.CitaID">
-                                        <div class="mr-3">
+                                    <div v-for="cita in citas" class="dropdown-item d-flex align-items-center" v-bind:href="'https://localhost:44386/Citas/Details/'+ cita.cita.CitaID">
+                                        <div class="mr-1">
                                             @*<div class="icon-circle bg-primary">
                                                     <i class="fas fa-file-alt text-white"></i>
                                                 </div>*@
@@ -283,7 +259,9 @@
                                             <span class="font-weight-bold">{{cita.producto.Nombre}}</span>
                                             <span class="font-weight-bold text-success">{{cita.producto.Precio}}</span>
                                         </div>
-                                    </a>
+                                        <div class="ml-auto">@if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+                                        {<a v-on:click="aceptarCita(cita.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} &nbsp;<a class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a></div>
+                                    </div>
                                     @*<a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="mr-3">
                                                 <div class="icon-circle bg-success">
@@ -309,56 +287,7 @@
                                     <a class="dropdown-item text-center small text-gray-500" asp-controller="citas" asp-action="historial">Ver Historial de Citas</a>
                                 </div>
                             </li>
-                            <!-- ========================================= -->
-                            <!-- Nav Item - Alerts -->
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-bell fa-fw"></i>
-                                    <!-- Counter - Alerts -->
-                                    <span class="badge badge-danger badge-counter">3+</span>
-                                </a>
-                                <!-- Dropdown - Alerts -->
-                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                    <h6 class="dropdown-header">
-                                        Alerts Center
-                                    </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-primary">
-                                                <i class="fas fa-file-alt text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 12, 2019</div>
-                                            <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-success">
-                                                <i class="fas fa-donate text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 7, 2019</div>
-                                            $290.29 has been deposited into your account!
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-warning">
-                                                <i class="fas fa-exclamation-triangle text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 2, 2019</div>
-                                            Spending Alert: We've noticed unusually high spending for your account.
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                </div>
-                            </li>
-
+                            <!-- ========================================= -->                           
                             <!-- Nav Item - Messages -->
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -380,8 +309,8 @@
                                             <div class="text-truncate">{{mensaje.Contenido}}</div>
                                             <div class="small text-gray-500">{{mensaje.NombreComercial}}</div>
                                         </div>
-                                    </a> 
-                                    <h3 class="text-center" v-if="mensajes.length <= 0">No hay mensajes!</h3>                                 
+                                    </a>
+                                    <h3 class="text-center" v-if="mensajes.length <= 0">No hay mensajes!</h3>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                                 </div>
                             </li>
@@ -633,6 +562,23 @@
                         console.log('res mensajes join', res);
                         for (let i = 0; i < res.length; i++) {
                             app_topbar.mensajes.push(res[i]);
+                        }
+
+                    }).catch(err => {
+                        console.log('ha ocurrido un error', err);
+                        alert('Ha ocurrido un error');
+                    })
+                },
+                aceptarCita(citaId) {
+                    console.log("CITA ID", citadi);
+                    axios.post("https://localhost:44386" + "/Citas/Aceptar/" + citaId).then(response => {
+                        app_topbar.citas = [];
+                        let res = JSON.parse(response.data);
+                        if (res == true || res == "true") {
+                            ToastSweetAlert('success', 'Cita Aceptada!');
+                            app_topbar.getCitas();
+                        } else {
+                            ToastSweetAlert('danger', 'Error al intentar aceptar la cita!');
                         }
 
                     }).catch(err => {

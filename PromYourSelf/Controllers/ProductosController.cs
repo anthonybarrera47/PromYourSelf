@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
+using PromYourSelf.Utils;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -29,9 +30,9 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Nombre", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await _Repo.Productos.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+                Lista = await _Repo.Productos.GetListAsync(x => x.NegocioID == User.GetEmpresaID().ToInt() && x.Nombre.ToUpper().Contains(filter.ToUpper()));
             else
-                Lista = await _Repo.Productos.GetListAsync(x => true);
+                Lista = await _Repo.Productos.GetListAsync(x => x.NegocioID == User.GetEmpresaID().ToInt());
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Nombre");
             model.RouteValue = new RouteValueDictionary {
