@@ -38,7 +38,8 @@ namespace PromYourSelf.Utils
         [Description("¡La contraseña temporal ha sido enviada, tiene 24Horas para reestrablecer su contraseña !")]
         PasswordSend,
         [Description("¡Su contraseña ha sido reestablecida temporalmente recuerde por favor cambiar sus credenciales!")]
-        PasswordReset
+        PasswordReset,
+
     }
     public enum IconType
     {

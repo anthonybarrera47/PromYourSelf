@@ -29,18 +29,30 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-6">
-                    <label class="control-label">Tipo de Clasificaci&oacute;n</label>
-                    <select id="Producto" asp-items="@(new SelectList(ViewBag.TipoClasificacion, "TipoClasificacionID", "Descripcion"))"
-                            class="form-control select2"
-                            style="width:100%;"
-                            data-placeholder="Seleccione el Tipo de Clasifición">
-                    </select>
+                <div class="col-6 mt-1">
+                    <div class="input-group">
+                        <label for="TipoClasificacion" class="control-label">Tipo de Clasificaci&oacute;n</label>
+                        <select id="TipoClasificacion"
+                                class="form-control select2"
+                                style="width:80%;height:auto"
+                                data-placeholder="Seleccione el Tipo de Clasifición">
+                            <option value="0" v-for="c in ListaClasificaciones" v-bind:value="c.value">{{c.text}}</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button id="OpenModal" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#NuevoTipoClasificacion">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-6">
-                    <label asp-for="Monto" class="control-label"></label>
-                    <input asp-for="Monto" class="form-control" />
-                    <span asp-validation-for="Monto" class="text-danger"></span>
+
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Monto" class="control-label"></label>
+                        <input asp-for="Monto" class="form-control" />
+                        <span asp-validation-for="Monto" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -53,4 +65,5 @@
         </div>
         <partial name="_ButtonsCardFooterPartialView" model="Button" />
     </div>
+    
 </form>

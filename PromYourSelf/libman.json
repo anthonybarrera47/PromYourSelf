@@ -18,6 +18,10 @@
     {
       "library": "limonte-sweetalert2@7.33.1",
       "destination": "wwwroot/js/sweetAlert/"
+    },
+    {
+      "library": "select2-bootstrap-theme@0.1.0-beta.10",
+      "destination": "wwwroot/vendor/select2-bootstrap/select2-bootstrap-theme/"
     }
   ]
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
 using PromYourSelf.Models.SweetAlert;
@@ -185,6 +186,19 @@ namespace PromYourSelf.Controllers
         {
             List<Pagos> ListaPagos = await _Repo.Pagos.GetListAsync(x => true);
             return ListaPagos.Any(e => e.PagoID == id);
+        }
+        public async Task AddTipoClasificacion(string TipoClasificacion)
+        {
+            TipoClasificacion tipo = new TipoClasificacion
+            {
+                Descripcion = TipoClasificacion
+            };
+            await _Repo.TiposClasficacion.SaveAsync(tipo);
+        }
+        public async Task<JsonResult> GetClasificaciones()
+        {
+            var Lista = await _Repo.TiposClasficacion.GetListAsync(x => true);   
+            return new JsonResult(JsonConvert.SerializeObject(Lista));
         }
     }
 }
