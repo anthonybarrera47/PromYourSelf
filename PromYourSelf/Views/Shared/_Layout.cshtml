@@ -53,7 +53,7 @@
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
             <!-- Divider -->
-            @if (User.GetPosicion().GetDescription() == "Administrador")
+            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
                 <hr class="sidebar-divider my-0">
 
