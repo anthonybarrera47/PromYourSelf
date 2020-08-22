@@ -16,12 +16,12 @@
     <div class="card shadow mb-4">
         @*<div class="card-header"><h1 class="m-0 font-weight-bold text-primary">o</h1></div>*@
         @*<input type="hidden" asp-for="Producto.ProductoID"  />
-        <input type="hidden" asp-for="Negocio.NegocioID"/>*@
+            <input type="hidden" asp-for="Negocio.NegocioID"/>*@
         <input type="hidden" asp-for="ProductoID" />
         <input type="hidden" asp-for="NegocioID" />
         <div class="card-body">
-            <div class="card text-center" >                              
-               
+            <div class="card text-center">
+
                 <div class="card-body row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                         <div id="carouselExampleIndicators" class="carousel slide text-center" data-ride="carousel">
@@ -31,13 +31,13 @@
                             </ol>
                             <div class="carousel-inne text-centerr" role="listbox">
                                 <div class="carousel-item active">
-                                    <img style="max-width: 600px;max-height: 400px" class="card-img-top d-block text-center" src="https://revistafamily.com/wp-content/uploads/2018/02/peluqueria-encontrar.jpg" alt="First slide">
+                                    <img style="max-width: 600px;max-height: 400px" class="card-img-top d-block text-center" src="https://noticiaspais.com/wp-content/uploads/WhatsApp-Image-2020-08-16-at-2.42.28-PM.jpeg" alt="First slide">
                                 </div>
                                 <div class="carousel-item">
-                                    <img style="max-width: 600px;max-height: 400px" class="card-img-top d-block" src="https://www.lavanguardia.com/r/GODO/LV/p7/WebSite/2020/04/29/Recortada/20200427-637235929384829254_20200427141003-kjzE-U48822057610IuH-992x558@LaVanguardia-Web.jpg" data-src="https://www.lavanguardia.com/r/GODO/LV/p7/WebSite/2020/04/29/Recortada/20200427-637235929384829254_20200427141003-kjzE-U48822057610IuH-992x558@LaVanguardia-Web.jpg" alt="Second slide">
+                                    <img style="max-width: 600px;max-height: 400px" class="card-img-top d-block" src="https://n.com.do/wp-content/uploads/2020/06/pqYMBvTy_400x400.jpg" alt="Second slide">
                                 </div>
                                 <div class="carousel-item">
-                                    <img style="max-width: 600px;max-height: 400px" class="card-img-top d-block" src="https://www.flowww.net/hs-fs/hubfs/Q32019%20Julio/OPTIMIZACI%C3%93N%20WEB/mejores-nombres-para-centros-de-peluqueria_flowww.jpg?width=832&name=mejores-nombres-para-centros-de-peluqueria_flowww.jpg" data-src="https://www.flowww.net/hs-fs/hubfs/Q32019%20Julio/OPTIMIZACI%C3%93N%20WEB/mejores-nombres-para-centros-de-peluqueria_flowww.jpg?width=832&name=mejores-nombres-para-centros-de-peluqueria_flowww.jpg" alt="Second slide">
+                                    <img style="max-width: 600px;max-height: 400px" class="card-img-top d-block" src="https://pbs.twimg.com/media/Efj0Bf8XkAIkUVP.jpg" alt="Second slide">
                                 </div>
                             </div>
                             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -58,9 +58,9 @@
                         <p class="card-text">
                             <h3 style="font-weight: bold;">@Html.DisplayFor(model => model.NombreComercial)</h3>
                             <h3>@Html.DisplayFor(model => model.Nombre)</h3>
-                            <p>@Html.DisplayFor(model => model.Descripcion)</p>
-                            @*@foreach (var etiqueta in Model.Etiquetas) {<span class="badge badge-pill badge-primary">@etiqueta</span>}*@
-                            <h3 class="text-success">$@Html.DisplayFor(model => model.Precio)</h3>
+                        <p>@Html.DisplayFor(model => model.Descripcion)</p>
+                        @*@foreach (var etiqueta in Model.Etiquetas) {<span class="badge badge-pill badge-primary">@etiqueta</span>}*@
+                        <h3 class="text-success">$@Html.DisplayFor(model => model.Precio)</h3>
 
                         </p>
                     </div>
@@ -76,14 +76,14 @@
                                 <span asp-validation-for="FechaInicio" class="text-danger"></span>
                             </div>
                         </div>
-<div class="col-lg-2"></div>
+                        <div class="col-lg-2"></div>
                         @*<div class="col-6">
-            <div class="form-group">
-                <label asp-for="Cita.FechaFin" class="control-label"></label>
-                <input asp-for="Cita.FechaFin" class="form-control" />
-                <span asp-validation-for="Cita.FechaFin" class="text-danger"></span>
-            </div>
-        </div>*@
+                                <div class="form-group">
+                                    <label asp-for="Cita.FechaFin" class="control-label"></label>
+                                    <input asp-for="Cita.FechaFin" class="form-control" />
+                                    <span asp-validation-for="Cita.FechaFin" class="text-danger"></span>
+                                </div>
+                            </div>*@
                     </div>
                     <div class="form-row">
                         <div class="col-lg-2"></div>
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            
+
         </div>
         <partial name="_ButtonsCardFooterPartialView" model="Button" />
     </div>

@@ -66,18 +66,12 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Ventas/Create
-        public async Task< IActionResult> Create()
-        {
-            //var lista = await (from datos in db.Productos.AsNoTracking().AsQueryable()
-            //               .Where(x => x.EsNulo == false)
-            //                   select new Generico
-            //                   {
-            //                       Id = datos.ProductoID.ToString(),
-            //                       Name = datos.Nombre
-            //                   }).ToListAsync();
+        public async Task< IActionResult> Create(int citaId)
+        {       
             ViewBag.Clientes = await _Repo.Usuarios.GetListAsync(x => true);
             ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
-            return View(new Ventas());
+			Ventas venta = new Ventas();			
+            return View(venta);
         }
 
         // POST: Ventas/Create

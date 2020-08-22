@@ -73,12 +73,13 @@ namespace PromYourSelf.Controllers
 		{
 			List<object> lista_anonima = new List<object>();
 			int empresaId = User.GetEmpresaID().ToInt();
-			List<Citas> lista_citas = await _Repo.Citas.GetListAsync(x => x.Estado == EstadoCita.Solicitado && (x.UsuarioID == User.GetUserID().ToInt() || x.NegocioID == empresaId));
+			List<Citas> lista_citas = await _Repo.Citas.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt() || x.NegocioID == empresaId);
 			foreach (Citas cita in lista_citas)
 			{
 				Productos producto = await _Repo.Productos.FindAsync(cita.ProductoID);
 				Negocios negocio = await _Repo.Negocios.FindAsync(cita.NegocioID);
-				lista_anonima.Add(new { cita, producto, negocio });
+				Usuarios usuario = await _Repo.Usuarios.FindAsync(cita.UsuarioID);
+				lista_anonima.Add(new { cita, producto, negocio, usuario });
 			}
 
 			return new JsonResult(JsonConvert.SerializeObject(lista_anonima));
@@ -137,12 +138,13 @@ namespace PromYourSelf.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> Aceptar(int? id)
+		public async Task<IActionResult> Aceptar(int? id, int estado = -1)
 		{
+			if (estado < 0) estado = (int)EstadoCita.Aceptada;
 			Citas cita = (await _Repo.Citas.GetListAsync(x => x.CitaID == id)).FirstOrDefault();
 			if (cita != null)
 			{
-				cita.Estado = EstadoCita.Aceptada;
+				cita.Estado = (EstadoCita)estado;
 				bool paso = await _Repo.Citas.ModifiedAsync(cita);
 				return new JsonResult(JsonConvert.SerializeObject(paso));
 			}
@@ -151,6 +153,7 @@ namespace PromYourSelf.Controllers
 				return new JsonResult(JsonConvert.SerializeObject(false));
 			}
 		}
+		
 
 
 

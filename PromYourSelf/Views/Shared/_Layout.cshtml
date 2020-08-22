@@ -502,7 +502,7 @@
                         for (let i = 0; i < res.length; i++) {
                             app_topbar.citas.push(res[i]);
                         }
-
+                        app_topbar.citas = app_topbar.citas.filter(x => x.cita.Estado == 0);
                     }).catch(err => {
                         console.log('ha ocurrido un error', err);
                         alert('Ha ocurrido un error');

@@ -8,111 +8,123 @@
     ViewData["Title"] = Titulo;
 }
 
-<form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="card shadow mb-4">
-        <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
+<div id="app-ventas">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card shadow mb-4">
+            <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@Titulo</h1></div>
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <div class="row justify-content-end">
-                <div class="col-3">
-                    <div class="form-group">
-                        <label asp-for="Fecha" class="control-label"></label>
-                        <input asp-for="Fecha" class="form-control" />
-                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                <div class="row justify-content-end">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label asp-for="Fecha" class="control-label"></label>
+                            <input asp-for="Fecha" class="form-control" />
+                            <span asp-validation-for="Fecha" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row justify-content-start">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label class="control-label">Productos</label>
-                        <select id="Cliente" asp-for="UsuarioClienteID" asp-items="@(new SelectList(ViewBag.Clientes, "Id", "Nombres"))"
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="control-label">Productos</label>
+                            <select id="Cliente" asp-for="UsuarioClienteID" asp-items="@(new SelectList(ViewBag.Clientes, "Id", "Nombres"))"
+                                    class="form-control select2"
+                                    style="width:100%;"
+                                    data-placeholder="Seleccione el Cliente">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label class="control-label">Productos</label>
+                            <select id="Producto" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
+                                    class="form-control select2"
+                                    style="width:100%;"
+                                    data-placeholder="Seleccione el producto">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label id="CantidadLB" class="control-label"> Cantidad</label>
+                            <input for="CantidadLB" class="form-control" type="text" id="Cantidad" />
+                        </div>
+                    </div>
+
+                    <div class="col-3 ">
+                        <label id="PrecioLB" class="control-label">Precio</label>
+                        <div class="form-group form-inline">
+                            <input for="PrecioLB" class="form-control" type="number" id="Precio" />
+                            <input value="Agregar" type="button" class="btn btn-primary" onclick="AgregaConcepto(); return false;" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="divProductos">
+                    <div class="table table-responsive">
+                        <table class="table table-hover" id="tablaConceptos">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Producto</th>
+                                    <th>Precio unitario</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="row justify-content-end">
+                    <label>Total:  $<bold id="total"></bold></label>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label asp-for="Monto" class="control-label"></label>
+                            <input asp-for="Monto" id="Monto" style="text-align:right" disabled readonly class="form-control" />
+                            <span asp-validation-for="Monto" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        @*<div class="form-group">
+                                <label asp-for="CitaID" class="control-label"></label>
+                                <input asp-for="CitaID" class="form-control" />
+                                <span asp-validation-for="CitaID" class="text-danger"></span>
+                            </div>*@
+
+                        <select id="select_citas"
                                 class="form-control select2"
-                                style="width:100%;"
-                                data-placeholder="Seleccione el Cliente">
+                                style="width:80%;height:auto"
+                                data-placeholder="Seleccione la cita">
+                            <option v-for="c in citas_pendientes" v-bind:value="c.value">{{c.text}}</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-group">
-                        <label class="control-label">Productos</label>
-                        <select id="Producto" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
-                                class="form-control select2"
-                                style="width:100%;"
-                                data-placeholder="Seleccione el producto">
-                        </select>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label id="CantidadLB" class="control-label"> Cantidad</label>
-                        <input for="CantidadLB" class="form-control" type="text" id="Cantidad" />
-                    </div>
-                </div>
-
-                <div class="col-3 ">
-                    <label id="PrecioLB" class="control-label">Precio</label>
-                    <div class="form-group form-inline">
-                        <input for="PrecioLB" class="form-control" type="number" id="Precio" />
-                        <input value="Agregar" type="button" class="btn btn-primary" onclick="AgregaConcepto(); return false;" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" id="divProductos">
-                <div class="table table-responsive">
-                    <table class="table table-hover" id="tablaConceptos">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Cantidad</th>
-                                <th>Producto</th>
-                                <th>Precio unitario</th>
-                                <th>Total</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-
-            </div>
-            <div class="row justify-content-end">
-                <label>Total:  $<bold id="total"></bold></label>
-            </div>
-            <div class="row justify-content-end">
-                <div class="col-3">
-                    <div class="form-group">
-                        <label asp-for="Monto" class="control-label"></label>
-                        <input asp-for="Monto" id="Monto" style="text-align:right" disabled readonly class="form-control" />
-                        <span asp-validation-for="Monto" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label asp-for="CitaID" class="control-label"></label>
-                        <input asp-for="CitaID" class="form-control" />
-                        <span asp-validation-for="CitaID" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
+            <partial name="_ButtonsCardFooterPartialView" model="Button" />
         </div>
-        <partial name="_ButtonsCardFooterPartialView" model="Button" />
-    </div>
-</form>
-
+    </form>
+</div>
+<script src="~/js/VueJs/vue.js"></script>
+<script src="~/js/VueJs/axios.min.js"></script>
+<script src="~/vendor/jquery/jquery.min.js"></script>
+<script src="~/vendor/select2/js/select2.min.js"></script>
 
 <script>
     var list = [];
     var num = 0;
 
     function eliminar(e) {
-        e.preventDefault();        
-        var row = e.srcElement.parentNode.parentNode;         
+        e.preventDefault();
+        var row = e.srcElement.parentNode.parentNode;
         let id = parseInt(row.cells[0].textContent);
         list.splice(list.indexOf(el => el.id == id), 1);
         calcularTotal();
@@ -126,7 +138,7 @@
         $('#total').html(total.toString());
         document.getElementById("Monto").value = total.toString();
     }
-    function AgregaConcepto() {         
+    function AgregaConcepto() {
         let Cantidad = document.getElementById("Cantidad").value;
         let Precio = document.getElementById("Precio").value;
         //let Producto = document.getElementById("Producto").val();
@@ -135,7 +147,7 @@
         let itemExists = list.find(el => el.id == parseInt(id))
         if (!itemExists) {
             list.push({ id: id, Producto: Producto, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
-           
+
         } else {
             //mostrar mensaje de error
             alert("Este producto ya esta agregado.");
@@ -176,8 +188,8 @@
         let HiddenProducto = document.createElement("input");
         let HiddenPrecio = document.createElement("input");
         let HiddenProductoId = document.createElement("input");
-        console.log('el id es', parseInt(id)); 
-        HiddenProductoId.name = "Details[" + num + "].ProductoID";               
+        console.log('el id es', parseInt(id));
+        HiddenProductoId.name = "Details[" + num + "].ProductoID";
         HiddenProductoId.value = parseInt(id);
         HiddenProductoId.type = "hidden";
         HiddenIndex.name = "Details.Index";
@@ -191,7 +203,7 @@
         HiddenProducto.type = "hidden";
         HiddenPrecio.name = "Details[" + num + "].Precio";
         HiddenPrecio.value = Precio;
-        HiddenPrecio.type = "hidden";       
+        HiddenPrecio.type = "hidden";
         DivProductos.appendChild(HiddenIndex);
         DivProductos.appendChild(HiddenCantidad);
         DivProductos.appendChild(HiddenProducto);
@@ -203,6 +215,51 @@
 
         num++;
     }
+</script>
+
+<script>
+    var app_ventas = new Vue({
+        el: '#app-ventas',
+        data: {
+            citas_pendientes: [],
+            default_value: "",
+            mensajes: []
+
+        },
+        methods: {
+            getCitasPendientes: function () {
+                axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
+                    app_ventas.citas_pendientes = [];
+                    let res = JSON.parse(response.data);
+                    const queryString = window.location.search;
+                    console.log('Query string', queryString);
+                    const urlParams = new URLSearchParams(queryString);
+                    const citaId = urlParams.get('citaId')
+                    if (citaId && citaId > 0) {
+                        res = res.filter(x => x.cita.CitaID == citaId);
+                    }                        
+                    let Lista = res.filter(x => x.cita.Estado == 3).map(function (x) {
+                        return {
+                            value: x.cita.CitaID,
+                            text: x.usuario.Nombres + " - " + x.producto.Nombre + " - " + x.cita.FechaInicio.split('T')[0],
+                        }
+
+                    });
+                    for (let i = 0; i < Lista.length; i++) {
+                        app_ventas.citas_pendientes.push(Lista[i]);
+                    }
+                    console.log('res Lista', Lista);
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                    alert('Ha ocurrido un error');
+                })
+
+            }
+
+        }
+    });
+    app_ventas.getCitasPendientes();
+
 </script>
 
 

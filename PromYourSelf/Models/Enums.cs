@@ -18,7 +18,8 @@ namespace Models
 		Aceptada = 1,
 		EnProceso = 2,
 		Finalizado = 3,
-		Cancelada = 4
+		Cancelada = 4,
+		Facturado = 5
 	}
 	public enum TipoProducto
 	{
