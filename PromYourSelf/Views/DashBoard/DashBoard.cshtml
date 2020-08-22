@@ -277,4 +277,6 @@
     </div>
 </div>
 
-<!-- /.container-fluid -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

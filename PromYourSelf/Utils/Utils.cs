@@ -78,9 +78,13 @@ namespace PromYourSelf.Utils
         }
         public static string GetPosicion(this ClaimsPrincipal principal)
         {
+            string value = string.Empty; 
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
-            return principal.FindFirst(c => c.Type == TypeClaims.Posicion.ToString("G"))?.Value;
+            value = principal.FindFirst(c => c.Type == TypeClaims.Posicion.ToString("G"))?.Value;
+            if (value == null)
+                value = string.Empty;
+            return value;
         }
         public static string GetFoto(this ClaimsPrincipal principal)
         {

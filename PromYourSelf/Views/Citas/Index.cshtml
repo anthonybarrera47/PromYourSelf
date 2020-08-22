@@ -42,7 +42,7 @@
                     <tr>
                         <th>
                             @Html.SortableHeaderFor(model => model.FechaInicio)
-                        </th>                   
+                        </th>
                         <th>
                             @Html.SortableHeaderFor(model => model.CodigoComprobacion)
                         </th>
@@ -50,7 +50,7 @@
                             @Html.SortableHeaderFor(model => model.Estado)
                         </th>
                         <th>
-                            @Html.SortableHeaderFor(model => model.CreadoPor)
+                            Estado
                         </th>
 
                         <th>Acci&oacute;n</th>
@@ -62,22 +62,14 @@
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FechaInicio)
-                            </td>                   
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CodigoComprobacion)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Estado)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreadoPor)
-                            </td>
-                            <td>
-                                @*<a asp-action="Edit" asp-route-id="@item.CitaID"><i class="fas fa-edit">&nbsp; Editar</i></a> |
-                            <a asp-action="Details" asp-route-id="@item.CitaID"><i class="fas fa-info-circle">&nbsp;Detalles</i></a> |
-                            <a asp-action="Delete" asp-route-id="@item.CitaID"><i class="fas fa-trash-alt">&nbsp;Eliminar</i></a>*@
-                                <partial name="_ActionsPartialView" model="new Actions() { Key =item.CitaID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                            </td>
+                            <partial name="_ActionsPartialView" model="new Actions() { Key =item.CitaID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
                         </tr>
                     }
                 </tbody>
