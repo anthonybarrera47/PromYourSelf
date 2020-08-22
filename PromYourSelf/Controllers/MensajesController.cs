@@ -90,16 +90,7 @@ namespace PromYourSelf.Controllers
 			List<Mensajes> mensajes = new List<Mensajes>();
 
 			if (receptorId.ToInt() <= 0)
-			{
-				//var mensajes2 = (from mensaje in await _Repo.Mensajes.GetListAsync(x => x.UsuarioID == userId || x.ReceptorID == userId)
-				// join negocio in await  _Repo.Negocios.GetListAsync(x => true)
-				// on 1 equals 1			
-				// select new
-				// {
-				//	 Contenido = mensaje.Contenido,
-				//	 NombreComercial = negocio.NombreComercial
-				// }).ToList();
-				//return new JsonResult(JsonConvert.SerializeObject(mensajes2));
+			{				
 				mensajes = await _Repo.Mensajes.GetListAsync(x => x.UsuarioID == userId || x.ReceptorID == userId);
 			} else
 			{
@@ -114,13 +105,17 @@ namespace PromYourSelf.Controllers
 		{
 			int userId = User.GetUserID().ToInt();
 			mensaje.CreadoPor = userId;
-			mensaje.Tipo = TipoContenido.Texto;
+			mensaje.Tipo = TipoContenido.Texto;			
 			mensaje.UsuarioID = userId;
 			mensaje.CreadoPor = userId;			
-			mensaje.ModificadoPor = userId;
-			await db.Mensaje.AddAsync(mensaje);
-			await db.SaveChangesAsync();	
-
+			mensaje.ModificadoPor = userId;			
+			try
+			{
+				bool paso = (await _Repo.Mensajes.SaveAsync(mensaje));
+			}catch(Exception e)
+			{
+				throw e;
+			}			
 		}
 
 

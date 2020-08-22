@@ -28,21 +28,25 @@ namespace PromYourSelf.Views.Shared.Components.Chat
 		{
 			Negocios NuevoChat = await this.db.Negocios.Where<Negocios>(x => x.NegocioID == negocioId).FirstOrDefaultAsync();
 			if (negocioId > 0)
-			{
-				//Negocios NuevoChat = await this.db.Negocios.Where<Negocios>(x => x.NegocioID == negocioId).FirstOrDefaultAsync();
+			{				
 				if(NuevoChat != null)
 				{
-					Mensajes MensajeInicial = new Mensajes()
+					List<Mensajes> listaMensajes = await this.db.Mensaje.Where(x => x.UsuarioID == NuevoChat.UsuarioID && x.ReceptorID == usuarioId).ToListAsync();
+					if(listaMensajes.Count <= 0)
 					{
-						Contenido = "Bienvenido a " + NuevoChat.NombreComercial,
-						UsuarioID = NuevoChat.UsuarioID,
-						ReceptorID = usuarioId,
-						Tipo = TipoContenido.Texto,
-						EstadoMensaje = EstadoMensaje.Leido,
+						Mensajes MensajeInicial = new Mensajes()
+						{
+							Contenido = "Bienvenido a " + NuevoChat.NombreComercial,
+							UsuarioID = NuevoChat.UsuarioID,
+							ReceptorID = usuarioId,
+							Tipo = TipoContenido.Texto,
+							EstadoMensaje = EstadoMensaje.Leido,
 
-					};
-					await this.db.Mensaje.AddAsync(MensajeInicial);
-					bool guardado = await this.db.SaveChangesAsync() > 0;
+						};
+						await this.db.Mensaje.AddAsync(MensajeInicial);
+						bool guardado = await this.db.SaveChangesAsync() > 0;
+					}
+					
 				}
 			}
 			this.mensajes = await this.db.Mensaje.Where<Mensajes>(x => x.UsuarioID == usuarioId || x.ReceptorID == usuarioId).ToListAsync();

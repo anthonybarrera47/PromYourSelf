@@ -67,8 +67,7 @@
                                     <ul class="users">
                                         @{
                                             foreach (var negocio in Model.negocios)
-                                            {
-
+                                            {                                               
                                                 <li class="person active-user" data-chat="@negocio.NegocioID" v-on:click="getMessages(@negocio.NegocioID, '@negocio.NombreComercial')">
                                                     <div class="user">
                                                         <img src="https://www.bootdey.com/img/Content/avatar/avatar2.png" alt="Retail Admin">
@@ -81,6 +80,7 @@
                                                 </li>
 
                                             } }
+
                                     </ul>
                                 </div>
                             </div>
@@ -128,21 +128,22 @@
 </div>
 
 @*<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>*@
 <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
 <style>
     .sendNewMessage:hover {
         background-color: cornflowerblue;
     }
- div.scroll { 
-                margin:4px, 4px; 
-                padding:4px;             
-                width: 100%; 
-                height: 500px; 
-                overflow-x: hidden; 
-                overflow-y: auto; 
-                text-align:justify; 
-            } 
+
+    div.scroll {
+        margin: 4px, 4px;
+        padding: 4px;
+        width: 100%;
+        height: 500px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        text-align: justify;
+    }
 </style>
 
 
@@ -164,7 +165,8 @@
             negocio: "",
             negocio_obj: {},
             negocioId: 0,
-            mensaje: ""
+            mensaje: "",
+            receptorId: 0
         },
         methods: {
             notificarMensajes(receptorId, mensaje) {
@@ -179,10 +181,12 @@
                     let res = JSON.parse(response.data);
                     console.log('res mensajes', res);
                     for (let i = 0; i < res.length; i++) {
+                        if (i == 0 && !app_chat.negocio || !app_chat.receptorId) {
+                            app_chat.receptorId = res[i].ReceptorID;
+                        }
                         console.log(res[i].Contenido);
                         app_chat.mensajes.push(res[i]);
                     }
-                    console.log('mensajes', app_chat.mensajes);
                     // alert('datos obtenidos correctamente');
 
                 }).catch(err => {
@@ -199,8 +203,9 @@
                     for (let i = 0; i < res.length; i++) {
                         app_chat.negocios.push(res[i]);
                     }
-                    if (app_chat.negocios.length > 0) {
+                    if (app_chat.negocios.length == 1) {
                         app_chat.negocio = app_chat.negocios[0].NombreComercial;
+                        //app_chat.receptorId = app_chat.negocios[0].Rece;
                     }
 
                 }).catch(err => {
@@ -214,7 +219,7 @@
                 axios.post("https://localhost:44386/Mensajes" + "/EnviarMensaje", {
                     ReceptorID: app_chat.receptorId,
                     Contenido: app_chat.mensaje
-                }).then(response => {                    
+                }).then(response => {
                     app_chat.notificarMensajes(app_chat.receptorId, app_chat.mensaje);
                     app_chat.getMessages(app_chat.receptorId, app_chat.negocio);
                     app_chat.mensaje = "";
@@ -227,6 +232,7 @@
 
     app_chat.getNegocios();
     app_chat.getMessages();
+   
 
 </script>
 
