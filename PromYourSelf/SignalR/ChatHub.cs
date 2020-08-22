@@ -34,9 +34,17 @@ namespace SignalRChat
 
 		public override Task OnConnectedAsync()
 		{
-			string name = User.GetUserID().ToString();
+			try
+			{
+				string name = User.GetUserID().ToString();
 
-			_connections.Add(name, Context.ConnectionId);
+				_connections.Add(name, Context.ConnectionId);
+
+				
+			}catch(Exception e)
+			{
+
+			}
 
 			return base.OnConnectedAsync();
 		}		
@@ -110,24 +118,27 @@ namespace BasicChat
 
 		public void Remove(T key, string connectionId)
 		{
-			lock (_connections)
+				try
 			{
-				HashSet<string> connections;
-				if (!_connections.TryGetValue(key, out connections))
+				lock (_connections)
 				{
-					return;
-				}
-
-				lock (connections)
-				{
-					connections.Remove(connectionId);
-
-					if (connections.Count == 0)
+					HashSet<string> connections;
+					if (!_connections.TryGetValue(key, out connections))
 					{
-						_connections.Remove(key);
+						return;
+					}
+
+					lock (connections)
+					{
+						connections.Remove(connectionId);
+
+						if (connections.Count == 0)
+						{
+							_connections.Remove(key);
+						}
 					}
 				}
-			}
+			}catch(Exception e) { }
 		}
 	}
 }

@@ -24,8 +24,8 @@ namespace PromYourSelf.Views.Shared.Components.Chat
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync(
-		int usuarioId, int negocioId = 0)
-		{
+		int usuarioId = 0, int negocioId = 0)
+		{	if(usuarioId <= 0) return View(new ChatViewModel(new List<Negocios>()));
 			Negocios NuevoChat = await this.db.Negocios.Where<Negocios>(x => x.NegocioID == negocioId).FirstOrDefaultAsync();
 			if (negocioId > 0)
 			{				
