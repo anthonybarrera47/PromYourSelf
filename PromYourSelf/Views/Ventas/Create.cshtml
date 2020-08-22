@@ -99,8 +99,9 @@
                                 <input asp-for="CitaID" class="form-control" />
                                 <span asp-validation-for="CitaID" class="text-danger"></span>
                             </div>*@
-
+                           @*todo: obtener el valor seleccionado para guardar la venta relacionada con la cita*@
                         <select id="select_citas"
+                                asp-for="CitaID"
                                 class="form-control select2"
                                 style="width:80%;height:auto"
                                 data-placeholder="Seleccione la cita">
@@ -115,8 +116,6 @@
 </div>
 <script src="~/js/VueJs/vue.js"></script>
 <script src="~/js/VueJs/axios.min.js"></script>
-<script src="~/vendor/jquery/jquery.min.js"></script>
-<script src="~/vendor/select2/js/select2.min.js"></script>
 
 <script>
     var list = [];
@@ -227,6 +226,9 @@
 
         },
         methods: {
+            selectChange(e) {
+                console.log('cambio', e);
+            },
             getCitasPendientes: function () {
                 axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
                     app_ventas.citas_pendientes = [];
@@ -237,7 +239,7 @@
                     const citaId = urlParams.get('citaId')
                     if (citaId && citaId > 0) {
                         res = res.filter(x => x.cita.CitaID == citaId);
-                    }                        
+                    }
                     let Lista = res.filter(x => x.cita.Estado == 3).map(function (x) {
                         return {
                             value: x.cita.CitaID,
