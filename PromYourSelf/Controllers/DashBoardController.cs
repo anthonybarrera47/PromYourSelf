@@ -32,10 +32,9 @@ namespace PromYourSelf.Controllers
         {
             return View();
         }
-        [Authorize]
+        [AllowAnonymous]
         public ActionResult DashBoard()
         {
-            var user =_accesor.HttpContext.User;
             return View();
         }
         [Authorize]

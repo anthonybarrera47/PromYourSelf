@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
+using PromYourSelf.Utils;
 using ReflectionIT.Mvc.Paging;
 
 namespace PromYourSelf.Controllers
@@ -18,7 +21,7 @@ namespace PromYourSelf.Controllers
         private readonly IRepoWrapper _Repo;
         private readonly Contexto _context;
         public static List<TipoClasificacion> Lista;
-        public TipoClasificacionsController(IRepoWrapper RepoTipo,Contexto contexto)
+        public TipoClasificacionsController(IRepoWrapper RepoTipo, Contexto contexto)
         {
             _Repo = RepoTipo;
             _context = contexto;
@@ -35,9 +38,9 @@ namespace PromYourSelf.Controllers
                 Hasta = lastDayOfMonth.ToString("dd/MM/yyyy");
 
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await _Repo.TiposClasificacion.GetListAsync(x => true);
+                Lista = await _Repo.TiposClasificacion.GetListAsync(x => x.Descripcion.Contains(filter) && x.UsuarioID == User.GetUserID().ToInt());
             else
-                Lista = await _Repo.TiposClasificacion.GetListAsync(x => true);
+                Lista = await _Repo.TiposClasificacion.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt());
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Fecha");
             var RoutesValues = new RouteValueDictionary {
@@ -87,7 +90,9 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
-               await _Repo.TiposClasificacion.SaveAsync(tipoClasificacion);
+                tipoClasificacion.UsuarioID = User.GetUserID().ToInt();
+
+                await _Repo.TiposClasificacion.SaveAsync(tipoClasificacion);
                 return RedirectToAction(nameof(Index));
             }
             return View(tipoClasificacion);
@@ -101,7 +106,8 @@ namespace PromYourSelf.Controllers
                 return NotFound();
             }
 
-            var tipoClasificacion = await _Repo.TiposClasificacion.FindAsync(id);
+            var tipoClasificacion = await _Repo.TiposClasificacion.FindAsync(x=>x.TipoClasificacionID==id && x.UsuarioID==User.GetUserID().ToInt());
+
             if (tipoClasificacion == null)
             {
                 return NotFound();
@@ -161,6 +167,7 @@ namespace PromYourSelf.Controllers
         }
 
         // POST: TipoClasificacions/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
