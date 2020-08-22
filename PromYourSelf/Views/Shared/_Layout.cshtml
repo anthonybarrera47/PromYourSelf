@@ -12,30 +12,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PromYourSelf</title>
 
-    <environment include="Development">
-        <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link href="~/vendor/fontawesome-free-5.13.1/css/all.min.css" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="~/vendor/fontawesome-free-5.13.1/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-        <!-- Custom styles for this template-->
-        <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
-    </environment>
-    <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
+    <!-- Custom styles for this template-->
     <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
-    <script src="~/js/sweetAlert/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
     <link rel="stylesheet" href="~/js/sweetAlert/sweetalert2.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
-    <script src="~/js/VueJs/promise-polyfill.js"></script>
+    <link rel="stylesheet" href="~/css/animate.min.css" />
+
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/js/sb-admin-2.min.js"></script>
+
+    <script src="~/js/sweetAlert/sweetalert2.min.js"></script>
     <script src="~/js/VueJs/vue.js"></script>
     <script src="~/js/VueJs/axios.min.js"></script>
+
+    <script src="~/js/sweetAlert/sweetalert2.all.min.js"></script>
+    <script src="~/js/profile-image-manager.js"></script>
+
 </head>
 <body id="page-top">
 
@@ -51,10 +50,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Prom YourSelf</div>
             </a>
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
             <!-- Divider -->
             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
@@ -81,7 +76,7 @@
                     <i class="fas fa-street-view"></i>
                     <span>Explorar</span>
                 </a>
-            </li>  @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription() || User.GetPosicion()== Models.Posicion.Normal.GetDescription())
+            </li>  @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
 
                 <li class="nav-item">
@@ -188,22 +183,29 @@
                 </li>
                 <!--FIN DE SUBMENU CLASIFICACIONES-->
             }
-            @*@if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+            @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
-              
+
+                <!--INICIO DE SUBMENU mensajes-->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsemensajes" aria-expanded="true" aria-controls="collapsemensajes">
                         <i class="fas fa-fw fa-envelope"></i>
                         <span>mensajes</span>
                     </a>
                     <div id="collapsemensajes" class="collapse" aria-labelledby="collapsemensajes" data-parent="#collapsemensajes">
-                        <div class="bg-white py-2 collapse-inner rounded">                 
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @*<h6 class="collapse-header">Custom Components:</h6>*@
                             <a class="collapse-item" asp-controller="mensajes" asp-action="index">Listado de mensajes</a>
                             <a class="collapse-item" asp-controller="mensajes" asp-action="create">Nuevo mensaje </a>
                         </div>
                     </div>
-                </li>            
-            }*@
+                </li>
+                <!--FIN DE SUBMENU mensajes-->
+            }
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
         </ul>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
@@ -312,17 +314,19 @@
                                         </a>*@
                                     <a class="dropdown-item text-center small text-gray-500" asp-controller="citas" asp-action="historial">Ver Historial de Citas</a>
                                 </div>
+
                             </li>
+
                             <!-- ========================================= -->
                             <!-- Nav Item - Messages -->
                             <li class="nav-item dropdown no-arrow mx-1">
-                                <a class="nav-link dropdown-toggle"  asp-controller="mensajes" asp-action="create" id="messagesDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-envelope fa-fw"></i>
                                     <!-- Counter - Messages -->
                                     @*<span class="badge badge-danger badge-counter">7</span>*@
                                 </a>
                                 <!-- Dropdown - Messages -->
-                                @*<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                                     <h6 class="dropdown-header">
                                         Message Center
                                     </h6>
@@ -338,7 +342,7 @@
                                     </a>
                                     <h3 class="text-center" v-if="mensajes.length <= 0">No hay mensajes!</h3>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                                </div>*@
+                                </div>
                             </li>
 
 
@@ -352,40 +356,32 @@
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="@Url.Action("Profile","Usuarios",new { Id=User.GetUserID()})">
-                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Perfil
-                                    </a>
                                     @if (User.GetUserID().ToInt() > 0)
                                     {
+                                        <a class="dropdown-item" href="@Url.Action("Profile","Usuarios",new { Id=User.GetUserID()})">
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Perfil
+                                        </a>
+
                                         <a class="dropdown-item" href="@Url.Action("ChangePassword","Usuarios")">
                                             <i class="fas fa-shield-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Cambiar Contrase&ntilde;a
                                         </a>
                                     }
-                                    @if (User.GetEmpresaID().ToInt() == 0)
+                                    @if (User.GetEmpresaID().ToInt() == 0 && User.GetPosicion().Equals(Models.Posicion.Normal.GetDescription()))
                                     {
                                         <a class="dropdown-item" href="@Url.Action("Create", "negocios", new { Id = User.GetUserID() })">
                                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Cambiar a Cuenta Empresarial
                                         </a>
                                     }
-                                    else
+                                    @if (User.GetEmpresaID().ToInt() > 0)
                                     {
                                         <a class="dropdown-item" href="@Url.Action("Edit", "negocios", new { id = User.GetEmpresaID().ToInt() })">
                                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Modificar Negocio
                                         </a>
                                     }
-
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Settings
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Activity Log
-                                    </a>
                                     <div class="dropdown-divider"></div>
                                     @if (User.GetUserID().ToInt() <= 0)
                                     {
@@ -465,74 +461,6 @@
             </div>
         </div>
     </form>
-
-
-    @*<footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - PromYourSelf - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>*@
-
-    <environment include="Development">
-        @*<script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
-        <!-- Bootstrap core JavaScript-->
-        <script src="~/vendor/jquery/jquery.min.js"></script>
-        <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="~/js/sb-admin-2.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="~/vendor/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="~/js/demo/chart-area-demo.js"></script>
-        <script src="~/js/demo/chart-pie-demo.js"></script>
-        @*<script src="~/js/profile-image-manager.js"></script>*@
-    </environment>
-    <environment exclude="Development">
-        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery"
-                    crossorigin="anonymous"
-                    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
-            </script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                    crossorigin="anonymous"
-                    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
-            </script>*@
-        <!-- Bootstrap core JavaScript-->
-        <script src="~/vendor/jquery/jquery.min.js"></script>
-        <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="~/js/sb-admin-2.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="~/vendor/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="~/js/demo/chart-area-demo.js"></script>
-        <script src="~/js/demo/chart-pie-demo.js"></script>
-        @*<script src="~/js/profile-image-manager.js"></script>*@
-    </environment>
-    <script src="~/js/sweetAlert/sweetalert2.all.min.js"></script>
-    <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
-    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-
-    <script src="~/js/profile-image-manager.js"></script>
-
-    @*<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>*@
 
     @if (TempData["SweetAlert"] != null)
     {
@@ -617,65 +545,6 @@
         app_topbar.getCitas();
         app_topbar.getMensajes();
     </script>
-
-    <script>
-        function toggleMenu() {
-            "use strict";
-            // Start of use strict
-
-            // Toggle the side navigation
-            $("#sidebarToggle , #sidebarToggleTop").on('click', function (e) {
-                $("body").toggleClass("sidebar-toggled");
-                $(".sidebar").toggleClass("toggled");
-                if ($(".sidebar").hasClass("toggled")) {
-                    $('.sidebar .collapse').collapse('hide');
-                };
-            });
-
-            // Close any open menu accordions when window is resized below 768px
-            $(window).resize(function () {
-                if ($(window).width() < 768) {
-                    $('.sidebar .collapse').collapse('hide');
-                };
-            });
-
-            // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-            $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function (e) {
-                if ($(window).width() > 768) {
-                    var e0 = e.originalEvent,
-                        delta = e0.wheelDelta || -e0.detail;
-                    this.scrollTop += (delta < 0 ? 1 : -1) * 30;
-                    e.preventDefault();
-                }
-            });
-
-            // Scroll to top button appear
-            $(document).on('scroll', function () {
-                var scrollDistance = $(this).scrollTop();
-                if (scrollDistance > 100) {
-                    $('.scroll-to-top').fadeIn();
-                } else {
-                    $('.scroll-to-top').fadeOut();
-                }
-            });
-
-            // Smooth scrolling using jQuery easing
-            $(document).on('click', 'a.scroll-to-top', function (e) {
-                var $anchor = $(this);
-                $('html, body').stop().animate({
-                    scrollTop: ($($anchor.attr('href')).offset().top)
-                }, 1000, 'easeInOutExpo');
-                e.preventDefault();
-            });
-            console.log('Cerrando Slidebar');
-        } // End of use strict
-        toggleMenu();
-
-    </script>
-    @if (ViewBag.ToastSweetAlert != null)
-    {
-
-    }
 
     @RenderSection("Scripts", required: false)
 </body>

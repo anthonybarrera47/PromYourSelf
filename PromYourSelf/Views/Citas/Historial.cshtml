@@ -6,7 +6,6 @@
     string Delete = "Delete";
     string Details = "Details";
     ViewData["Title"] = Titulo;
-    int PageSize = 1;
 }
 
 <h1>Citas</h1>
@@ -19,14 +18,6 @@
                 <button type="submit" class="btn  btn-primary">
                     <i class="fas fa-search" aria-hidden="true">Buscar</i>
                 </button>
-            </div>
-            <div class="form-group">
-                <select asp-for="@PageSize" class="form-control">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                </select>
             </div>
         </div>
 
@@ -50,7 +41,7 @@
                             @Html.SortableHeaderFor(model => model.Estado)
                         </th>
                         <th>
-                            @Html.SortableHeaderFor(model => model.CreadoPor)
+                            Estado
                         </th>
 
                         <th>Acci&oacute;n</th>
@@ -86,14 +77,13 @@
 
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CreadoPor)
+                                @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
+                                {<a v-on:click="aceptarCita(@item.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} &nbsp;<a class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a>
+
                             </td>
-                            
-                                @*<a asp-action="Edit" asp-route-id="@item.CitaID"><i class="fas fa-edit">&nbsp; Editar</i></a> |
-                                    <a asp-action="Details" asp-route-id="@item.CitaID"><i class="fas fa-info-circle">&nbsp;Detalles</i></a> |
-                                    <a asp-action="Delete" asp-route-id="@item.CitaID"><i class="fas fa-trash-alt">&nbsp;Eliminar</i></a>*@
-                                <partial name="_ActionsPartialView" model="new Actions() { Key =item.CitaID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                            
+
+                            <partial name="_ActionsPartialView" model="new Actions() { Key =item.CitaID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
+
                         </tr>
                     }
                 </tbody>

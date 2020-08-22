@@ -89,9 +89,10 @@ namespace PromYourSelf.Controllers
                         {
                             await _repoWrappers.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
 
+      
                             if (isTemporalyPassword)
                                 return RedirectToAction("ResetPassword", "Usuarios", new { user.Id });
-                            else if (model.ReturnUrl.Equals("/"))
+                            else if (model.ReturnUrl == null || model.ReturnUrl.Equals("/"))
                                 return RedirectToAction("DashBoard", "DashBoard");
                             else if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                                 return Redirect(model.ReturnUrl);
