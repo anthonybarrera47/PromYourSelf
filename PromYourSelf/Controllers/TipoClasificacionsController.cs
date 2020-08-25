@@ -42,7 +42,7 @@ namespace PromYourSelf.Controllers
             else
                 Lista = await _Repo.TiposClasificacion.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt());
 
-            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Fecha");
+            var model = PagingList.Create(Lista, PageSize, page, sortExpression, "Descripcion");
             var RoutesValues = new RouteValueDictionary {
                             { "filter", filter},{"Desde",Desde},{"Hasta",Hasta}
             };

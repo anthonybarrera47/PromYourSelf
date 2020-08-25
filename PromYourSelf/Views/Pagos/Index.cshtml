@@ -9,44 +9,52 @@
     //int PageSize = 1;
 }
 
-
 <div class="card shadow">
     <div class="card-body">
         <div class="row">
             <form method="get" asp-action="Index">
 
                 <div class="row">
-                    <div class="form-group">
-                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input name="filter" type="text" class="form-control bg-light border-0 small" value="@Model.RouteValue["Filter"]" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-search fa-sm">&nbsp; Buscar</i>
-                                    </button>
+                    <div class="row col-12">
+                        <div class="form-group">
+                            <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                <div class="input-group">
+                                    <input name="filter" type="text" class="form-control bg-light border-0 small" value="@Model.RouteValue["Filter"]" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm">&nbsp; Buscar</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                <div class="form-group">
+                                    <input name="Desde" type="datetime" class="form-control bg-light border-0 small" value="@Model.RouteValue["Desde"]" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                <div class="form-group">
+                                    <input name="Hasta" type="datetime" class="form-control bg-light border-0 small" value="@Model.RouteValue["Hasta"]" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="form-group">
-                                <input name="Desde" type="datetime" class="form-control bg-light border-0 small" value="@Model.RouteValue["Desde"]" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                            </div>
+                    <div class="row ml-3">
+                        <div class="form-group">
+                            <select id="TipoClasificacion"
+                                    name="TipoClasificacionId" value="@Model.RouteValue["TipoClasificacionId"]"
+                                    class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search select2"
+                                    style="width:100%;height:auto" 
+                                    asp-items="@ViewBag.Clasificaciones"
+                                    data-placeholder="Seleccione el Tipo de Clasifición">
+                            </select>
                         </div>
-                    </div><div class="form-group">
-                        <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="form-group">
-                                <input name="Hasta" type="datetime" class="form-control bg-light border-0 small" value="@Model.RouteValue["Hasta"]" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <a asp-action="Create" class="btn btn-secondary fa-pull-right">Create New</a>
                     </div>
                 </div>
-
-
             </form>
         </div>
         <hr />
@@ -54,3 +62,19 @@
     </div>
 </div>
 
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <link rel="stylesheet" href="~/vendor/select2-bootstrap/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <script src="~/vendor/select2/js/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select2').select2({
+                theme: "bootstrap"
+            })
+        });
+    </script>
+}
