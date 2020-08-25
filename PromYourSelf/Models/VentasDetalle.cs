@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace Models
         [Required(ErrorMessage = "Este campo es requerido")]
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
+		[ForeignKey("ProductoID")]
+		public Productos Producto { get; set; }
 
-    }
+	}
 }

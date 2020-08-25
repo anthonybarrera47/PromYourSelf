@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Newtonsoft.Json;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
@@ -43,8 +44,18 @@ namespace PromYourSelf.Controllers
             return View(model);
         }
 
-        // GET: Productos/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+		// GET: GetProductos
+		public async Task<IActionResult> GetProductos()
+		{		
+			int usuarioId = User.GetUserID().ToInt();
+			List<Productos> lista = await _Repo.Productos.GetListAsync(x => x.UsuarioID == usuarioId);			
+
+			return new JsonResult(JsonConvert.SerializeObject(lista));
+		}
+
+		// GET: Productos/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -76,6 +87,8 @@ namespace PromYourSelf.Controllers
         {
             if (ModelState.IsValid)
             {
+				productos.NegocioID = User.GetEmpresaID().ToInt();
+				productos.UsuarioID = User.GetUserID().ToInt();
                 await _Repo.Productos.SaveAsync(productos);
                 return RedirectToAction(nameof(Index));
             }
@@ -112,7 +125,9 @@ namespace PromYourSelf.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+				productos.NegocioID = User.GetEmpresaID().ToInt();
+				productos.UsuarioID = User.GetUserID().ToInt();
+				try
                 {
                     await _Repo.Productos.ModifiedAsync(productos);
                 }

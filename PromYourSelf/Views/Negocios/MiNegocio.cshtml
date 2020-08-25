@@ -1,97 +1,168 @@
 ﻿@model Models.Negocios
 
 @{
-    ViewData["Title"] = "MiNegocio";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Titulo = "Mi Negocio";
+    ViewData["Title"] = Titulo;
 }
+<link rel='stylesheet prefetch' href='~/css/float-button.css'>
+<div id="app">
+    <form class="form">
+        <input type="hidden" name="negocioId" id="negocioId" value="@Model.NegocioID" />
+        <input type="hidden" name="telefono1" id="telefono1" value="@Model.Telefono1" />
+        <input type="hidden" v-bind="telefono2" name="telefono2" id="telefono2" value="@Model.Telefono2" />
+        <div style="border-color: orangered;" class="card shadow mb-4">
+            <div class="card-header">
+                <h1 class="m-0 font-weight-bold text-primary">@Html.DisplayFor(model => model.NombreComercial)</h1>
+                @Html.DisplayFor(model => model.Direccion) <br /><span class="text-success"> <span v-on:click="copiarTelefono(1)"> <li class="fa fa-phone"></li> &nbsp;@Html.DisplayFor(model => model.Telefono1)</span>  <span v-if="telefono2" v-on:click="copiarTelefono(2)"> <li class="fa fa-phone"> </li>&nbsp;@Html.DisplayFor(model => model.Telefono1)</span>
+            </div>
+            <div class="card-body">
+                <div class="card-columns">
+                    <div class="card p-3 text-center" style="background-color: cadetblue;border-radius: 5px;" v-for="item in productos">
+                        <div class="card-header bg-tertiary ">
+                            @* Titulo de la tarjeta *@
+                            <h2 style="font-weight: bold" class="text-black-50">{{item.Nombre}} - <span class="text-success"> ${{item.Precio}}</span></h2>
 
-<h1>MiNegocio</h1>
+                        </div>
+                        <div class="card-body">
+                            @* Cuerpo de la tarjeta *@
+                            <p class="text-white">
+                                {{item.Descripcion}}
+                            </p>
+                        </div>
+                        <div class="card-footer" v-if="item.TipoProductos == 1">
+                            @* Footer de la tarjeta *@
+                            <a  class="btn btn-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
 
-<div>
-    <h4>Negocios</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UsuarioID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UsuarioID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NombreComercial)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NombreComercial)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono1)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telefono1)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telefono2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CiudadID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CiudadID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitud)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Latitud)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitud)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Longitud)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EsNulo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EsNulo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCreacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCreacion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModificadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModificadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaModificacion)
-        </dd>
-    </dl>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    @*<a href="#" class="float">
+            <i class="fas fa-sms my-float"></i>
+        </a>*@
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<li class="nav-item dropdown no-arrow mx-1">
+
+    <a onclick="openMessage()" href="#" class="float  dropdown-toggle" data-toggle="dropdown" id="enviarMensajeDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-sms my-float"></i>
+    </a>
+    <!-- Dropdown - Messages animated--grow-in-->
+    <div id="menumensaje" class="dropdown-list dropdown-menu dropdown-menu-right shadow" aria-labelledby="enviarMensajeDropdown">
+        <h6 class="dropdown-header">
+            Message Center
+        </h6>
+        @await Component.InvokeAsync("Chat", new { usuarioId = User.GetUserID().ToInt(), Model.NegocioID })
+    </div>
+</li>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="~/vendor/jquery/jquery.min.js"></script>
+
+<script>
+$( document ).ready(function() {
+    console.log("ready!");
+ $("#menumensaje").click(function (e) {
+        console.log('menumensaje clicked', e);
+        e.stopPropagation();
+    });
+});
+
+    function openMessage() {
+
+        $(this).parent().toggleClass('open');
+
+    };
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            negocio: {},
+            productos: [],
+            telefono2: "",
+            buscarPor: "todo",
+            filtro: "",
+            porTodo: false,
+            porNegocios: false,
+            porProductos: false,
+            btn_text: "Buscar...."
+        },
+        methods: {
+            getAll: function () {
+                console.log('buscarPor', app.buscarPor);
+                if (app.buscarPor == "todo") {
+                    app.getNegocios();
+                    app.getProductos();
+                } else if (app.buscarPor == "negocios") {
+                    app.getNegocios();
+                } else {
+                    app.getProductos();
+                }
+            },
+            copiarTelefono(idx) {
+                let telefono = "";
+                if (idx == 1) {
+                    telefono = document.getElementById('telefono1').value;
+                } else {
+                    telefono = document.getElementById('telefono2').value;
+                }
+
+                let blob = new Blob([telefono], { type: 'text/plain' });
+                let item = new ClipboardItem({ 'text/plain': blob });
+                navigator.clipboard.write([item]).then(function () {
+                    ToastSweetAlert('success', `${telefono} copiado!`);
+                }, function (err) {
+                    console.log('Ha ocurrido un error intentando copiar el telefono', err);
+                });
+
+            },
+
+
+            getProductos: function () {
+                let negocioId = document.getElementById('negocioId').value;
+                axios.get("https://localhost:44386" + "/Negocios/GetProductosByNegocio" + `?negocioId=${negocioId}&buscarpor=${app.buscarPor}`).then(response => {
+                    app.productos = [];
+                    let res = JSON.parse(response.data);
+                    console.log('res', res);
+                    for (let i = 0; i < res.length; i++) {
+                        app.productos.push(res[i]);
+                    }
+
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                    alert('Ha ocurrido un error');
+                })
+            },
+
+            change(event) {
+                console.log('checkbox changed', app.porTodo, app.porNegocios, app.porProductos);
+                if (app.porTodo || (app.porNegocios && app.porProductos)) {
+                    app.buscarPor = "todo";
+                    app.porNegocios = false;
+                    app.porProductos = false;
+                } else if (app.porNegocios) {
+                    app.buscarPor = "negocios";
+                    app.porTodo = false;
+                    app.porProductos = false;
+                } else {
+                    app.buscarPor = "productos";
+                    app.porTodo = false;
+                    app.porNegocios = false;
+                }
+            }
+
+        }
+
+    });
+
+    app.getProductos();
+</script>

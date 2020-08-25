@@ -25,41 +25,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-start">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label class="control-label">Productos</label>
-                            <select id="Cliente" asp-for="UsuarioClienteID" asp-items="@(new SelectList(ViewBag.Clientes, "Id", "Nombres"))"
-                                    class="form-control select2"
-                                    style="width:100%;"
-                                    data-placeholder="Seleccione el Cliente">
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-3">
                         <div class="form-group">
                             <label class="control-label">Productos</label>
-                            <select id="Producto" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
-                                    class="form-control select2"
-                                    style="width:100%;"
-                                    data-placeholder="Seleccione el producto">
+                            @*<select id="Producto" v-on:change="verCitaId" asp-items="@(new SelectList(ViewBag.Productos, "ProductoID", "Nombre"))"
+                            class="form-control select2"
+                            style="width:100%;"
+                            data-placeholder="Seleccione el producto">
+                    </select>*@
+                            <select class="form-control select2" style="width:100%;" onchange="app_ventas.onChange(this)">
+                                <option v-for="c in productos_select" v-bind:value="c.value">{{c.text}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="form-group">
                             <label id="CantidadLB" class="control-label"> Cantidad</label>
-                            <input for="CantidadLB" class="form-control" type="text" id="Cantidad" />
+                            <input for="CantidadLB" v-model="cantidad" class="form-control" type="text" id="Cantidad" />
                         </div>
                     </div>
 
                     <div class="col-3 ">
                         <label id="PrecioLB" class="control-label">Precio</label>
                         <div class="form-group form-inline">
-                            <input for="PrecioLB" class="form-control" type="number" id="Precio" />
-                            <input value="Agregar" type="button" class="btn btn-primary" onclick="AgregaConcepto(); return false;" />
+                            <input for="PrecioLB" readonly v-model="precio" class="form-control" type="number" id="Precio" />
+                            @*<input value="Agregar" type="button" class="btn btn-primary" onclick="AgregaConcepto(); return false;" />*@
+                            <a class="btn btn-primary text-white" v-on:click="agregar_detalle()">Agregar</a>
                         </div>
                     </div>
                 </div>
@@ -69,25 +61,43 @@
                         <table class="table table-hover" id="tablaConceptos">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>Cantidad</th>
                                     <th>Producto</th>
+                                    <th>Cantidad</th>
                                     <th>Precio unitario</th>
                                     <th>Total</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                <tr v-for="(producto, index) in productos_detalle">
+                                    <td scope="row">{{producto.Nombre}}</td>
+                                    <th>{{producto.Cantidad}}</th>
+                                    <td>{{producto.Precio}}</td>
+                                    <td>{{producto.Total}}</td>
+                                    <td><a class="btn btn-danger text-white" v-on:click="eliminar_detalle(producto)">Eliminar</a></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
 
                 </div>
+
+                <div id="venta_detalle">
+                    <div v-for="(producto, index) in productos_detalle">
+                        <input type="hidden" :name="'Details[' + index + '].ProductoID'" v-model="producto.ProductoID" />
+                        <input type="hidden" :name="'Details[' + index + '].Cantidad'" v-model="producto.Cantidad" />
+                        <input type="hidden" :name="'Details[' + index + '].Precio'" v-model="producto.Precio" />
+                    </div>
+
+                </div>
                 <div class="row justify-content-end">
-                    <label>Total:  $<bold id="total"></bold></label>
+                    @*<label>Total:  $<bold id="total"></bold></label>*@
                 </div>
                 <div class="row justify-content-end">
                     <div class="col-3">
                         <div class="form-group">
                             <label asp-for="Monto" class="control-label"></label>
-                            <input asp-for="Monto" id="Monto" style="text-align:right" disabled readonly class="form-control" />
+                            <input asp-for="Monto" id="Monto" v-model="total" style="text-align:right" disabled readonly class="form-control" />
                             <span asp-validation-for="Monto" class="text-danger"></span>
                         </div>
                     </div>
@@ -95,18 +105,22 @@
                 <div class="row">
                     <div class="col-6">
                         @*<div class="form-group">
-                                <label asp-for="CitaID" class="control-label"></label>
-                                <input asp-for="CitaID" class="form-control" />
-                                <span asp-validation-for="CitaID" class="text-danger"></span>
-                            </div>*@
-                           @*todo: obtener el valor seleccionado para guardar la venta relacionada con la cita*@
-                        <select id="select_citas"
-                                asp-for="CitaID"
-                                class="form-control select2"
-                                style="width:80%;height:auto"
-                                data-placeholder="Seleccione la cita">
+                    <label asp-for="CitaID" class="control-label"></label>
+                    <input asp-for="CitaID" class="form-control" />
+                    <span asp-validation-for="CitaID" class="text-danger"></span>
+                </div>*@
+                        @*todo: obtener el valor seleccionado para guardar la venta relacionada con la cita*@
+                        @*<select id="select_citas"
+                        class="form-control select2"
+                        style="width:80%;height:auto"
+                        v-model="citaId"
+                        data-placeholder="Seleccione la cita">
+                    <option v-for="c in citas_pendientes" v-bind:value="c.value">{{c.text}}</option>
+                </select>*@
+                        <select class="form-control select2" style="width:100%;" onchange="app_ventas.onChangeCita(this)" v-model="citaId">
                             <option v-for="c in citas_pendientes" v-bind:value="c.value">{{c.text}}</option>
                         </select>
+                        <input type="hidden" name="CitaID" v-model="citaId" />
                     </div>
                 </div>
             </div>
@@ -143,10 +157,9 @@
         //let Producto = document.getElementById("Producto").val();
         let Producto = $('#Producto :selected').text();
         let id = $('#Producto :selected').val();
-        let itemExists = list.find(el => el.id == parseInt(id))
+        let itemExists = list.find(el => el.id == parseInt(id));
         if (!itemExists) {
             list.push({ id: id, Producto: Producto, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
-
         } else {
             //mostrar mensaje de error
             alert("Este producto ya esta agregado.");
@@ -209,8 +222,8 @@
         DivProductos.appendChild(HiddenPrecio);
         DivProductos.appendChild(HiddenProductoId);
 
-        document.getElementById("Cantidad").value = "";
-        document.getElementById("Precio").value = "";
+        //document.getElementById("Cantidad").value = "";
+        //document.getElementById("Precio").value = "";
 
         num++;
     }
@@ -222,13 +235,53 @@
         data: {
             citas_pendientes: [],
             default_value: "",
-            mensajes: []
+            mensajes: [],
+            citaId: 0,
+            productos_select: [],
+            productos: [],
+            productos_detalle: [],
+            productoId: 0,
+            precio: 0,
+            cantidad: 0,
+            total: 0
 
         },
         methods: {
             selectChange(e) {
                 console.log('cambio', e);
             },
+            calcular_total() {
+                app_ventas.total = app_ventas.productos_detalle.reduce((a, b) => a + b.Cantidad * b.Precio, 0);
+            },
+            agregar_detalle() {
+                console.log('productoid en agregar detalle', app_ventas.productoId);
+                let index = app_ventas.productos_detalle.findIndex(x => x.ProductoID == app_ventas.productoId);
+                if (index >= 0) {
+                    app_ventas.productos_detalle[index].Cantidad += parseInt(app_ventas.cantidad);
+                } else {
+                    let producto = app_ventas.productos.filter(x => x.ProductoID == app_ventas.productoId)[0];
+                    producto.Total = parseFloat(app_ventas.precio) * parseInt(app_ventas.cantidad);
+                    producto.Cantidad = app_ventas.cantidad;
+                    app_ventas.productos_detalle.push(producto);
+                }
+                app_ventas.calcular_total();
+
+            },
+            eliminar_detalle(producto) {
+                console.log('Eliminando producto detalle', producto);
+                app_ventas.productos_detalle.splice(app_ventas.productos_detalle.indexOf(el => el.ProductoID == producto.ProductoID), 1);
+                app_ventas.calcular_total();
+            },
+            onChange: function (event) {
+                console.log('producto id en change', event.value, "mode id", app_ventas.productoId);
+                app_ventas.precio = app_ventas.productos.filter(x => x.ProductoID == parseInt(event.value))[0].Precio;
+                app_ventas.cantidad = 1;
+                app_ventas.productoId = event.value;
+            },
+            onChangeCita: function (event) {
+                app_ventas.citaId = event.value;
+            },
+            verCitaId() { console.log("citaId", app_ventas.citaId); alert('valor de citaid: ' + app_ventas.citaId); },
             getCitasPendientes: function () {
                 axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
                     app_ventas.citas_pendientes = [];
@@ -248,9 +301,38 @@
 
                     });
                     for (let i = 0; i < Lista.length; i++) {
+                        //if (i == 0) app_ventas.citaId = Lista[i].value;
                         app_ventas.citas_pendientes.push(Lista[i]);
                     }
                     console.log('res Lista', Lista);
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                    alert('Ha ocurrido un error');
+                })
+
+            },
+            getProductos: function () {
+                axios.get("https://localhost:44386" + "/Productos/GetProductos").then(response => {
+                    app_ventas.productos = [];
+                    app_ventas.productos_select = [];
+                    let res = JSON.parse(response.data);
+                    let Lista = res.map(function (x) {
+                        return {
+                            value: x.ProductoID,
+                            text: x.Nombre,
+                        }
+
+                    });
+                    for (let i = 0; i < Lista.length; i++) {
+                        if (i == 0) {
+                            app_ventas.productoId = Lista[i].value;
+                            app_ventas.cantidad = 1;
+                            app_ventas.precio = res[i].Precio;
+                        }
+                        app_ventas.productos_select.push(Lista[i]);
+                        app_ventas.productos.push(res[i]);
+                    }
+                    console.log('res Lista Productos', Lista);
                 }).catch(err => {
                     console.log('ha ocurrido un error', err);
                     alert('Ha ocurrido un error');
@@ -261,6 +343,7 @@
         }
     });
     app_ventas.getCitasPendientes();
+    app_ventas.getProductos();
 
 </script>
 
@@ -269,7 +352,9 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/vendor/select2/js/select2.full.js"></script>
+    <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="~/vendor/select2-bootstrap/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <script src="~/vendor/select2/js/select2.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {

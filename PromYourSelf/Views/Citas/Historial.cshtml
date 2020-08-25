@@ -66,13 +66,14 @@
                                 <span v-if="item.cita.Estado == 2" class="bg-warning text-white"> En Proceso </span>
                                 <span v-if="item.cita.Estado == 3" class="bg-success text-white"> Terminada </span>
                                 <span v-if="item.cita.Estado == 4" class="bg-danger text-white"> Cancelada </span>
+                                <span v-if="item.cita.Estado == 5" class="bg-success text-white"> Facturada </span>
 
 
 
                             </td>
                             <td>
                                 @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                                {<a v-if="item.cita.Estado == 0" v-on:click="aceptarCita(item.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 2" v-on:click="aceptarCita(item.cita.CitaID, 3)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 1" v-on:click="aceptarCita(item.cita.CitaID, 2)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} &nbsp;<a v-if="item.cita.Estado != 3 && item.cita.Estado != 4" v-on:click="aceptarCita(item.cita.CitaID, 4)" class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a><a v-if="item.cita.Estado == 3 && item.cita.Estado != 5" v-bind:href="'/Ventas/Create?citaId='+ item.cita.CitaID" class="btn btn-sm btn-success text-white"><i class="fas fa-file-invoice-dollar"></i></a>
+                                {<a v-if="item.cita.Estado == 0" v-on:click="aceptarCita(item.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 2" v-on:click="aceptarCita(item.cita.CitaID, 3)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 1" v-on:click="aceptarCita(item.cita.CitaID, 2)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} &nbsp;<a v-if="item.cita.Estado != 3 && item.cita.Estado != 4 && item.cita.Estado != 5" v-on:click="aceptarCita(item.cita.CitaID, 4)" class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a><a v-if="item.cita.Estado == 3 && item.cita.Estado != 5" v-bind:href="'/Ventas/Create?citaId='+ item.cita.CitaID" class="btn btn-sm btn-success text-white"><i class="fas fa-file-invoice-dollar"></i></a>
                             </td>
 
 

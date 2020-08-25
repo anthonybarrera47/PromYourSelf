@@ -12,6 +12,7 @@ using Models;
 using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
+using PromYourSelf.Utils;
 using PromYourSelf.ViewModels;
 using ReflectionIT.Mvc.Paging;
 
@@ -34,9 +35,9 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FechaCreacion", int PageSize = 5)
         {
             if (!string.IsNullOrWhiteSpace(filter))
-                Lista = await _Repo.Ventas.GetListAsync(x => x.FechaCreacion.ToString().Contains(filter.ToUpper()));
+                Lista = await _Repo.Ventas.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt() && x.FechaCreacion.ToString().Contains(filter.ToUpper()));
             else
-                Lista = await _Repo.Ventas.GetListAsync(x => true);
+                Lista = await _Repo.Ventas.GetListAsync(x => x.UsuarioID == User.GetUserID().ToInt());
 
             var model = PagingList.Create(Lista, PageSize, page, sortExpression, "FechaCreacion");
             model.RouteValue = new RouteValueDictionary {
@@ -85,7 +86,16 @@ namespace PromYourSelf.Controllers
             //calcular
             //guardar
             if (ModelState.IsValid)
-            {
+            {			
+				ventas.UsuarioID = User.GetUserID().ToInt();
+				ventas.NegocioID = User.GetEmpresaID().ToInt();
+				ventas.Monto = ventas.Details.Sum(x => x.Precio * x.Cantidad);
+				if (ventas.CitaID > 0)
+				{
+					Citas cita = await _Repo.Citas.FindAsync(ventas.CitaID);
+					cita.Estado = EstadoCita.Facturado;
+					await _Repo.Citas.ModifiedAsync(cita);
+				}
 
                 await _Repo.Ventas.SaveAsync(ventas);
                 return RedirectToAction(nameof(Index));
@@ -124,8 +134,11 @@ namespace PromYourSelf.Controllers
             }
 
             if (ModelState.IsValid)
-            {
-                try
+            {				
+				ventas.UsuarioID = User.GetUserID().ToInt();
+				ventas.NegocioID = User.GetEmpresaID().ToInt();
+				ventas.Monto = ventas.Details.Sum(x => x.Precio * x.Cantidad);
+				try
                 {
                     await _Repo.Ventas.ModifiedAsync(ventas);
                 }

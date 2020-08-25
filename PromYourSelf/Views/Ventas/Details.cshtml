@@ -3,58 +3,49 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div id="app_venta_detalle">
+    <div class="card">
+        <div class="card-header">                      
+            <div class="row">
+                <div class="col-10">
+                    <h2 class="card-title">Detalle de Venta</h2>
+                </div>
+                <div class="col-2"><p class="pull-right">@Html.DisplayFor(model => model.Fecha)</p></div>
+            </div>      
+            <h2 class="text-success" style="font-weight: bold"> @Model.Monto.ToString(("C"))</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int count = 0;
+                        foreach (var detalle in Model.Details)
+                        {
+                            count++;
+                            <tr>
+                                <th scope="row">@count</th>
+                                <td>@detalle.Producto.Nombre</td>
+                                <td>@detalle.Cantidad</td>
+                                <td>@detalle.Precio</td>
+                                <td>@(detalle.Cantidad * detalle.Precio)</td>
+                            </tr>
+                        }}
 
-<h1>Details</h1>
-
-<div>
-    <h4>Ventas</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fecha)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fecha)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Monto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Monto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CitaID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CitaID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCreacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCreacion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModificadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModificadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaModificacion)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.VentaID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                </tbody>                
+            </table>
+        </div>
+    </div> 
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.VentaID">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
