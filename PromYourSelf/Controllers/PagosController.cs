@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DNTBreadCrumb.Core;
+using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -22,6 +23,7 @@ namespace PromYourSelf.Controllers
     {
         private readonly IRepoWrapper _Repo;
         public static List<Pagos> Lista;
+        public bool IsChecked { get; set; }
         public PagosController(IRepoWrapper RepoEmpleado)
         {
             _Repo = RepoEmpleado;
@@ -29,20 +31,25 @@ namespace PromYourSelf.Controllers
 
         // GET: Pagos
         [BreadCrumb(Title = "Listado de Pagos", Order = 1)]
-        public async Task<IActionResult> Index(string filter, string Desde, string Hasta, int page = 1, string sortExpression = "Monto")
+        public async Task<IActionResult> Index(string filter, string Desde, string Hasta, bool TipoClasificacion, int page = 1, string sortExpression = "Monto", int TipoClasificacionId = -1)
         {
             int PageSize = 10;
-            var Modelo = await FillIndex(filter,Desde,Hasta, page, sortExpression, PageSize);
+            var Modelo = await FillIndex(filter, Desde, Hasta, TipoClasificacion, page, sortExpression, PageSize, TipoClasificacionId);
             return View(Modelo);
         }
-        public async Task<ActionResult> PartialIndex(string filter, string Desde, string Hasta, int page = 1, string sortExpression = "Monto")
+        public async Task<ActionResult> PartialIndex(string filter, string Desde, string Hasta, bool TipoClasificacion, int page = 1, string sortExpression = "Monto", int TipoClasificacionId = -1)
         {
             int PageSize = 10;
-            var Modelo = await FillIndex(filter, Desde, Hasta, page, sortExpression,PageSize);
+            var Modelo = await FillIndex(filter, Desde, Hasta, TipoClasificacion, page, sortExpression, PageSize, TipoClasificacionId);
             return PartialView("Index", Modelo);
         }
-        public async Task<PagingList<Pagos>> FillIndex(string filter,string Desde,string Hasta, int page = 1, string sortExpression = "Monto", int PageSize = 10)
+        public async Task<PagingList<Pagos>> FillIndex(string filter, string Desde, string Hasta, bool TipoClasificacion, int page = 1, string sortExpression = "Monto", int PageSize = 10, int TipoClasificacionId = -1)
         {
+            var ListaClasificaciones = await _Repo.TiposClasificacion.GetListAsync(x => true);
+            ListaClasificaciones.Insert(0, new Models.TipoClasificacion() { TipoClasificacionID = 0, Descripcion = "Todos" });
+
+            ViewBag.Clasificaciones = new SelectList(ListaClasificaciones, "TipoClasificacionID", "Descripcion");
+
             var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
@@ -198,7 +205,7 @@ namespace PromYourSelf.Controllers
         }
         public async Task<JsonResult> GetClasificaciones()
         {
-            var Lista = await _Repo.TiposClasificacion.GetListAsync(x => true);   
+            var Lista = await _Repo.TiposClasificacion.GetListAsync(x => true);
             return new JsonResult(JsonConvert.SerializeObject(Lista));
         }
     }
