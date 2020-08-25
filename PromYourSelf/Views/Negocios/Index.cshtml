@@ -53,25 +53,25 @@
     <br />
     <h4 class="text-center">Negocios recomendados</h4>
     @*<hr />
-    <div class="card-columns mt-5">
-        @foreach (var item in Model)
-        {
-            <div class="card p-3 text-center border-primary">
-                <div class="card-header bg-tertiary ">                    
-                    <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
+        <div class="card-columns mt-5">
+            @foreach (var item in Model)
+            {
+                <div class="card p-3 text-center border-primary">
+                    <div class="card-header bg-tertiary ">
+                        <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
 
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            @Html.DisplayFor(modelItem => item.Direccion)
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
+                    </div>
                 </div>
-                <div class="card-body">                    
-                    <p>
-                        @Html.DisplayFor(modelItem => item.Direccion)
-                    </p>
-                </div>
-                <div class="card-footer">                    
-                    <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
-                </div>
-            </div>
-        }
-    </div>*@
+            }
+        </div>*@
     <hr />
     <div class="container-fluid">
         <div class="d-flex flex-row flex-nowrap overflow-auto card-columns">
@@ -96,11 +96,21 @@
                         </div>
                     </div>
                 </div>
-            }           
+            }
         </div>
     </div>
-<hr />
     <hr />
+    <hr />
+    <p>
+        <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Ver Mapa <i class="fas fa-map-marked-alt"></i>
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <div id="mapa" style="width: 100%;height: 600px;"></div>
+        </div>
+    </div>
     <h4 class="text-center">Productos</h4>
     <hr />
     <div class="card-columns">
@@ -123,141 +133,9 @@
                 <a class="btn btn-outline-primary btn-block" v-bind:href="'https://localhost:44386/Negocios/Details/'+ item.NegocioID">Ver Negocio</a>
             </div>
         </div>
-        </div>
-
-
-        <div id="mapa" style="width: 800px;height: 600px;"></div>
-
-
-        @*<div class="card shadow">
-            <div class="card-body">
-
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>
-                                    @Html.SortableHeaderFor(model => model.NombreComercial)
-                                </th>
-                                <th>
-                                    @Html.SortableHeaderFor(model => model.Direccion)
-                                </th>
-                                <th>
-                                    @Html.SortableHeaderFor(model => model.Telefono1)
-                                </th>
-                                <th>
-                                    @Html.SortableHeaderFor(model => model.Telefono2)
-                                </th>
-                                <th>
-                                    @Html.SortableHeaderFor(model => model.Latitud)
-                                </th>
-                                <th>
-                                    @Html.SortableHeaderFor(model => model.Longitud)
-                                </th>
-                                <th>Acci&oacute;n</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NombreComercial)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Direccion)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Telefono1)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Telefono2)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Latitud)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Longitud)
-                                    </td>
-                                    <td>
-                                        <partial name="_ActionsPartialView" model="new Actions() { Key =item.NegocioID,EditAction=Edit,DetailsAction=Details,DeleteAction=Delete  }" />
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <partial name="_PaginationPartialView" model="this.Model" />
-                </div>
-            </div>
-        </div>*@
     </div>
+</div>
 
-<script>
-    let map, infoWindow;
-
-    function initMap() {
-        return;
-        map = new google.maps.Map(document.getElementById("mapa"), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 15
-        });
-        infoWindow = new google.maps.InfoWindow();
-
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    const pos2 = {
-                        lat: 19.210251,
-                        lng: -70.356858
-                    };
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent("<h3>Esta es tu ubicación. Localiza los negocios cercanos.</h3><br><input class='form-control' placeholder='Introduzca un servicio'><br><a class='btn text-white btn-primary btn-block'><i class='fa fa-search'></i></a><br><a class='btn text-white btn-primary btn-block'>Visitar Negocio</a>");
-                    //infoWindow.open(map);
-                    console.log('pos', pos);
-                    var marker = new google.maps.Marker({
-                        position: pos,
-                        map: map,
-                        title: 'Información del Negocio'
-                    });
-                    marker.addListener('click', function () {
-                        infoWindow.open(map, marker);
-                    });
-
-                    var marker2 = new google.maps.Marker({
-                        position: pos2,
-                        map: map,
-                        title: 'Información del Negocio'
-                    });
-                    marker2.addListener('click', function () {
-                        infoWindow.open(map, marker2);
-                    });
-                    map.setCenter(pos);
-                },
-                () => {
-                    handleLocationError(true, infoWindow, map.getCenter());
-                }
-            );
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
-        }
-    }
-
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(
-            browserHasGeolocation
-                ? "Error: The Geolocation service failed."
-                : "Error: Your browser doesn't support geolocation."
-        );
-        infoWindow.open(map);
-    }
-</script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -308,7 +186,7 @@
                     app_negocios.productos = [];
                     let res = JSON.parse(response.data);
                     console.log('res', res);
-                    for (let i = 0; i < res.length; i++) {                        
+                    for (let i = 0; i < res.length; i++) {
                         app_negocios.productos.push(res[i]);
                     }
 
@@ -340,4 +218,75 @@
     });
 
     app_negocios.getAll();
+</script>
+
+<script>
+    let map, infoWindow;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("mapa"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 15
+        });
+        infoWindow = new google.maps.InfoWindow();
+        console.log("negocios de app negocios", app_negocios.negocios);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    for (let negocio of app_negocios.negocios) {
+                        let pos_negocio = {
+                            lat: parseFloat(negocio.Latitud),
+                            lng: parseFloat(negocio.Longitud)
+                        };
+                        infoWindow.setPosition(pos_negocio);
+                        infoWindow.setContent(`<h3>${negocio.Nombre} <br> ${negocio.Descripcion}.</h3><br><input class='form-control' placeholder='Introduzca un servicio'><br><a class='btn text-white btn-primary btn-block'><i class='fa fa-search'></i></a><br><a class='btn text-white btn-primary btn-block'>Visitar Negocio</a>`);
+                        var marker_negocio = new google.maps.Marker({
+                            position: pos_negocio,
+                            map: map,
+                            title: 'Información del Negocio'
+                        });
+                        marker_negocio.addListener('click', function () {
+                            infoWindow.open(map, marker_negocio);
+                        });
+                    }
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent("<h3>Esta es tu ubicación. Localiza los negocios cercanos.</h3><br><input class='form-control' placeholder='Introduzca un servicio'><br><a class='btn text-white btn-primary btn-block'><i class='fa fa-search'></i></a><br><a class='btn text-white btn-primary btn-block'>Visitar Negocio</a>");
+                    //infoWindow.open(map);
+                    console.log('pos', pos);
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: 'Información del Negocio'
+                    });
+                    marker.addListener('click', function () {
+                        infoWindow.open(map, marker);
+                    });
+                   
+                    map.setCenter(pos);
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation
+                ? "Error: The Geolocation service failed."
+                : "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(map);
+    }
+    initMap();
 </script>
