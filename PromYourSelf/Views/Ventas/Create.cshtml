@@ -105,18 +105,19 @@
                 <div class="row">
                     <div class="col-6">
                         @*<div class="form-group">
-                    <label asp-for="CitaID" class="control-label"></label>
-                    <input asp-for="CitaID" class="form-control" />
-                    <span asp-validation-for="CitaID" class="text-danger"></span>
-                </div>*@
+            <label asp-for="CitaID" class="control-label"></label>
+            <input asp-for="CitaID" class="form-control" />
+            <span asp-validation-for="CitaID" class="text-danger"></span>
+        </div>*@
                         @*todo: obtener el valor seleccionado para guardar la venta relacionada con la cita*@
                         @*<select id="select_citas"
-                        class="form-control select2"
-                        style="width:80%;height:auto"
-                        v-model="citaId"
-                        data-placeholder="Seleccione la cita">
-                    <option v-for="c in citas_pendientes" v-bind:value="c.value">{{c.text}}</option>
-                </select>*@
+                class="form-control select2"
+                style="width:80%;height:auto"
+                v-model="citaId"
+                data-placeholder="Seleccione la cita">
+            <option v-for="c in citas_pendientes" v-bind:value="c.value">{{c.text}}</option>
+        </select>*@
+                        <label asp-for="CitaID" class="control-label">Cita</label>
                         <select class="form-control select2" style="width:100%;" onchange="app_ventas.onChangeCita(this)" v-model="citaId">
                             <option v-for="c in citas_pendientes" v-bind:value="c.value">{{c.text}}</option>
                         </select>
@@ -352,13 +353,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
     <link rel="stylesheet" href="~/vendor/select2-bootstrap/select2-bootstrap-theme/select2-bootstrap.min.css">
     <script src="~/vendor/select2/js/select2.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.select2').select2({ width: 'resolve', theme: "classic" });
+            $('.select2').select2({ width: 'resolve', theme: "bootstrap" });
         });
     </script>
 }

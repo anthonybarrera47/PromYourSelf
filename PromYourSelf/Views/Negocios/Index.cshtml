@@ -4,7 +4,6 @@
     string Titulo = "Listado  de Negocios";
     ViewData["Title"] = Titulo;
     string Details = "Details";
-    int PageSize = 1;
 }
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cad1LFmApInoTY5wF_qwK_hQHnIOWfo&callback=initMap"
@@ -35,16 +34,6 @@
                         <input v-on:change="change($event)" v-model="porProductos" type="checkbox" class="custom-control-input" id="customSwitch3">
                         <label class="custom-control-label" for="customSwitch3">Servicios</label>
                     </div>
-
-
-                </div>
-                <div class="form-group">
-                    <select asp-for="@PageSize" class="form-control">
-                        <option value="5" selected>5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                    </select>
                 </div>
             </div>
 

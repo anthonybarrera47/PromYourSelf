@@ -30,11 +30,11 @@
             </div>
             <div class="row">
                 <div class="col-6 mt-1">
+                    <label for="TipoClasificacion" class="control-label">Tipo de Clasificaci&oacute;n</label>
                     <div class="input-group">
-                        <label for="TipoClasificacion" class="control-label">Tipo de Clasificaci&oacute;n</label>
                         <select id="TipoClasificacion"
                                 class="form-control select2"
-                                style="width:80%;height:auto"
+                                style="width:95%;height:auto"
                                 data-placeholder="Seleccione el Tipo de Clasifición">
                             <option value="0" v-for="c in ListaClasificaciones" v-bind:value="c.value">{{c.text}}</option>
                         </select>

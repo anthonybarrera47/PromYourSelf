@@ -168,13 +168,14 @@ namespace PromYourSelf.Controllers
 		{
 			if (id != negocios.NegocioID)
 			{
-				return NotFound();
+				return View("NotFoundView");
 			}
 
 			if (ModelState.IsValid)
 			{
 				try
 				{
+					negocios.UsuarioID = User.GetUserID().ToInt();
 					await _Repo.Negocios.ModifiedAsync(negocios);
 				}
 				catch (DbUpdateConcurrencyException)

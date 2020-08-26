@@ -7,6 +7,5 @@
         <div class="error mx-auto" data-text="404">404</div>
         <p class="lead text-gray-800 mb-5">Página no encontrada</p>
         <p class="text-gray-500 mb-0">Esta página no ha sido encontrada.</p>
-        <a href="index.html">;</a>
-        @Html.ActionLink($"{(char)27}Volver al Menu principal", "DashBoard", "DashBoardController", new { id = "123" }, null);
+        <i class="fas fa-arrow-left"></i>@Html.ActionLink($"Volver al Menu principal", "DashBoard", "DashBoardController");
     </div>
