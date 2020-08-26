@@ -277,31 +277,11 @@
                                         </div>
                                         <div class="ml-auto">
                                             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                                            {<a v-on:click="aceptarCita(cita.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} &nbsp;<a class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a>
+                                            {<a v-on:click="aceptarCita(cita.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} 
+                                            &nbsp;
+                                            <a class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a>
                                         </div>
                                     </div>
-                                    @*<a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-success">
-                                                    <i class="fas fa-donate text-white"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">December 7, 2019</div>
-                                                $290.29 has been deposited into your account!
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-warning">
-                                                    <i class="fas fa-exclamation-triangle text-white"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">December 2, 2019</div>
-                                                Spending Alert: We've noticed unusually high spending for your account.
-                                            </div>
-                                        </a>*@
                                     <a class="dropdown-item text-center small text-gray-500" asp-controller="citas" asp-action="historial">Ver Historial de Citas</a>
                                 </div>
 

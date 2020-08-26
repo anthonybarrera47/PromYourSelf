@@ -3,7 +3,7 @@
 @{
     Layout = null;
 }
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+<link rel='stylesheet prefetch' href='~/css/reset.min.css'>
 <link rel='stylesheet prefetch' href='~/css/chat.css'>
 
 
@@ -22,20 +22,6 @@
             <div class="row gutters">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                     <h5 class="title">Mensajes</h5>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <div class="daterange-container">
-                        <div class="date-range">
-                            <div id="reportrange" class="form-inline">
-                                @*<i class="fa fa-calendar cal"></i>
-                                    <span class="range-text">
-
-                                    <i class="fa fa-chevron-down arrow"></i>*@
-                                <input name="Desde" type="date" class="form-control bg-light border-0 small col-6" value="@DateTime.Now" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                <input name="Desde" type="date" class="form-control bg-light border-0 small col-6" value="@DateTime.Now" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
