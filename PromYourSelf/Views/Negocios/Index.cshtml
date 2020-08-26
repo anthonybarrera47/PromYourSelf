@@ -11,7 +11,7 @@
 <div id="app-negocios">
     <form method="get" asp-action="Index">
         <div class="d-flex justify-content-center">
-            <div class="row col-3">
+            <div class="row">
                 <div class="input-group">
                     <input name="filter" class="form-control" placeholder="Filtro"
                            v-model="filtro" />
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <div class="row col-3 mt-3">
+            <div class="row mt-3">
                 <div class="custom-control custom-switch ml-1">
                     <input name="todo" v-on:change="change($event)" v-model="porTodo" type="checkbox" class="custom-control-input form-control-lg" id="customSwitch1">
                     <label class="custom-control-label" for="customSwitch1">Todo</label>
@@ -45,26 +45,24 @@
     <div class="card">
         <div class="card-header text-center text-lg"><strong>Negocios recomendados</strong></div>
         <div class="card-body">
-            <div class="row">
+            <div class="card-deck">
                 @foreach (var item in Model)
                 {
-                    <div class="col-4">
-                        <div class="card">
-                            <div class="card-header text-center bg-tertiary ">
-                                @* Titulo de la tarjeta *@
-                                <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
+                    <div class="card">
+                        <div class="card-header text-center bg-tertiary ">
+                            @* Titulo de la tarjeta *@
+                            <strong> @Html.DisplayFor(modelItem => item.NombreComercial)</strong>
 
-                            </div>
-                            <div class="card-body">
-                                @* Cuerpo de la tarjeta *@
-                                <p class="text-center">
-                                    @Html.DisplayFor(modelItem => item.Direccion)
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                @* Footer de la tarjeta *@
-                                <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
-                            </div>
+                        </div>
+                        <div class="card-body">
+                            @* Cuerpo de la tarjeta *@
+                            <p class="text-center">
+                                @Html.DisplayFor(modelItem => item.Direccion)
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            @* Footer de la tarjeta *@
+                            <a class="btn btn-outline-primary btn-block" asp-action="@Details" asp-route-id="@item.NegocioID">Ver Negocio</a>
                         </div>
                     </div>
 
