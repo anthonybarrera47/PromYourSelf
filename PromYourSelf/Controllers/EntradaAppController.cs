@@ -104,7 +104,7 @@ namespace PromYourSelf.Controllers
                                     return RedirectToAction("DashBoardEmpresarial", "DashBoard");
                                 }
                                 else
-                                    return RedirectToAction("DashBoard", "DashBoard");
+                                    return RedirectToAction("Index", "Negocios");
                             }
                         }
                         else

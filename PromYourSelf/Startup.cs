@@ -113,7 +113,7 @@ namespace PromYourSelf
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=DashBoard}/{action=DashBoard}/{id?}");
+                    template: "{controller=Negocios}/{action=Index}/{id?}");
             });
 
             app.UseSignalR(routes =>

@@ -37,9 +37,10 @@
 
 </head>
 <body id="page-top">
-
+     
     <div id="wrapper">
-
+        <input type="hidden" id="_posicionId" v-model="posicion" value="@User.GetPosicion().ToInt()"  />
+        <input type="hidden" id="_usuarioId" v-model="usuarioId" value="@User.GetUserID().ToInt()" />
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -341,7 +342,7 @@
                                         </div>
                                     </a>
                                     <h3 class="text-center" v-if="mensajes.length <= 0">No hay mensajes!</h3>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                                    <a class="dropdown-item text-center small text-gray-500" asp-controller="mensajes" asp-action="create">Read More Messages</a>
                                 </div>
                             </li>
 
@@ -494,7 +495,9 @@
             el: '#app-topbar',
             data: {
                 citas: [],
-                mensajes: []
+                mensajes: [],
+                posicion: 0,
+                usuarioId: 0
 
             },
             methods: {
@@ -516,8 +519,10 @@
                     axios.get("https://localhost:44386" + "/Mensajes/GetMessages").then(response => {
                         app_topbar.mensajes = [];
                         let res = JSON.parse(response.data);
-                        console.log('res mensajes join', res);
+                        res = res.filter(x => x.UsuarioID != app_topbar.usuarioId);
+                        console.log('res mensajes join', res);                                                
                         for (let i = 0; i < res.length; i++) {
+                            if (i == 5) return;
                             app_topbar.mensajes.push(res[i]);
                         }
 
