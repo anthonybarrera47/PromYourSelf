@@ -1,4 +1,5 @@
 ﻿using Models;
+using PromYourSelf.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace PromYourSelf.ViewModels
 		public decimal Precio { get; set; }
 		public String Descripcion { get; set; }
 		public string NombreComercial { get; set; }
-		public List<Etiquetas> Etiquetas { get; set; }		
+		public List<EtiquetasDetails> Etiquetas { get; set; }		
 		public int NegocioID { get; set; }
 		public int EmpleadoAsignado { get; set; }	
 		public DateTime FechaInicio { get; set; }	
@@ -23,7 +24,7 @@ namespace PromYourSelf.ViewModels
 		public int CitaID { get; set; }
 
 
-		public CitasViewModel(string nombre, decimal precio, string descripcion, List<Etiquetas> etiquetas, string nombre_comercial, int negocioId, int productoId)
+		public CitasViewModel(string nombre, decimal precio, string descripcion, List<EtiquetasDetails> etiquetas, string nombre_comercial, int negocioId, int productoId)
 		{
 			this.Nombre = nombre;
 			this.Precio = precio;

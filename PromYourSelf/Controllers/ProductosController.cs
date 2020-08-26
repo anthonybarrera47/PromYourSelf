@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -52,6 +53,32 @@ namespace PromYourSelf.Controllers
 			List<Productos> lista = await _Repo.Productos.GetListAsync(x => x.UsuarioID == usuarioId);			
 
 			return new JsonResult(JsonConvert.SerializeObject(lista));
+		}
+
+		// GET: GetEtiquetas
+		public async Task<IActionResult> GetEtiquetas()
+		{			
+			List<Etiquetas> lista = await _Repo.Etiquetas.GetListAsync(x =>true);
+
+			return new JsonResult(JsonConvert.SerializeObject(lista));
+		}
+
+
+		// POST/GET: Etiquetas		
+		public async Task<IActionResult> AgregarEtiqueta(string nombre)
+		{		
+			List<Etiquetas> lista = await _Repo.Etiquetas.GetListAsync(x => x.Nombre.ToLower() == nombre.ToLower());
+			if(lista.Count > 0)
+			{
+				return new JsonResult(JsonConvert.SerializeObject(false));
+			}
+			Etiquetas etiqueta = new Etiquetas()
+			{
+				Nombre = nombre,
+				UsuarioID = User.GetUserID().ToInt(),				
+			};
+			bool paso = await _Repo.Etiquetas.SaveAsync(etiqueta);
+			return new JsonResult(JsonConvert.SerializeObject(paso));
 		}
 
 		// GET: Productos/Details/5

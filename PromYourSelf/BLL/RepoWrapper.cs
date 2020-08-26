@@ -32,8 +32,9 @@ namespace PromYourSelf.BLL
         private IRepositoryCodeValidation _CodeValidation;
         private IRepositoryPagos _RepositoryPagos;
         private IRepositoryTipoClasificacion _RepositoryTipoClasificacion;
+		private IRepositoryEtiquetas _Etiquetas;
 
-        public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
+		public RepoWrapper(Contexto contexto, UserManager<Usuarios> userManager, 
                 RoleManager<Roles> rolManager,
                 IOptions<ErrorMsg> errorMsg,
                 ILogger<RepoWrapper> logger,
@@ -112,7 +113,20 @@ namespace PromYourSelf.BLL
                 return _Productos;
             }
         }
-        public IRepositoryUsuarios Usuarios
+
+		public IRepositoryEtiquetas Etiquetas
+		{
+			get
+			{
+				if (_Etiquetas == null)
+				{
+					_Etiquetas = new RepositorioEtiqueta(_RepoContexto, _accessor);
+				}
+
+				return _Etiquetas;
+			}
+		}
+		public IRepositoryUsuarios Usuarios
         {
             get
             {

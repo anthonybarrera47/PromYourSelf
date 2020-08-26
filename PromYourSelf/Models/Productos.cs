@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PromYourSelf.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Models
         [Required(ErrorMessage = "Este campo es requerido")]
         [Display(Name = "Tipo Productos")]
         public TipoProducto TipoProductos { get; set; }
-        public virtual List<Etiquetas> Etiquetas { get; set; }
+        public virtual List<EtiquetasDetails> Etiquetas { get; set; }
         public virtual List<FotosProductos> Fotos { get; set; }
 
     }

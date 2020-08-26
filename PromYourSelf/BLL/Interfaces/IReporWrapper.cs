@@ -12,7 +12,8 @@ namespace PromYourSelf.BLL.Interfaces
         IRepositoryMensajes Mensajes { get; }
         IRepositoryNegocios Negocios { get;  }
         IRepositoryProductos Productos { get; }
-        IRepositoryUsuarios Usuarios { get; }
+		IRepositoryEtiquetas Etiquetas { get; }
+		IRepositoryUsuarios Usuarios { get; }
         IRepositoryVentas Ventas { get; }
         IRepositoryRol Rol { get; }
         IRepositoryCodeValidation CodeValidation { get; }
