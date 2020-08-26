@@ -16,33 +16,32 @@
                 @Html.DisplayFor(model => model.Direccion) <br /><span class="text-success"> <span v-on:click="copiarTelefono(1)"> <li class="fa fa-phone"></li> &nbsp;@Html.DisplayFor(model => model.Telefono1)</span>  <span v-if="telefono2" v-on:click="copiarTelefono(2)"> <li class="fa fa-phone"> </li>&nbsp;@Html.DisplayFor(model => model.Telefono1)</span>
             </div>
             <div class="card-body">
-                <div class="card-columns">
-                    <div class="card p-3 text-center border-primary" v-for="item in productos">
+                <div class="card-deck">
+                    <div class="card p-3 text-center" style="background-color: cadetblue;border-radius: 5px;" v-for="item in productos">
                         <div class="card-header bg-tertiary ">
                             @* Titulo de la tarjeta *@
-                            <h2>{{item.Nombre}} - <span class="text-success"> ${{item.Precio}}</span></h2>
+                            <h2 style="font-weight: bold" class="text-black-50">{{item.Nombre}} - <span class="text-success"> ${{item.Precio}}</span></h2>
 
                         </div>
                         <div class="card-body">
                             @* Cuerpo de la tarjeta *@
-                            <p>
+                            <p class="text-white">
                                 {{item.Descripcion}}
                             </p>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer" v-if="item.TipoProductos == 1">
                             @* Footer de la tarjeta *@
-                            <a v-if="item.TipoProductos == 1" class="btn btn-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
+                            <a class="btn btn-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
 
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </form>
     @*<a href="#" class="float">
             <i class="fas fa-sms my-float"></i>
-        </a>*@ 
+        </a>*@
 
     <div>
         <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
@@ -69,14 +68,14 @@
 <script src="~/vendor/jquery/jquery.min.js"></script>
 
 <script>
-$( document ).ready(function() {
-    console.log("ready!");
- $("#menumensaje").click(function (e) {
-        console.log('menumensaje clicked', e);
-        e.stopPropagation();
+    $(document).ready(function () {
+        console.log("ready!");
+        $("#menumensaje").click(function (e) {
+            console.log('menumensaje clicked', e);
+            e.stopPropagation();
+        });
     });
-});
-   
+
     function openMessage() {
 
         $(this).parent().toggleClass('open');
@@ -107,7 +106,7 @@ $( document ).ready(function() {
                 } else {
                     app.getProductos();
                 }
-            },        
+            },
             copiarTelefono(idx) {
                 let telefono = "";
                 if (idx == 1) {
