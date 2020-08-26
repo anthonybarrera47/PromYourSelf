@@ -2,14 +2,10 @@
 
 @{
     string Titulo = "Listado  de Citas";
-    string Edit = "Edit";
-    string Delete = "Delete";
-    string Details = "Details";
     ViewData["Title"] = Titulo;
 }
 
 <div id="app-historial">
-    <h1>Citas</h1>
     <div>
         <form method="get" asp-action="Index">
             <div class="form-row justify-content-between">
@@ -22,6 +18,8 @@
                 </div>
             </div>
 
+            <input type="hidden" id="_usuarioId" value="@User.GetUserID().ToInt()"/>
+            <input type="hidden" id="_empresaId" value="@User.GetEmpresaID().ToInt()"/>
         </form>
     </div>
     <br />
@@ -73,7 +71,9 @@
                             </td>
                             <td>
                                 @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                                {<a v-if="item.cita.Estado == 0" v-on:click="aceptarCita(item.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 2" v-on:click="aceptarCita(item.cita.CitaID, 3)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 1" v-on:click="aceptarCita(item.cita.CitaID, 2)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} &nbsp;<a v-if="item.cita.Estado != 3 && item.cita.Estado != 4 && item.cita.Estado != 5" v-on:click="aceptarCita(item.cita.CitaID, 4)" class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a><a v-if="item.cita.Estado == 3 && item.cita.Estado != 5" v-bind:href="'/Ventas/Create?citaId='+ item.cita.CitaID" class="btn btn-sm btn-success text-white"><i class="fas fa-file-invoice-dollar"></i></a>
+                                {<a  v-if="empresaId == item.cita.NegocioID && item.cita.Estado == 0" v-on:click="aceptarCita(item.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 2 && empresaId==item.cita.NegocioID" v-on:click="aceptarCita(item.cita.CitaID, 3)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 1 && empresaId==item.cita.NegocioID" v-on:click="aceptarCita(item.cita.CitaID, 2)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>}
+                                &nbsp;
+                                <a v-if="item.cita.Estado != 3 && item.cita.Estado != 4 && item.cita.Estado != 5" v-on:click="aceptarCita(item.cita.CitaID, 4)" class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a><a v-if="item.cita.Estado == 3 && item.cita.Estado != 5" v-bind:href="'/Ventas/Create?citaId='+ item.cita.CitaID" class="btn btn-sm btn-success text-white"><i class="fas fa-file-invoice-dollar"></i></a>
                             </td>
 
 
@@ -93,7 +93,9 @@
         el: '#app-historial',
         data: {
             citas: [],
-            mensajes: []
+            mensajes: [],
+            usuarioId: 0,
+            empresaId: 0
 
         },
         methods: {
@@ -115,14 +117,13 @@
                 })
             },
             getCitas: function () {
-                axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
+                axios.get("/Citas/GetCitas").then(response => {
                     app_historial.citas = [];
                     let res = JSON.parse(response.data);
-                    console.log('res', res);
+                    console.log('res Citas :', res);
                     for (let i = 0; i < res.length; i++) {
                         app_historial.citas.push(res[i]);
                     }
-
                 }).catch(err => {
                     console.log('ha ocurrido un error', err);
                     alert('Ha ocurrido un error');
@@ -130,6 +131,12 @@
             }
 
         }
+    });
+    $(document).ready(function () {
+        app_topbar.usuarioId = $("#_usuarioId").val();
+        app_topbar.empresaId = $("#_empresaId").val();
+        console.log("Empresa :", app_topbar.empresaId);
+        console.log("usuario :", app_topbar.usuarioId);
     });
     app_historial.getCitas();    
 </script>

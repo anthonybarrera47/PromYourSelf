@@ -32,7 +32,7 @@ namespace PromYourSelf.Controllers
 			_signInManager = signInManager;
 		}
 		// GET: GetNegocios
-		public async Task<IActionResult> GetNegocios(string filter, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
+		public async Task<IActionResult> GetNegocios(string filter, string sortExpression = "NombreComercial", int PageSize = 5)
 		{
 			if (!string.IsNullOrWhiteSpace(filter))
 				Lista = await _Repo.Negocios.GetListAsync(x => x.NombreComercial.ToUpper().Contains(filter.ToUpper()));

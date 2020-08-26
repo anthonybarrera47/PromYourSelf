@@ -14,9 +14,8 @@ namespace PromYourSelf.Views.Shared.Components.Chat
 	public class ChatViewComponent : ViewComponent
 	{
 		private readonly Contexto db;
-		int empresaIdActual;
-		List<Mensajes> mensajes = new List<Mensajes>();
-		List<Negocios> negocios = new List<Negocios>();
+        private List<Mensajes> mensajes = new List<Mensajes>();
+		private List<Negocios> negocios = new List<Negocios>();
 
 		public ChatViewComponent(Contexto contexto)
 		{

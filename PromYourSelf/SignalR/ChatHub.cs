@@ -22,7 +22,7 @@ namespace SignalRChat
 		}
 		private readonly static ConnectionMapping<string> _connections =
 		   new ConnectionMapping<string>();		
-		public void Send(string receptorId, string mensaje)
+		public void Send(string receptorId)
 		{
 			string name = this.User.GetUserID();
 
@@ -41,9 +41,9 @@ namespace SignalRChat
 				_connections.Add(name, Context.ConnectionId);
 
 				
-			}catch(Exception e)
+			}catch(Exception)
 			{
-
+				throw;
 			}
 
 			return base.OnConnectedAsync();
@@ -91,14 +91,13 @@ namespace BasicChat
 		{
 			lock (_connections)
 			{
-				HashSet<string> connections;
-				if (!_connections.TryGetValue(key, out connections))
-				{
-					connections = new HashSet<string>();
-					_connections.Add(key, connections);
-				}
+                if (!_connections.TryGetValue(key, out HashSet<string> connections))
+                {
+                    connections = new HashSet<string>();
+                    _connections.Add(key, connections);
+                }
 
-				lock (connections)
+                lock (connections)
 				{
 					connections.Add(connectionId);
 				}
@@ -107,13 +106,12 @@ namespace BasicChat
 
 		public IEnumerable<string> GetConnections(T key)
 		{
-			HashSet<string> connections;
-			if (_connections.TryGetValue(key, out connections))
-			{
-				return connections;
-			}
+            if (_connections.TryGetValue(key, out HashSet<string> connections))
+            {
+                return connections;
+            }
 
-			return Enumerable.Empty<string>();
+            return Enumerable.Empty<string>();
 		}
 
 		public void Remove(T key, string connectionId)
@@ -122,13 +120,12 @@ namespace BasicChat
 			{
 				lock (_connections)
 				{
-					HashSet<string> connections;
-					if (!_connections.TryGetValue(key, out connections))
-					{
-						return;
-					}
+                    if (!_connections.TryGetValue(key, out HashSet<string> connections))
+                    {
+                        return;
+                    }
 
-					lock (connections)
+                    lock (connections)
 					{
 						connections.Remove(connectionId);
 
@@ -138,7 +135,7 @@ namespace BasicChat
 						}
 					}
 				}
-			}catch(Exception e) { }
+			}catch(Exception) { throw; }
 		}
 	}
 }

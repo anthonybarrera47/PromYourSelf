@@ -221,9 +221,11 @@ namespace PromYourSelf.Controllers
         {
             bool Paso = false;
             MailMessage mail = new MailMessage();
-            CodeValidation Code = new CodeValidation();
-            Code.UsuarioID = usuarios.Id;
-            Code.Email = usuarios.Email;
+            CodeValidation Code = new CodeValidation
+            {
+                UsuarioID = usuarios.Id,
+                Email = usuarios.Email
+            };
             Code.UsuarioID = usuarios.Id;
             Code.TiempoExpiracion = DateTime.Now.AddDays(1);//24Horas para expirar el codigo.
             Code = _repoWrappers.CodeValidation.GenerarToken(Code);

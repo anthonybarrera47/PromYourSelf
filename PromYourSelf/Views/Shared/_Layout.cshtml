@@ -39,8 +39,9 @@
 <body id="page-top">
      
     <div id="wrapper">
-        <input type="hidden" id="_posicionId" v-model="posicion" value="@User.GetPosicion().ToInt()"  />
-        <input type="hidden" id="_usuarioId" v-model="usuarioId" value="@User.GetUserID().ToInt()" />
+        <input type="hidden" id="_posicionId" value="@User.GetPosicion().ToInt()" v-model="posicion"  />
+        <input type="hidden" id="_usuarioId" value="@User.GetUserID().ToInt()" v-model="usuarioId" />
+        <input type="hidden" id="_empresaId"  value="@User.GetEmpresaID().ToInt() "v-model="empresaId" />
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -93,17 +94,17 @@
             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
             {
                 @*<li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
-                            <i class="fas fa-fw fa-user-plus"></i>
-                            <span>Usuarios</span>
-                        </a>
-                        <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
-                                <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
-                            </div>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios" aria-expanded="true" aria-controls="collapseUsuarios">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" asp-controller="usuarios" asp-action="index">Listado de Usuarios</a>
+                            <a class="collapse-item" asp-controller="usuarios" asp-action="create">Nuevo Usuario</a>
                         </div>
-                    </li>*@
+                    </div>
+                </li>*@
                 <!--FIN DE SUBMENU USUARIOS-->
                 <!--INICIO DE SUBMENU NEGOCIOS-->
 
@@ -205,7 +206,7 @@
             }
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button id="sidebarToggle" name="menulateral" class=".esconder rounded-circle border-0 " ></button>
+                <button id="sidebarToggle" name="menulateral" class=".esconder rounded-circle border-0 "></button>
             </div>
         </ul>
         <!-- End of Sidebar -->
@@ -264,8 +265,8 @@
                                     <div v-for="cita in citas" class="dropdown-item d-flex align-items-center" v-bind:href="'https://localhost:44386/Citas/Details/'+ cita.cita.CitaID">
                                         <div class="mr-1">
                                             @*<div class="icon-circle bg-primary">
-                                                    <i class="fas fa-file-alt text-white"></i>
-                                                </div>*@
+                                                <i class="fas fa-file-alt text-white"></i>
+                                            </div>*@
                                             <div class="icon-circle bg-warning">
                                                 <i class="fas fa-exclamation-triangle text-white"></i>
                                             </div>
@@ -277,7 +278,7 @@
                                         </div>
                                         <div class="ml-auto">
                                             @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                                            {<a v-on:click="aceptarCita(cita.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>} 
+                                            {<a v-if="empresaId==cita.cita.NegocioID" v-on:click="aceptarCita(cita.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>}
                                             &nbsp;
                                             <a class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a>
                                         </div>
@@ -466,7 +467,8 @@
                 citas: [],
                 mensajes: [],
                 posicion: 0,
-                usuarioId: 0
+                usuarioId: 0,
+                empresaId : 0
 
             },
             methods: {
@@ -517,9 +519,14 @@
                         alert('Ha ocurrido un error');
                     })
                 }
-
             }
         });
+       
+        $(document).ready(function () {
+            app_topbar.usuarioId = $("#_usuarioId").val();
+            app_topbar.empresaId = $("#_empresaId").val();
+        });
+        
         app_topbar.getCitas();
         app_topbar.getMensajes();
     </script>
