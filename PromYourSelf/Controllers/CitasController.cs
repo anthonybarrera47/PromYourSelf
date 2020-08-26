@@ -153,7 +153,6 @@ namespace PromYourSelf.Controllers
 				return new JsonResult(JsonConvert.SerializeObject(false));
 			}
 		}
-		
 
 
 

@@ -50,7 +50,7 @@
                        
                         <tr v-for="item in citas">
                             <td>
-                                {{item.cita.FechaInicio}}
+                                {{item.cita.FechaInicio.replace('T', ' ')}}
                             </td>
                             <td>
                                 {{item.producto.Nombre}}
@@ -133,10 +133,10 @@
         }
     });
     $(document).ready(function () {
-        app_topbar.usuarioId = $("#_usuarioId").val();
-        app_topbar.empresaId = $("#_empresaId").val();
-        console.log("Empresa :", app_topbar.empresaId);
-        console.log("usuario :", app_topbar.usuarioId);
+        app_historial.usuarioId = $("#_usuarioId").val();
+        app_historial.empresaId = $("#_empresaId").val();
+        console.log("Empresa :", app_historial.empresaId);
+        console.log("usuario :", app_historial.usuarioId);
     });
     app_historial.getCitas();    
 </script>
