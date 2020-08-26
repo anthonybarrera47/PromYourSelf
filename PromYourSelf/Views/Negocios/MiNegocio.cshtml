@@ -16,7 +16,7 @@
                 @Html.DisplayFor(model => model.Direccion) <br /><span class="text-success"> <span v-on:click="copiarTelefono(1)"> <li class="fa fa-phone"></li> &nbsp;@Html.DisplayFor(model => model.Telefono1)</span>  <span v-if="telefono2" v-on:click="copiarTelefono(2)"> <li class="fa fa-phone"> </li>&nbsp;@Html.DisplayFor(model => model.Telefono1)</span>
             </div>
             <div class="card-body">
-                <div class="card-columns">
+                <div class="card-deck">
                     <div class="card p-3 text-center" style="background-color: cadetblue;border-radius: 5px;" v-for="item in productos">
                         <div class="card-header bg-tertiary ">
                             @* Titulo de la tarjeta *@
