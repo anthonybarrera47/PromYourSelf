@@ -15,6 +15,7 @@ namespace PromYourSelf.ViewModels
 		public string NombreComercial { get; set; }
 		public List<EtiquetasDetails> Etiquetas { get; set; }		
 		public int NegocioID { get; set; }
+		public int UsuarioNegocioID { get; set; }
 		public int EmpleadoAsignado { get; set; }	
 		public DateTime FechaInicio { get; set; }	
 		public string CodigoComprobacion { get; set; }
@@ -22,6 +23,7 @@ namespace PromYourSelf.ViewModels
 		public EstadoCita Estado { get; set; }
 		public int ProductoID { get; set; }
 		public int CitaID { get; set; }
+		public DateTime CreatedAt { get; set; }		
 
 
 		public CitasViewModel(string nombre, decimal precio, string descripcion, List<EtiquetasDetails> etiquetas, string nombre_comercial, int negocioId, int productoId)

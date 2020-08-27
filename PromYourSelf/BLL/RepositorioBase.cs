@@ -102,12 +102,16 @@ namespace BLL
 					(entity as CamposEstandar).EsNulo = false;
 					(entity as CamposEstandar).CreadoPor = User.GetUserID().ToInt();
 					(entity as CamposEstandar).ModificadoPor = User.GetUserID().ToInt();
+					(entity as CamposEstandar).FechaCreacion = DateTime.Now;
+					(entity as CamposEstandar).FechaModificacion = DateTime.Now;
 				}
 				if (entity.GetType() == typeof(Usuarios))
 				{
 					(entity as Usuarios).EsNulo = false;
 					(entity as Usuarios).CreadoPor = User.GetUserID().ToInt();
 					(entity as Usuarios).ModificadoPor = User.GetUserID().ToInt();
+					(entity as CamposEstandar).FechaCreacion = DateTime.Now;
+					(entity as CamposEstandar).FechaModificacion = DateTime.Now;
 				}
 				if (db.Set<T>().AddAsync(entity) != null)
 					paso = await db.SaveChangesAsync() > 0;
@@ -122,9 +126,12 @@ namespace BLL
 		{
 			bool paso = false;
 			try
-			{
+			{				
 				if (entity.GetType().BaseType == typeof(CamposEstandar))
+				{
+					(entity as CamposEstandar).FechaModificacion = DateTime.Now;
 					(entity as CamposEstandar).ModificadoPor = User.GetUserID().ToInt();
+				}					
 
 				if (entity.GetType() == typeof(Usuarios))
 					(entity as Usuarios).ModificadoPor = User.GetUserID().ToInt();

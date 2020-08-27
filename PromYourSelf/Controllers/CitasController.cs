@@ -104,8 +104,11 @@ namespace PromYourSelf.Controllers
 				Precio = producto.Precio,
 				NombreComercial = negocio.NombreComercial,
 				CodigoComprobacion = cita.CodigoComprobacion,
-				FechaInicio = cita.FechaInicio
-			};
+				FechaInicio = cita.FechaInicio,
+				CreatedAt = cita.FechaCreacion,
+				NegocioID = cita.NegocioID,
+				UsuarioNegocioID = negocio.UsuarioID
+				};
 			string url = "https://localhost:44386/Citas/Comprobar?codigo=" + cvm.CodigoComprobacion;
 			ViewBag.txtQRCode = url;
 			QRCodeGenerator qrGenerator = new QRCodeGenerator();

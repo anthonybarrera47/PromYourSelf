@@ -32,6 +32,17 @@ namespace SignalRChat
 			}
 		}
 
+		public void Notify(string receptorId)
+		{
+			string name = this.User.GetUserID();
+
+			foreach (var connectionId in _connections.GetConnections(receptorId))
+			{
+				Clients.Client(connectionId).SendAsync("newNotification");
+			}
+		}
+
+
 		public override Task OnConnectedAsync()
 		{
 			try

@@ -439,8 +439,9 @@
             });
         }
     </script>
-
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
     <script>
+
         var app_topbar = new Vue({
             el: '#app-topbar',
             data: {
@@ -501,13 +502,25 @@
                         alert('Ha ocurrido un error');
                     })
                 }
-               
+
             }
         });
 
         $(document).ready(function () {
             app_topbar.usuarioId = $("#_usuarioId").val();
             app_topbar.empresaId = $("#_empresaId").val();
+            console.log("usuarioId", parseInt(app_topbar.usuarioId));
+            if (parseInt(app_topbar.usuarioId) > 0) {
+                var connection = new signalR.HubConnectionBuilder().withUrl('/ChatHub').build();
+                connection.start().catch(function (err) {
+                    console.error("Error intantendo conectar el chat", err);
+                });
+                //Escribir funcion para invocar envio de mensaje
+                connection.on("newNotification", (mensaje) => {
+                    console.log('nueva notificacion');
+                    app_topbar.getCitas();
+                });
+            }
         });
 
         app_topbar.getCitas();
