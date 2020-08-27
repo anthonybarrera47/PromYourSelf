@@ -7,6 +7,7 @@ using PromYourSelf.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace PromYourSelf.BLL
@@ -47,6 +48,37 @@ namespace PromYourSelf.BLL
 			catch (Exception)
 			{ throw; }
 			return entity;
+		}
+
+		public override async Task<List<Productos>> GetListAsync(Expression<Func<Productos, bool>> expression, bool GetNullFields = false)
+		{
+			List<Productos> Lista = new List<Productos>();
+			try
+			{
+				Lista = await _context.Productos.Where(expression).Include(x => x.Etiquetas).Include(x => x.Fotos).ToListAsync();
+				foreach(var producto in Lista)
+				{
+					producto.Etiquetas = (from item in producto.Etiquetas
+										select new EtiquetasDetails
+										{
+											ID = item.ID,
+											EtiquetaID = item.EtiquetaID,
+											ProductoID = item.ProductoID,
+											Etiqueta = _context.Etiquetas.Find(item.EtiquetaID)
+
+										}
+							  ).ToList();
+				}
+				if (GetNullFields == false)
+				{
+					if (typeof(Productos).BaseType == typeof(CamposEstandar))
+						Lista.RemoveAll(x => (x as CamposEstandar).EsNulo == true);
+
+				}
+			}
+			catch (Exception)
+			{ throw; }
+			return Lista;
 		}
 	}
 }

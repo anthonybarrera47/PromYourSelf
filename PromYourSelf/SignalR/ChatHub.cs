@@ -45,6 +45,7 @@ namespace SignalRChat
 
 		public override Task OnConnectedAsync()
 		{
+			if (User.GetUserID().ToInt() <= 0) return null;
 			try
 			{
 				string name = User.GetUserID().ToString();

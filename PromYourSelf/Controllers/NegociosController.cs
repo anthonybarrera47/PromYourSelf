@@ -56,7 +56,7 @@ namespace PromYourSelf.Controllers
 		{
 			List<Productos> lista = new List<Productos>();
 			if (!string.IsNullOrWhiteSpace(filter))
-				lista = await _Repo.Productos.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()));
+				lista = await _Repo.Productos.GetListAsync(x => x.Nombre.ToUpper().Contains(filter.ToUpper()) || x.Etiquetas.Exists(y => y.Etiqueta.Nombre.ToUpper().Contains(filter.ToUpper())));
 			else
 				lista = await _Repo.Productos.GetListAsync(x => true);
 

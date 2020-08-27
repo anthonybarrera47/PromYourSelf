@@ -31,7 +31,14 @@
                         </div>
                         <div class="card-footer" v-if="item.TipoProductos == 1">
                             @* Footer de la tarjeta *@
-                            <a class="btn btn-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
+                            @if (User.GetPosicion().Equals(string.Empty))
+                            {
+                            <a class="btn btn-warning btn-block" asp-action="Login" asp-controller="EntradaApp" >Iniciar Sesión para Reservar Cita</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-warning btn-block" v-bind:href="'https://localhost:44386/Citas/Create/?servicio='+ item.ProductoID">Reservar Cita</a>
+                            }
 
                         </div>
                     </div>
