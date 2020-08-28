@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Migrations.Design;
 
 namespace PromYourSelf.Migrations
 {
@@ -130,6 +129,25 @@ namespace PromYourSelf.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CodeValidation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Etiquetas",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UsuarioID = table.Column<int>(nullable: false),
+                    EsNulo = table.Column<bool>(nullable: false),
+                    CreadoPor = table.Column<int>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    ModificadoPor = table.Column<int>(nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Nombre = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Etiquetas", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -407,29 +425,29 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Etiquetas",
+                name: "EtiquetasDetails",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UsuarioID = table.Column<int>(nullable: false),
-                    EsNulo = table.Column<bool>(nullable: false),
-                    CreadoPor = table.Column<int>(nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    ModificadoPor = table.Column<int>(nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    Nombre = table.Column<string>(nullable: true),
-                    ProductosProductoID = table.Column<int>(nullable: true)
+                    ProductoID = table.Column<int>(nullable: false),
+                    EtiquetaID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Etiquetas", x => x.ID);
+                    table.PrimaryKey("PK_EtiquetasDetails", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Etiquetas_Productos_ProductosProductoID",
-                        column: x => x.ProductosProductoID,
+                        name: "FK_EtiquetasDetails_Etiquetas_EtiquetaID",
+                        column: x => x.EtiquetaID,
+                        principalTable: "Etiquetas",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EtiquetasDetails_Productos_ProductoID",
+                        column: x => x.ProductoID,
                         principalTable: "Productos",
                         principalColumn: "ProductoID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -496,6 +514,12 @@ namespace PromYourSelf.Migrations
                 {
                     table.PrimaryKey("PK_VentasDetalle", x => x.ID);
                     table.ForeignKey(
+                        name: "FK_VentasDetalle_Productos_ProductoID",
+                        column: x => x.ProductoID,
+                        principalTable: "Productos",
+                        principalColumn: "ProductoID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_VentasDetalle_Ventas_VentaID",
                         column: x => x.VentaID,
                         principalTable: "Ventas",
@@ -508,9 +532,9 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 2547, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 20, 23, 7, 2, 317, DateTimeKind.Local).AddTicks(2277), new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(2849), "1000", "2000", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 1 },
-                    { 2, 2547, 3, "Cenovi, SFM", false, new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3456), new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3465), "1000", "2000", 3, "APAS LABS", "809-754-0319", "", 3 },
-                    { 3, 2547, 4, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3475), new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3476), "1000", "2000", 4, "BHTech", "829-935-9510", "809-123-4567", 4 }
+                    { 1, 2547, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 28, 19, 33, 40, 468, DateTimeKind.Local).AddTicks(1912), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1274), "19.187340530798558", " -70.22277173397258", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 1 },
+                    { 2, 2547, 3, "Cenovi, SFM", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1889), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1898), "19.229372", " -70.360117", 3, "APAS LABS", "809-754-0319", "", 3 },
+                    { 3, 2547, 4, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1908), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1909), "19.30789", "-70.27587", 4, "BHTech", "829-935-9510", "809-123-4567", 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -518,12 +542,12 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "ProductoID", "CreadoPor", "Descripcion", "EsNulo", "FechaCreacion", "FechaModificacion", "ModificadoPor", "NegocioID", "Nombre", "Precio", "PrecioOferta", "Stock", "TipoProductos", "Unidad", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1667), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1671), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 3 },
-                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1711), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1712), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 3 },
-                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1714), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1715), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 4 },
-                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 4 },
-                    { 5, 1, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1719), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1720), 1, 3, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 1 },
-                    { 6, 1, "Catar Vinos", false, new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1721), new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1722), 1, 3, "Catador de vinos", 15000m, 0m, 0, 1, 1, 1 }
+                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9754), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9762), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 3 },
+                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9808), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9809), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 3 },
+                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9811), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9812), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 4 },
+                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9814), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9815), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 4 },
+                    { 5, 1, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9816), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9818), 1, 1, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 1 },
+                    { 6, 1, "Catar Vinos", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9820), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9820), 1, 1, "Catador de vinos", 15000m, 0m, 0, 1, 1, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -566,9 +590,14 @@ namespace PromYourSelf.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Etiquetas_ProductosProductoID",
-                table: "Etiquetas",
-                column: "ProductosProductoID");
+                name: "IX_EtiquetasDetails_EtiquetaID",
+                table: "EtiquetasDetails",
+                column: "EtiquetaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EtiquetasDetails_ProductoID",
+                table: "EtiquetasDetails",
+                column: "ProductoID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FotosProductos_ProductoID",
@@ -586,10 +615,14 @@ namespace PromYourSelf.Migrations
                 column: "TipoClasificacionID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_VentasDetalle_ProductoID",
+                table: "VentasDetalle",
+                column: "ProductoID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VentasDetalle_VentaID",
                 table: "VentasDetalle",
                 column: "VentaID");
-            Utils.Utils.SeedCuidades(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -619,7 +652,7 @@ namespace PromYourSelf.Migrations
                 name: "CodeValidation");
 
             migrationBuilder.DropTable(
-                name: "Etiquetas");
+                name: "EtiquetasDetails");
 
             migrationBuilder.DropTable(
                 name: "FotosProductos");
@@ -646,13 +679,16 @@ namespace PromYourSelf.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Productos");
+                name: "Etiquetas");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "TipoClasificacion");
+
+            migrationBuilder.DropTable(
+                name: "Productos");
 
             migrationBuilder.DropTable(
                 name: "Ventas");

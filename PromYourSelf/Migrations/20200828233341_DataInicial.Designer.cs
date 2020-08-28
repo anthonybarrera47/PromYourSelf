@@ -10,7 +10,7 @@ using Models;
 namespace PromYourSelf.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200821030702_DataInicial")]
+    [Migration("20200828233341_DataInicial")]
     partial class DataInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,13 +139,9 @@ namespace PromYourSelf.Migrations
 
                     b.Property<string>("Nombre");
 
-                    b.Property<int?>("ProductosProductoID");
-
                     b.Property<int>("UsuarioID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ProductosProductoID");
 
                     b.ToTable("Etiquetas");
                 });
@@ -280,10 +276,10 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Direccion = "En todas partes , es omnipresente",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 317, DateTimeKind.Local).AddTicks(2277),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(2849),
-                            Latitud = "1000",
-                            Longitud = "2000",
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 468, DateTimeKind.Local).AddTicks(1912),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1274),
+                            Latitud = "19.187340530798558",
+                            Longitud = " -70.22277173397258",
                             ModificadoPor = 1,
                             NombreComercial = "JuanDupreCompany",
                             Telefono1 = "829-123-4567",
@@ -297,10 +293,10 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Direccion = "Cenovi, SFM",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3456),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3465),
-                            Latitud = "1000",
-                            Longitud = "2000",
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1889),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1898),
+                            Latitud = "19.229372",
+                            Longitud = " -70.360117",
                             ModificadoPor = 3,
                             NombreComercial = "APAS LABS",
                             Telefono1 = "809-754-0319",
@@ -314,10 +310,10 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Direccion = "Centro de la cuidad, SFM",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3475),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 318, DateTimeKind.Local).AddTicks(3476),
-                            Latitud = "1000",
-                            Longitud = "2000",
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1908),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1909),
+                            Latitud = "19.30789",
+                            Longitud = "-70.27587",
                             ModificadoPor = 4,
                             NombreComercial = "BHTech",
                             Telefono1 = "829-935-9510",
@@ -408,8 +404,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Descripcion = "PrestFast Lite",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1667),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1671),
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9754),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9762),
                             ModificadoPor = 3,
                             NegocioID = 2,
                             Nombre = "App Prestamo",
@@ -426,8 +422,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 3,
                             Descripcion = "Consultoria Informatica",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1711),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1712),
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9808),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9809),
                             ModificadoPor = 3,
                             NegocioID = 2,
                             Nombre = "Consultor Informatico",
@@ -444,8 +440,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "ASUS Q503",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1714),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1715),
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9811),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9812),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Laptop",
@@ -462,8 +458,8 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 4,
                             Descripcion = "Reparación y Mantenimiento",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1717),
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9814),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9815),
                             ModificadoPor = 4,
                             NegocioID = 3,
                             Nombre = "Reparación",
@@ -480,10 +476,10 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Descripcion = "Brugal Dupre 200mg",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1719),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1720),
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9816),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9818),
                             ModificadoPor = 1,
-                            NegocioID = 3,
+                            NegocioID = 1,
                             Nombre = "Brugal Dupre",
                             Precio = 15000m,
                             PrecioOferta = 0m,
@@ -498,10 +494,10 @@ namespace PromYourSelf.Migrations
                             CreadoPor = 1,
                             Descripcion = "Catar Vinos",
                             EsNulo = false,
-                            FechaCreacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1721),
-                            FechaModificacion = new DateTime(2020, 8, 20, 23, 7, 2, 319, DateTimeKind.Local).AddTicks(1722),
+                            FechaCreacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9820),
+                            FechaModificacion = new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9820),
                             ModificadoPor = 1,
-                            NegocioID = 3,
+                            NegocioID = 1,
                             Nombre = "Catador de vinos",
                             Precio = 15000m,
                             PrecioOferta = 0m,
@@ -651,6 +647,8 @@ namespace PromYourSelf.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("ProductoID");
+
                     b.HasIndex("VentaID");
 
                     b.ToTable("VentasDetalle");
@@ -738,6 +736,25 @@ namespace PromYourSelf.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.EtiquetasDetails", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EtiquetaID");
+
+                    b.Property<int>("ProductoID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EtiquetaID");
+
+                    b.HasIndex("ProductoID");
+
+                    b.ToTable("EtiquetasDetails");
                 });
 
             modelBuilder.Entity("PromYourSelf.Models.Roles", b =>
@@ -846,13 +863,6 @@ namespace PromYourSelf.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Models.Etiquetas", b =>
-                {
-                    b.HasOne("Models.Productos")
-                        .WithMany("Etiquetas")
-                        .HasForeignKey("ProductosProductoID");
-                });
-
             modelBuilder.Entity("Models.FotosProductos", b =>
                 {
                     b.HasOne("Models.Productos")
@@ -878,6 +888,11 @@ namespace PromYourSelf.Migrations
 
             modelBuilder.Entity("Models.VentasDetalle", b =>
                 {
+                    b.HasOne("Models.Productos", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Models.Ventas", "Venta")
                         .WithMany("Details")
                         .HasForeignKey("VentaID");
@@ -910,6 +925,19 @@ namespace PromYourSelf.Migrations
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("PromYourSelf.Models.EtiquetasDetails", b =>
+                {
+                    b.HasOne("Models.Etiquetas", "Etiqueta")
+                        .WithMany()
+                        .HasForeignKey("EtiquetaID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Models.Productos")
+                        .WithMany("Etiquetas")
+                        .HasForeignKey("ProductoID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
