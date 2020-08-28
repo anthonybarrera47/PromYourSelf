@@ -10,6 +10,8 @@
         <input type="hidden" name="negocioId" id="negocioId" value="@Model.NegocioID" />
         <input type="hidden" name="telefono1" id="telefono1" value="@Model.Telefono1" />
         <input type="hidden" v-bind="telefono2" name="telefono2" id="telefono2" value="@Model.Telefono2" />
+        <input type="hidden" v-bind="latitud" name="latitud" id="latitud" value="@Model.Latitud" />
+        <input type="hidden" v-bind="longitud" name="longitud" id="longitud" value="@Model.Longitud" />
         <div class="card shadow mb-4">
             <div class="card-header">
                 <h1 class="m-0 font-weight-bold text-primary">@Html.DisplayFor(model => model.NombreComercial)</h1>
@@ -21,7 +23,6 @@
                         <div class="card-header bg-tertiary ">
                             @* Titulo de la tarjeta *@
                             <h2 style="font-weight: bold" class="text-black-50">{{item.Nombre}} - <span class="text-success"> ${{item.Precio}}</span></h2>
-
                         </div>
                         <div class="card-body">
                             @* Cuerpo de la tarjeta *@
@@ -33,7 +34,7 @@
                             @* Footer de la tarjeta *@
                             @if (User.GetPosicion().Equals(string.Empty))
                             {
-                            <a class="btn btn-warning btn-block" asp-action="Login" asp-controller="EntradaApp" >Iniciar Sesión para Reservar Cita</a>
+                                <a class="btn btn-warning btn-block" asp-action="Login" asp-controller="EntradaApp">Iniciar Sesión para Reservar Cita</a>
                             }
                             else
                             {
@@ -46,9 +47,17 @@
             </div>
         </div>
     </form>
-    @*<a href="#" class="float">
-            <i class="fas fa-sms my-float"></i>
-        </a>*@
+    <div class="card">
+        <div class="card-header">
+            <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Ver Mapa <i class="fas fa-map-marked-alt"></i>
+            </a>
+        </div>
+        <div class="card-body collapse" id="collapseExample">
+            <div id="mapa" style="width: 100%;height: 600px;"></div>
+        </div>
+    </div>
+
 
     <div>
         <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
@@ -73,6 +82,8 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="~/vendor/jquery/jquery.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cad1LFmApInoTY5wF_qwK_hQHnIOWfo&callback=initMap"
+        type="text/javascript"></script>
 
 <script>
     $(document).ready(function () {
@@ -100,7 +111,9 @@
             porTodo: false,
             porNegocios: false,
             porProductos: false,
-            btn_text: "Buscar...."
+            btn_text: "Buscar....",
+            latitud: "",
+            longitud: ""
         },
         methods: {
             getAll: function () {
@@ -172,3 +185,63 @@
 
     app.getProductos();
 </script>
+
+
+<script>
+    let map, infoWindow;
+    let latitud = parseFloat($("#latitud").val());
+    let longitud = parseFloat($("#longitud").val());
+    console.log("latitud: ", latitud, "longitud: ", longitud);
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("mapa"), {
+            center: { lat: latitud, lng: longitud },
+            zoom: 15
+        });
+        infoWindow = new google.maps.InfoWindow();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const pos = {
+                        lat: latitud,
+                        lng: longitud
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent("<h3>Esta es tu ubicación. Localiza los negocios cercanos.</h3><br><input class='form-control' placeholder='Introduzca un servicio'><br><a class='btn text-white btn-primary btn-block'><i class='fa fa-search'></i></a><br><a class='btn text-white btn-primary btn-block'>Visitar Negocio</a>");
+                    //infoWindow.open(map);
+                    console.log('pos', pos);
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: 'Información del Negocio'
+                    });
+                    marker.addListener('click', function () {
+                        infoWindow.open(map, marker);
+                    });
+
+                    map.setCenter(pos);
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation
+                ? "Error: The Geolocation service failed."
+                : "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(map);
+    }
+    $(document).ready(function () {
+        initMap();
+    });
+</script>
+
