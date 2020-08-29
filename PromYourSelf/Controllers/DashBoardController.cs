@@ -10,6 +10,7 @@ using Models;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.Utils;
+using PromYourSelf.ViewModels;
 
 namespace PromYourSelf.Controllers
 {
@@ -18,14 +19,14 @@ namespace PromYourSelf.Controllers
     {
         private readonly SignInManager<Usuarios> _signInManager;
         private readonly UserManager<Usuarios> _userManager;
-        private readonly IRepoWrapper _repoWrappers;
+        private readonly IRepoWrapper _repo;
         private readonly IHttpContextAccessor _accesor;
         public DashBoardController(SignInManager<Usuarios> signInManager,
            UserManager<Usuarios> userManager, IRepoWrapper repoWrappers, IHttpContextAccessor accessor)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _repoWrappers = repoWrappers;
+            _repo = repoWrappers;
             _accesor = accessor;
         }
         public IActionResult Index()
@@ -33,14 +34,36 @@ namespace PromYourSelf.Controllers
             return View();
         }
         [AllowAnonymous]
-        public ActionResult DashBoard()
+		[Authorize]
+		public async Task<ActionResult> DashBoard()
         {
-            return View();
-        }
+			decimal totalVentas = (await _repo.Ventas.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Sum(x => x.Monto);
+			decimal totalPagos = (await _repo.Pagos.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Sum(x => x.Monto);
+			List<Citas> citas = await _repo.Citas.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt());
+			int totalCitas = citas.Where(x => x.Estado != EstadoCita.Cancelada && x.Estado != EstadoCita.Solicitado).Count();
+			int totalCitasPendientes = citas.Where(x => x.Estado == EstadoCita.Solicitado).Count();
+			DashboardViewModel dvm = new DashboardViewModel()
+			{
+				TotalVentas = totalVentas,
+				TotalPagos = totalPagos,
+				TotalCitas = totalCitas,
+				TotalCitasPendientes = totalCitasPendientes
+			};
+			return View(dvm);
+		}
         [Authorize]
-        public IActionResult DashBoardEmpresarial()
+        public async Task<IActionResult> DashBoardEmpresarial()
 		{
-			return View();
+			decimal totalVentas = (await _repo.Ventas.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Sum(x => x.Monto);
+			decimal totalPagos = (await _repo.Pagos.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Sum(x => x.Monto);
+			int totalCitas = (await _repo.Citas.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Count();
+			DashboardViewModel dvm = new DashboardViewModel()
+			{
+				TotalVentas = totalVentas,
+				TotalPagos = totalPagos,
+				TotalCitas = totalCitas
+			};
+			return View(dvm);
 		}
 	}
 }
