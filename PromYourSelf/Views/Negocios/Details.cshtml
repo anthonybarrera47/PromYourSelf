@@ -9,6 +9,9 @@
     <form class="form">
         <input type="hidden" name="negocioId" id="negocioId" value="@Model.NegocioID" />
         <input type="hidden" name="telefono1" id="telefono1" value="@Model.Telefono1" />
+        <input type="hidden" name="nombre_comercial" id="nombre_comercial" value="@Model.NombreComercial" />
+        <input type="hidden" name="direccion" id="direccion" value="@Model.Direccion" />
+        <input type="hidden" name="negocio_id" id="negocio_id" value="@Model.NegocioID" />
         <input type="hidden" v-bind="telefono2" name="telefono2" id="telefono2" value="@Model.Telefono2" />
         <input type="hidden" v-bind="latitud" name="latitud" id="latitud" value="@Model.Latitud" />
         <input type="hidden" v-bind="longitud" name="longitud" id="longitud" value="@Model.Longitud" />
@@ -58,14 +61,9 @@
         </div>
     </div>
 
-
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.NegocioID">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>
 </div>
 
-<li class="nav-item dropdown no-arrow mx-1">
+<li class=" dropdown no-arrow mx-1">
 
     <a onclick="openMessage()" href="#" class="float  dropdown-toggle" data-toggle="dropdown" id="enviarMensajeDropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-sms my-float"></i>
@@ -191,6 +189,9 @@
     let map, infoWindow;
     let latitud = parseFloat($("#latitud").val());
     let longitud = parseFloat($("#longitud").val());
+    let nombre_comercial = $("#nombre_comercial").val();
+    let direccion = $("#direccion").val();
+    let negocio_id = parseInt($("#negocio_id").val());
     console.log("latitud: ", latitud, "longitud: ", longitud);
     function initMap() {
         map = new google.maps.Map(document.getElementById("mapa"), {
@@ -207,7 +208,8 @@
                     };
 
                     infoWindow.setPosition(pos);
-                    infoWindow.setContent("<h3>Esta es tu ubicación. Localiza los negocios cercanos.</h3><br><input class='form-control' placeholder='Introduzca un servicio'><br><a class='btn text-white btn-primary btn-block'><i class='fa fa-search'></i></a><br><a class='btn text-white btn-primary btn-block'>Visitar Negocio</a>");
+                    let url = `/negocios/details/${negocio_id}`;                 
+                    infoWindow.setContent(`<h3>${nombre_comercial} <br> ${direccion}.</h3><br><a href='${url}' class='btn text-white btn-primary btn-block'>Visitar Negocio</a>`);                                    
                     //infoWindow.open(map);
                     console.log('pos', pos);
                     var marker = new google.maps.Marker({

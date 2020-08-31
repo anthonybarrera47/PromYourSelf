@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -95,7 +96,7 @@ namespace PromYourSelf.Controllers
 			{
 				return NotFound();
 			}
-
+			negocios.Horarios = await _Repo.Horarios.FindAsync(negocios.NegocioID);
 			return View(negocios);
 		}
 
@@ -103,7 +104,7 @@ namespace PromYourSelf.Controllers
 		public async Task<IActionResult> MiNegocio(int? id)
 		{
 			Negocios negocio = (await _Repo.Negocios.GetListAsync(m => m.UsuarioID == id)).FirstOrDefault();
-
+			negocio.Horarios = await _Repo.Horarios.FindAsync(negocio.NegocioID);
 
 			if (negocio == null)
 			{
@@ -124,6 +125,7 @@ namespace PromYourSelf.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public async Task<IActionResult> Create(Negocios negocios)
 		{
 			if (ModelState.IsValid)
@@ -164,6 +166,7 @@ namespace PromYourSelf.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public async Task<IActionResult> Edit(int id, Negocios negocios)
 		{
 			if (id != negocios.NegocioID)
@@ -214,6 +217,7 @@ namespace PromYourSelf.Controllers
 		// POST: Negocios/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
 			await _Repo.Negocios.DeleteAsync(id);
