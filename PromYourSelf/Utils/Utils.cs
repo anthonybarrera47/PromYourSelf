@@ -76,6 +76,12 @@ namespace PromYourSelf.Utils
                 throw new ArgumentNullException(nameof(principal));
             return principal.FindFirst(c => c.Type == TypeClaims.Empresa.ToString("G"))?.Value;
         }
+        public static string GetHorarioID(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+                throw new ArgumentNullException(nameof(principal));
+            return principal.FindFirst(c => c.Type == TypeClaims.Horarios.ToString("G"))?.Value;
+        }
         public static string GetPosicion(this ClaimsPrincipal principal)
         {
             string value = string.Empty; 

@@ -56,6 +56,7 @@ namespace PromYourSelf.Utils
         Nombres = 0,
         Foto = 1,
         Posicion = 2,
-        Empresa = 3
+        Empresa = 3,
+        Horarios = 4
     }
 }

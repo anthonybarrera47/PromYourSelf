@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models.SweetAlert;
 using PromYourSelf.ViewModels;
@@ -17,13 +20,17 @@ namespace PromYourSelf.Controllers
 {
     public class HorariosController : BaseController
     {
-        private readonly Contexto db;
+        private readonly SignInManager<Usuarios> _signInManager;
+        private readonly UserManager<Usuarios> _userManager;
         private readonly IRepoWrapper _Repo;
         public static List<Horarios> Lista;
+        private static IHttpContextAccessor _accesor;
 
-        public HorariosController(Contexto context, IRepoWrapper RepoHorario)
+        public HorariosController( IRepoWrapper RepoHorario, SignInManager<Usuarios> signInManager,
+           UserManager<Usuarios> userManager)
         {
-            db = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
             _Repo = RepoHorario;
         }
 
@@ -76,8 +83,12 @@ namespace PromYourSelf.Controllers
             if (ModelState.IsValid)
             {
                 Horarios horario = horarios.ConvertToHorario();
+                horario.HorarioID = 0;
                 await _Repo.Horarios.SaveAsync(horario);
-                return RedirectToAction(nameof(Index));
+                var negocio = await _Repo.Negocios.FindAsync(horario.NegociosId);
+                var user = await _userManager.FindByIdAsync(negocio.UsuarioID.ToString());
+                await _Repo.Usuarios.UpdateClaimsUser(_signInManager, _userManager, user);
+                return RedirectToAction("dashboard", "dashboard");
             }
             return View(horarios);
         }
@@ -129,7 +140,7 @@ namespace PromYourSelf.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("dashboard", "dashboard");
             }
             return View(horarios);
         }

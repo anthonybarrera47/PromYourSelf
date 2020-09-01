@@ -19,6 +19,7 @@ namespace PromYourSelf.ViewModels
         public const string SABADO = "Sábado";
         public const string DOMINGO = "Domingo";
         public int Id { get; set; }
+        public int NegocioId { get; set; }
         [HorasRequiredAttribute("LunesHasta", ErrorMessage = "Debe elegir una ambos horarios")]
         public string LunesDesde { get; set; }
         public string LunesHasta { get; set; }
@@ -145,7 +146,8 @@ namespace PromYourSelf.ViewModels
                 Jueves = JuevesHorario,
                 Viernes = ViernesHorario,
                 Sabado = SabadoHorario,
-                Domingo = DomingoHorario
+                Domingo = DomingoHorario,
+                NegociosId = NegocioId
             };
 
             return Horario;

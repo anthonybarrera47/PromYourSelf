@@ -64,6 +64,8 @@ namespace PromYourSelf.BLL
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Foto.ToString("G"))));
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Empresa.ToString("G"))));
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Posicion.ToString("G"))));
+            await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Horarios.ToString("G"))));
+
             await signInManager.RefreshSignInAsync(usuarios);
         }
 
@@ -75,14 +77,19 @@ namespace PromYourSelf.BLL
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Foto.ToString("G"))));
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Empresa.ToString("G"))));
             await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Posicion.ToString("G"))));
+            await userManager.RemoveClaimsAsync(usuarios, Claims.Where(x => x.Type.Equals(TypeClaims.Horarios.ToString("G"))));
 
             var Negocio = await _context.Negocios.Where(x => x.UsuarioID == usuarios.Id).FirstOrDefaultAsync() ?? new Negocios();
-
+            var Horario = await _context.Horarios.Where(x => x.NegociosId == Negocio.NegocioID).FirstOrDefaultAsync() ?? new Horarios();
             ///agrega los claims nuevamente
             await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Nombres.ToString("G"), $"{usuarios.Nombres} {usuarios.Apellidos}"));
             await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Posicion.ToString("G"), $"{usuarios.Posicion}"));
 
-            await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Empresa.ToString("G"), $"{Negocio.NegocioID}"));
+            if (Negocio.NegocioID > 0)
+                await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Empresa.ToString("G"), $"{Negocio.NegocioID}"));
+            if (Horario.HorarioID > 0)
+                await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Horarios.ToString("G"), $"{Horario.HorarioID}"));
+
 
             if (usuarios.Foto != null && usuarios.Foto != string.Empty && usuarios.Foto.Length > 0)
                 await userManager.AddClaimAsync(usuarios, new Claim(TypeClaims.Foto.ToString("G"), usuarios.Foto));
