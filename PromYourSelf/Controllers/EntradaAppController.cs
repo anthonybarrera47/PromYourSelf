@@ -217,7 +217,7 @@ namespace PromYourSelf.Controllers
 
             return View();
         }
-        private static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
+        public static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
         {
             bool Paso = false;
             MailMessage mail = new MailMessage();

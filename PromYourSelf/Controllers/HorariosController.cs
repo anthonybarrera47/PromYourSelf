@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Horarios
+        [Authorize]
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Lunes", int PageSize = 5)
         {
 
@@ -78,6 +80,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(HorariosViewModel horarios)
         {
             if (ModelState.IsValid)
@@ -115,6 +118,7 @@ namespace PromYourSelf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, HorariosViewModel horarios)
         {
             if (id != horarios.Id)
@@ -165,6 +169,7 @@ namespace PromYourSelf.Controllers
         // POST: Horarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _Repo.Horarios.DeleteAsync(id);
