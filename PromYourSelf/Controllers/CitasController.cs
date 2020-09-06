@@ -35,6 +35,7 @@ namespace PromYourSelf.Controllers
 		}
 
 		// GET: Citas
+		[Authorize]
 		public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FechaInicio", int PageSize = 5)
 		{
 			if (!string.IsNullOrWhiteSpace(filter))
@@ -52,6 +53,7 @@ namespace PromYourSelf.Controllers
 		}
 
 		// GET: Historial
+		[Authorize]
 		public async Task<IActionResult> Historial(string filter, int page = 1, string sortExpression = "FechaInicio", int PageSize = 5)
 		{
 			if (!string.IsNullOrWhiteSpace(filter))
@@ -69,6 +71,7 @@ namespace PromYourSelf.Controllers
 		}
 
 		// GET: GetCitas
+		[Authorize]
 		public async Task<IActionResult> GetCitas()
 		{
 			List<object> lista_anonima = new List<object>();
@@ -86,6 +89,7 @@ namespace PromYourSelf.Controllers
 		}
 
 		// GET: Citas/Details/5
+		[Authorize]
 		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null)
@@ -133,7 +137,7 @@ namespace PromYourSelf.Controllers
 			return View(cvm);
 		}
 
-
+		[Authorize]
 		public async Task<IActionResult> Comprobar(string codigo)
 		{
 			bool comprobado = (await _Repo.Citas.GetListAsync(x => x.CodigoComprobacion == codigo && x.Estado != EstadoCita.Cancelada && x.Estado != EstadoCita.Finalizado)).ToList().Count() > 0;
@@ -141,6 +145,7 @@ namespace PromYourSelf.Controllers
 			return View();
 		}
 		[HttpPost]
+		[Authorize]
 		public async Task<IActionResult> Aceptar(int? id, int estado = -1)
 		{
 			if (estado < 0) estado = (int)EstadoCita.Aceptada;
@@ -217,6 +222,7 @@ namespace PromYourSelf.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public async Task<IActionResult> Edit(int id, Citas citas)
 		{
 			if (id != citas.CitaID)
@@ -266,6 +272,7 @@ namespace PromYourSelf.Controllers
 		// POST: Citas/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
 			await _Repo.Citas.DeleteAsync(id);

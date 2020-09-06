@@ -38,7 +38,7 @@ namespace PromYourSelf.Controllers
         {
             return View();
         }
-        public bool VerifiedPasswordRecovery(Usuarios user, string Password)
+        private bool VerifiedPasswordRecovery(Usuarios user, string Password)
         {
             bool Paso = false;
             double Time = (user.TimeExpired - DateTime.Now).TotalMilliseconds;
@@ -169,7 +169,7 @@ namespace PromYourSelf.Controllers
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
-        public async Task SaveDefaultCompany(Usuarios usuario)
+        private async Task SaveDefaultCompany(Usuarios usuario)
         {
 
             bool save = (await _repoWrappers.Negocios.GetListAsync(m => m.UsuarioID == usuario.Id)).ToList().Count() <= 0;
@@ -190,7 +190,7 @@ namespace PromYourSelf.Controllers
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost,Authorize]
         public async Task<IActionResult> ForgotPassword(string Email)
         {
             var Usuario = await _userManager.FindByEmailAsync(Email);
@@ -217,7 +217,7 @@ namespace PromYourSelf.Controllers
 
             return View();
         }
-        public static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
+        private static async Task SendMail(Usuarios usuarios, IRepoWrapper _repoWrappers)
         {
             bool Paso = false;
             MailMessage mail = new MailMessage();
@@ -255,6 +255,7 @@ namespace PromYourSelf.Controllers
             }
 
         }
+        [Authorize]
         public static async Task SendMailWithFakePassword(Usuarios usuarios,string Password)
         {
             MailMessage mail = new MailMessage
