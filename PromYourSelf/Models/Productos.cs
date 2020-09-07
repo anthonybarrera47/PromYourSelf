@@ -20,7 +20,7 @@ namespace Models
             ErrorMessage = "La descripción no debe de tener mas de 255 caracteres.")]
         public string Descripcion { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
-        public int Unidad { get; set; }
+        public string Unidad { get; set; }
         [Required(ErrorMessage = "Ingrese un stock.")]
         public int Stock { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
@@ -33,6 +33,22 @@ namespace Models
         public TipoProducto TipoProductos { get; set; }
         public virtual List<EtiquetasDetails> Etiquetas { get; set; }
         public virtual List<FotosProductos> Fotos { get; set; }
+
+        public Productos()
+        {
+            ProductoID = 0;
+            NegocioID = 0;
+            Nombre = string.Empty;
+            Descripcion = string.Empty;
+            Unidad = string.Empty;
+            Precio = 0;
+            Stock = 0;
+            Precio = 0;
+            PrecioOferta = 0;
+            TipoProductos = 0;
+            Etiquetas = new List<EtiquetasDetails>();
+            Fotos = new List<FotosProductos>();
+        }
 
     }
 }

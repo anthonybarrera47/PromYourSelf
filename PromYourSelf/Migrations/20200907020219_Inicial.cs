@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PromYourSelf.Migrations
 {
-    public partial class DataInicial : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -151,26 +151,6 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Horarios",
-                columns: table => new
-                {
-                    HorarioID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Lunes = table.Column<string>(nullable: true),
-                    Martes = table.Column<string>(nullable: true),
-                    Miercoles = table.Column<string>(nullable: true),
-                    Jueves = table.Column<string>(nullable: true),
-                    Viernes = table.Column<string>(nullable: true),
-                    Sabado = table.Column<string>(nullable: true),
-                    Domingo = table.Column<string>(nullable: true),
-                    NegociosId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Horarios", x => x.HorarioID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Negocios",
                 columns: table => new
                 {
@@ -210,7 +190,7 @@ namespace PromYourSelf.Migrations
                     NegocioID = table.Column<int>(nullable: false),
                     Nombre = table.Column<string>(nullable: false),
                     Descripcion = table.Column<string>(maxLength: 255, nullable: true),
-                    Unidad = table.Column<int>(nullable: false),
+                    Unidad = table.Column<string>(nullable: false),
                     Stock = table.Column<int>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
                     PrecioOferta = table.Column<decimal>(nullable: false),
@@ -425,6 +405,32 @@ namespace PromYourSelf.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Horarios",
+                columns: table => new
+                {
+                    HorarioID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Lunes = table.Column<string>(nullable: true),
+                    Martes = table.Column<string>(nullable: true),
+                    Miercoles = table.Column<string>(nullable: true),
+                    Jueves = table.Column<string>(nullable: true),
+                    Viernes = table.Column<string>(nullable: true),
+                    Sabado = table.Column<string>(nullable: true),
+                    Domingo = table.Column<string>(nullable: true),
+                    NegociosId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Horarios", x => x.HorarioID);
+                    table.ForeignKey(
+                        name: "FK_Horarios_Negocios_NegociosId",
+                        column: x => x.NegociosId,
+                        principalTable: "Negocios",
+                        principalColumn: "NegocioID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EtiquetasDetails",
                 columns: table => new
                 {
@@ -532,9 +538,9 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "NegocioID", "CiudadID", "CreadoPor", "Direccion", "EsNulo", "FechaCreacion", "FechaModificacion", "Latitud", "Longitud", "ModificadoPor", "NombreComercial", "Telefono1", "Telefono2", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 2547, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 8, 28, 19, 33, 40, 468, DateTimeKind.Local).AddTicks(1912), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1274), "19.187340530798558", " -70.22277173397258", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 1 },
-                    { 2, 2547, 3, "Cenovi, SFM", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1889), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1898), "19.229372", " -70.360117", 3, "APAS LABS", "809-754-0319", "", 3 },
-                    { 3, 2547, 4, "Centro de la cuidad, SFM", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1908), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(1909), "19.30789", "-70.27587", 4, "BHTech", "829-935-9510", "809-123-4567", 4 }
+                    { 1, 2547, 1, "En todas partes , es omnipresente", false, new DateTime(2020, 9, 6, 22, 2, 19, 583, DateTimeKind.Local).AddTicks(191), new DateTime(2020, 9, 6, 22, 2, 19, 585, DateTimeKind.Local).AddTicks(998), "19.187340530798558", " -70.22277173397258", 1, "JuanDupreCompany", "829-123-4567", "809-123-4567", 1 },
+                    { 2, 2547, 3, "Cenovi, SFM", false, new DateTime(2020, 9, 6, 22, 2, 19, 585, DateTimeKind.Local).AddTicks(2595), new DateTime(2020, 9, 6, 22, 2, 19, 585, DateTimeKind.Local).AddTicks(2611), "19.229372", " -70.360117", 3, "APAS LABS", "809-754-0319", "", 3 },
+                    { 3, 2547, 4, "Centro de la cuidad, SFM", false, new DateTime(2020, 9, 6, 22, 2, 19, 585, DateTimeKind.Local).AddTicks(2628), new DateTime(2020, 9, 6, 22, 2, 19, 585, DateTimeKind.Local).AddTicks(2629), "19.30789", "-70.27587", 4, "BHTech", "829-935-9510", "809-123-4567", 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -542,12 +548,12 @@ namespace PromYourSelf.Migrations
                 columns: new[] { "ProductoID", "CreadoPor", "Descripcion", "EsNulo", "FechaCreacion", "FechaModificacion", "ModificadoPor", "NegocioID", "Nombre", "Precio", "PrecioOferta", "Stock", "TipoProductos", "Unidad", "UsuarioID" },
                 values: new object[,]
                 {
-                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9754), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9762), 3, 2, "App Prestamo", 10m, 0m, 0, 0, 1, 3 },
-                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9808), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9809), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, 1, 3 },
-                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9811), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9812), 4, 3, "Laptop", 15000m, 0m, 0, 0, 1, 4 },
-                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9814), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9815), 4, 3, "Reparación", 15000m, 0m, 0, 1, 1, 4 },
-                    { 5, 1, "Brugal Dupre 200mg", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9816), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9818), 1, 1, "Brugal Dupre", 15000m, 0m, 0, 0, 1, 1 },
-                    { 6, 1, "Catar Vinos", false, new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9820), new DateTime(2020, 8, 28, 19, 33, 40, 469, DateTimeKind.Local).AddTicks(9820), 1, 1, "Catador de vinos", 15000m, 0m, 0, 1, 1, 1 }
+                    { 1, 3, "PrestFast Lite", false, new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2790), new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2804), 3, 2, "App Prestamo", 10m, 0m, 0, 0, "UND", 3 },
+                    { 2, 3, "Consultoria Informatica", false, new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2834), new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2835), 3, 2, "Consultor Informatico", 1000m, 0m, 0, 1, "UND", 3 },
+                    { 3, 4, "ASUS Q503", false, new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2838), new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2839), 4, 3, "Laptop", 15000m, 0m, 0, 0, "UND", 4 },
+                    { 4, 4, "Reparación y Mantenimiento", false, new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2843), new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2844), 4, 3, "Reparación", 15000m, 0m, 0, 1, "UND", 4 },
+                    { 5, 1, "Brugal Dupre 200mg", false, new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2847), new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2848), 1, 1, "Brugal Dupre", 15000m, 0m, 0, 0, "UND", 1 },
+                    { 6, 1, "Catar Vinos", false, new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2851), new DateTime(2020, 9, 6, 22, 2, 19, 587, DateTimeKind.Local).AddTicks(2852), 1, 1, "Catador de vinos", 15000m, 0m, 0, 1, "UND", 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -603,6 +609,12 @@ namespace PromYourSelf.Migrations
                 name: "IX_FotosProductos_ProductoID",
                 table: "FotosProductos",
                 column: "ProductoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Horarios_NegociosId",
+                table: "Horarios",
+                column: "NegociosId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mensaje_ReceptorID",
@@ -664,9 +676,6 @@ namespace PromYourSelf.Migrations
                 name: "Mensaje");
 
             migrationBuilder.DropTable(
-                name: "Negocios");
-
-            migrationBuilder.DropTable(
                 name: "Pagos");
 
             migrationBuilder.DropTable(
@@ -680,6 +689,9 @@ namespace PromYourSelf.Migrations
 
             migrationBuilder.DropTable(
                 name: "Etiquetas");
+
+            migrationBuilder.DropTable(
+                name: "Negocios");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
