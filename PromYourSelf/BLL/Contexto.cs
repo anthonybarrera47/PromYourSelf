@@ -30,8 +30,10 @@ namespace Models
         public DbSet<Ventas> Ventas { get; set; }
         public DbSet<CodeValidation> CodeValidation { get; set; }
         public DbSet<Pagos> Pagos { get; set; }
+		public DbSet<UsuariosMensaje> UsuariosMensajes { get; set; }
+		
 
-        public Contexto()
+		public Contexto()
         { }
 
         public Contexto(DbContextOptions<Contexto> options)
@@ -218,8 +220,8 @@ namespace Models
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
             });
-            //---
-        }
+			//---			
+		}
 
 
         private void OnBeforeSaving()

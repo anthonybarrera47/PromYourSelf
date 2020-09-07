@@ -44,11 +44,26 @@ namespace PromYourSelf.Controllers
 		}
 
 
-		public async Task<IActionResult> GetUsuarios()
-		{			
-				Lista = await _Repo.Usuarios.GetListAsync(x => true);
+		public async Task<IActionResult> GetUsuariosMensajes()
+		{
+			try
+			{
+				//int userId = (User.GetPosicion() == Posicion.Administrador.GetDescription()) ? User.GetEmpresaID().ToInt() : User.GetUserID().ToInt();
+				int userId = User.GetUserID().ToInt();
+				string sql = @"SELECT 0 As Id, m.Contenido, m.UsuarioID as UsuarioId, m.ReceptorID , u.Posicion, ISNULL(n.NombreComercial,u.Nombres+' '+u.Apellidos)AS Nombre,m.MensajeID FROM Mensaje as m 
+INNER JOIN AspNetUsers as u ON u.Id = m.UsuarioID
+LEFT JOIN Negocios as n ON n.UsuarioID = u.Id
+WHERE m.UsuarioID = {0} OR m.ReceptorID = {0}";
+				var ListaInterna = db.UsuariosMensajes.FromSql(sql, userId)
+					.AsNoTracking().ToList();
 
-			return new JsonResult(JsonConvert.SerializeObject(Lista));
+				return new JsonResult(JsonConvert.SerializeObject(ListaInterna));
+			}
+			catch (Exception ex)
+			{
+				new Exception(ex.Message);
+				throw;
+			}
 		}
 
 

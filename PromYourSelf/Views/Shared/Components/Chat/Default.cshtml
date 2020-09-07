@@ -15,6 +15,7 @@
 
     <div class="container">
         <input type="hidden" name="negocioId" value="@User.GetEmpresaID()" />
+        <input type="hidden" id="usuarioId" name="usuarioId" value="@User.GetUserID()" />
         <!-- Page header start -->
         <div class="page-title">
             <div class="row gutters">
@@ -50,35 +51,34 @@
                                     </div>
                                     <ul class="users">
                                         @{
-                                            foreach (var negocio in Model.negocios)
-                                            {
-                                                <li class="person active-user" data-chat="@negocio.NegocioID" v-on:click="getMessages(@negocio.NegocioID, '@negocio.NombreComercial')">
-                                                    <div class="user">
-                                                        <img src="https://www.bootdey.com/img/Content/avatar/avatar2.png" alt="Retail Admin">
-                                                        <span class="status away"></span>
-                                                    </div>
-                                                    <p class="name-time">
-                                                        <span class="name">@negocio.NombreComercial</span>
-                                                        <span class="time">12/02/2019</span>
-                                                    </p>
-                                                </li>
 
-                                            } }
+                                            <li class="person active-user" v-for="item in usuarios" v-bind:data-chat="item.UsuarioID" v-on:click="getMessages(item)">
+                                                <div class="user">
+                                                    <img src="https://www.bootdey.com/img/Content/avatar/avatar2.png" alt="Retail Admin">
+                                                    <span class="status away"></span>
+                                                </div>
+                                                <p class="name-time">
+                                                    <span class="name">{{item.Nombre}}</span>
+                                                    <span class="time">12/02/2019</span>
+                                                </p>
+                                            </li>
+
+                                        }
 
                                     </ul>
                                 </div>
                             </div>
                             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
                                 <div class="selected-user">
-                                    <span>To: <span class="name">{{negocio}}</span></span>
+                                    <span>To: <span class="name">{{usuario.Nombre}}</span></span>
                                 </div>
                                 <div class="chat-container">
                                     <div class="scroll">
                                         <ul class="chat-box chatContainerScroll">
-                                            <li v-for="(item, index) in mensajes" v-bind:key="item.MensajeID" v-bind:class="{ 'chat-left': item.ReceptorID == @User.GetUserID().ToInt(), 'chat-right': item.UsuarioID == @User.GetUserID().ToInt() }">
+                                            <li v-for="(item, index) in mensajes" v-bind:key="item.MensajeID" v-bind:class="{ 'chat-left': item.UsuarioID != usuarioId, 'chat-right': item.UsuarioID == usuarioId }">
                                                 <div class="chat-avatar">
                                                     <img src="~/img/avatar.png" alt="Retail Admin">
-                                                    <div class="chat-name">{{negocio}}</div>
+                                                    <div class="chat-name"><span v-if="item.UsuarioID == usuarioId">Tu</span><span v-if="item.UsuarioID != usuarioId"> {{usuario.Nombre}}</span></div>
                                                 </div>
                                                 <div class="chat-text">
                                                     {{item.Contenido}}
@@ -138,46 +138,60 @@
     });
     //Escribir funcion para invocar envio de mensaje
     connection.on("newMessage", (mensaje) => {
-        app_chat.getMessages();
+        console.log('recibiendo notificacion');
+        app_chat.getUsuariosMensajes();
+        app_chat.getMessages(app_chat.usuario);
     });
     var app_chat = new Vue({
         el: '#app_chat',
         data: {
             message: 'Hello Vue!',
+            chats: [],
             mensajes: [],
             negocios: [],
             negocio: "",
             negocio_obj: {},
             negocioId: 0,
             mensaje: "",
-            receptorId: 0
+            receptorId: 0,
+            usuarioId: 0,
+            chat_actual: {},
+            chats_original: [],
+            usuarios: [],
+            usuario: {}
         },
         methods: {
             notificarMensajes(receptorId, mensaje) {
-                console.log('receptorid', receptorId);
+                console.log('receptorid notificando', receptorId);
                 connection.invoke("Send", receptorId).catch(err => { console.error('Ha ocurrido un error al intentar notificar'); alert('Error intentando modificar'); })
             },
-            getMessages: function (receptorId, nombre) {
-                console.log('obteniendo mensajes de receptor id', receptorId);
-                app_chat.negocio = nombre;
-                app_chat.receptorId = receptorId;
-                axios.get("https://localhost:44386/Mensajes" + "/GetMessages?" + "receptorId=" + receptorId).then(response => {
-                    app_chat.mensajes = [];
-                    let res = JSON.parse(response.data);
-                    console.log('res mensajes', res);
-                    for (let i = 0; i < res.length; i++) {
-                        if (i == 0 && !app_chat.negocio || !app_chat.receptorId) {
-                            app_chat.receptorId = res[i].ReceptorID;
-                        }
-                        console.log(res[i].Contenido);
-                        app_chat.mensajes.push(res[i]);
-                    }
-                    // alert('datos obtenidos correctamente');
+            getMessages: function (usuario) {
+                //console.log('obteniendo mensajes de receptor id', receptorId);
+                //app_chat.negocio = nombre;
+                //app_chat.receptorId = receptorId;
+                //axios.get("https://localhost:44386/Mensajes" + "/GetMessages?" + "receptorId=" + receptorId).then(response => {
+                //    app_chat.mensajes = [];
+                //    let res = JSON.parse(response.data);
+                //    console.log('res mensajes', res);
+                //    for (let i = 0; i < res.length; i++) {
+                //        if (i == 0 && !app_chat.negocio || !app_chat.receptorId) {
+                //            app_chat.receptorId = res[i].ReceptorID;
+                //        }
+                //        console.log(res[i].Contenido);
+                //        app_chat.mensajes.push(res[i]);
+                //    }
+                //    // alert('datos obtenidos correctamente');
 
-                }).catch(err => {
-                    console.log('ha ocurrido un error', err);
-                    alert('Ha ocurrido un error');
-                })
+                //}).catch(err => {
+                //    console.log('ha ocurrido un error', err);
+                //    alert('Ha ocurrido un error');
+
+                app_chat.usuario = usuario;
+                console.log('chats usuario', usuario);
+                console.log('chats antes de obtener', app_chat.chats);
+                app_chat.mensajes = app_chat.chats.filter(m => m.UsuarioID == usuario.UsuarioID || m.ReceptorID == usuario.UsuarioID);
+                console.log('mensajes obtenidos', app_chat.mensajes);
+                //chat_actual = app_chat.chats.filter(m => m.ReceptorID == receptorId || m.UsuarioID == receptorId);
             },
 
             getNegocios: function () {
@@ -205,23 +219,58 @@
             },
 
             enviarMensaje: function () {
-                console.log('enviando mensaje : ', app_chat.mensaje, " a negocio: ", app_chat.receptorId);
+                if (app_chat.mensaje == "" || !app_chat.usuario) return;
+                console.log('enviando mensaje : ', app_chat.mensaje, " a negocio: ", app_chat.usuario.UsuarioID);
                 axios.post("https://localhost:44386/Mensajes" + "/EnviarMensaje", {
-                    ReceptorID: app_chat.receptorId,
+                    ReceptorID: app_chat.usuario.UsuarioID,
                     Contenido: app_chat.mensaje
                 }).then(response => {
-                    app_chat.notificarMensajes(app_chat.receptorId, app_chat.mensaje);
-                    app_chat.getMessages(app_chat.receptorId, app_chat.negocio);
-                    app_chat.mensaje = "";
+                    app_chat.notificarMensajes(app_chat.usuario.UsuarioID, app_chat.mensaje);
+                    app_chat.getUsuariosMensajes();
+                    app_chat.getMessages(app_chat.usuario.UsuarioID, app_chat.negocio);
+                    app_chat.mensaje = "";                    
 
                 }).catch(err => { console.log('ha ocurrido un error enviando el mensaje', err); alert('Error enviando mensaje'); });
+            },
+            getUsuariosMensajes() {
+                app_chat.usuarioId = parseInt(document.getElementById("usuarioId").value);
+                console.log('usuarioIdgrasss', app_chat.usuarioId);
+                axios.get("https://localhost:44386" + "/Negocios/GetUsuariosMensajes").then(response => {
+                    let res = JSON.parse(response.data);
+                    app_chat.chats_original = res;
+                    console.log('res', res);
+                    app_chat.chats = res;
+                    let ids = Array.from(new Set(res.map(x => x.UsuarioID)));
+                    console.log('ids', ids);
+                    ids = ids.filter(x => x != app_chat.usuarioId);
+                    console.log('ids', ids);
+                    app_chat.usuarios = [];
+                    for (let id of ids) {
+                        let msgs = res.filter(x => id == x.UsuarioID);
+                        console.log('msgs', msgs);
+                        let usuario = msgs[0];
+
+                        if (app_chat.usuarios.findIndex(x => x.UsuarioID == id) == -1) {
+                            app_chat.usuarios.push(usuario);
+                        }
+
+                    }
+                    //app_chat.usuarios = res.filter(x => ids.findIndex(id => id == x.UsuarioID) >= 0);
+                    console.log('chats', app_chat.chats);
+
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                    alert('Ha ocurrido un error');
+                })
             }
+
+
         }
 
     });
 
-    app_chat.getNegocios();
-    app_chat.getMessages();
+    app_chat.getUsuariosMensajes();
+    //app_chat.getMessages();
 
 
 </script>
