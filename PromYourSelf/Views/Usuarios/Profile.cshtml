@@ -29,27 +29,9 @@
         <div class="card-body">
             <div class="row">
                 <input type="hidden" asp-for="Id" name="Id" />
-                <div class="col-3">
+                <center>
                     <!--left col-->
                     <div class="text-center">
-                        @*@if (Model.Foto != null && Model.Foto != string.Empty)
-                            {
-                                <input asp-for="Foto" hidden />
-                                <img src="@imgSrc" id="FotoResources" class="avatar img-circle img-thumbnail" alt="profile">
-                            }
-                            else
-                            {
-                                <img src="@Url.Content(_appSettings.Value.UserSinFoto)" id="FotoResources" class="avatar img-circle img-thumbnail" alt="avatar">
-                            }
-                            <hr />
-                            <div class="row justify-content-center">
-                                <input hidden id="inputFoto" asp-for="Foto" name="foto" type="file" onchange="ShowMyImage(this)" onclick="this.value=null;" class="text-center center-block file-upload" accept=".png,.jpg,.jpeg,.gif,.tif">
-                                <input hidden id="inputFotoFile" name="logo" asp-for="FotoFile" type="file" />
-                                <a class="btn btn-primary" href="javascript:changeLogo('inputFoto');">Cambiar</a>
-                                &nbsp;
-                                <a class="btn btn-danger" href="javascript:removeImage('@Url.Content(_appSettings.Value.UserSinFoto)','inputFoto','removeLogo');">Eliminar</a>
-                                <input type="hidden" style="display: none" value="0" name="removeLogo" id="removeLogo">
-                            </div>*@
                         <img id="preview" class="rounded" src="@Url.Content(fotoUrl)" width="250" height="230" />
                         <br />
                         <input type="file" id="logo" name="logo" style="display: none;" />
@@ -59,9 +41,9 @@
                         <input type="hidden" style="display: none" value="0" name="removeLogo" id="removeLogo">
                     </div>
                     <hr><br>
+                </center>
 
 
-                </div><!--/col-3-->
                 <div class="col-9">
 
                     <div class="form-row">
@@ -85,7 +67,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label asp-for="UserName" class="control-label">Nombre de Usuario</label>
-                                <label asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario."></label>                              
+                                <label asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario."></label>
                             </div>
                         </div>
                         <div class="col-6">
@@ -175,54 +157,54 @@
         }
 
 
-            //function ShowMyImage(fileInput) {
-            //    console.log('Estableciendo imagen or defecto');
-            //    let file = fileInput.files[0];
-            //    console.log('file', file);
-            //    let imageType = /image.*/;
-            //    if (!file.type.match(imageType)) {
-            //        alert("Formato de archivo incorrecto! Seleccione una imagen");
-            //        return;
-            //    }
+                    //function ShowMyImage(fileInput) {
+                    //    console.log('Estableciendo imagen or defecto');
+                    //    let file = fileInput.files[0];
+                    //    console.log('file', file);
+                    //    let imageType = /image.*/;
+                    //    if (!file.type.match(imageType)) {
+                    //        alert("Formato de archivo incorrecto! Seleccione una imagen");
+                    //        return;
+                    //    }
 
-            //    var img = document.getElementById("FotoResources");
-            //    document.getElementById("inputFotoFile").files = fileInput.files;
-            //    console.log('fotoEl', img);
-            //    img.file = file;
-            //    var reader = new FileReader();
+                    //    var img = document.getElementById("FotoResources");
+                    //    document.getElementById("inputFotoFile").files = fileInput.files;
+                    //    console.log('fotoEl', img);
+                    //    img.file = file;
+                    //    var reader = new FileReader();
 
-            //    reader.onload = (function (aImg) {
+                    //    reader.onload = (function (aImg) {
 
-            //        return function (e) {
-            //            aImg.src = e.target.result;
-            //            $("InputFoto").val(' ');
-            //        };
-            //    })(img);
-            //    $("#removeLogo").val(0);
-            //    reader.readAsDataURL(file);
-            //    //thumbnil.style.display = 'block';
-            //    console.log('fotoEl', img);
+                    //        return function (e) {
+                    //            aImg.src = e.target.result;
+                    //            $("InputFoto").val(' ');
+                    //        };
+                    //    })(img);
+                    //    $("#removeLogo").val(0);
+                    //    reader.readAsDataURL(file);
+                    //    //thumbnil.style.display = 'block';
+                    //    console.log('fotoEl', img);
 
-            //    for (var i = 0; i < files.length; i++) {
-            //        let fileInterna = files[i];
-            //        console.log(fileInterna.name);
-            //        let imageType = /image.*/;
-            //        if (!fileInterna.type.match(imageType)) {
-            //            continue;
-            //        }
-            //        var img = document.getElementById("FotoResources");
-            //        img.file = fileInterna;
-            //        var reader = new FileReader();
-            //        reader.onload = (function (aImg) {
-            //            return function (e) {
-            //                aImg.src = e.target.result;
-            //            };
-            //        })(img);
-            //        reader.readAsDataURL(fileInterna);
-            //        thumbnil.style.display = 'block';
-            //        //$("#banner_name").text(fileInterna.name);
-            //        console.log('Hola');
-            //    }
+                    //    for (var i = 0; i < files.length; i++) {
+                    //        let fileInterna = files[i];
+                    //        console.log(fileInterna.name);
+                    //        let imageType = /image.*/;
+                    //        if (!fileInterna.type.match(imageType)) {
+                    //            continue;
+                    //        }
+                    //        var img = document.getElementById("FotoResources");
+                    //        img.file = fileInterna;
+                    //        var reader = new FileReader();
+                    //        reader.onload = (function (aImg) {
+                    //            return function (e) {
+                    //                aImg.src = e.target.result;
+                    //            };
+                    //        })(img);
+                    //        reader.readAsDataURL(fileInterna);
+                    //        thumbnil.style.display = 'block';
+                    //        //$("#banner_name").text(fileInterna.name);
+                    //        console.log('Hola');
+                    //    }
 
     </script>
 }
