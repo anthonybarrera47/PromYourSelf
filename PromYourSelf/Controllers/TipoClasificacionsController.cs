@@ -131,6 +131,8 @@ namespace PromYourSelf.Controllers
             {
                 try
                 {
+                    tipoClasificacion.ModificadoPor = User.GetUserID().ToInt();
+                    tipoClasificacion.UsuarioID = User.GetUserID().ToInt();
                     await _Repo.TiposClasificacion.ModifiedAsync(tipoClasificacion);
                 }
                 catch (DbUpdateConcurrencyException)
