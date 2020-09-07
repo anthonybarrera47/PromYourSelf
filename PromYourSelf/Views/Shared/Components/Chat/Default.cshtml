@@ -14,7 +14,7 @@
 <div id="app_chat">
 
     <div class="container">
-
+        <input type="hidden" name="negocioId" value="@User.GetEmpresaID()" />
         <!-- Page header start -->
         <div class="page-title">
             <div class="row gutters">
@@ -51,7 +51,7 @@
                                     <ul class="users">
                                         @{
                                             foreach (var negocio in Model.negocios)
-                                            {                                               
+                                            {
                                                 <li class="person active-user" data-chat="@negocio.NegocioID" v-on:click="getMessages(@negocio.NegocioID, '@negocio.NombreComercial')">
                                                     <div class="user">
                                                         <img src="https://www.bootdey.com/img/Content/avatar/avatar2.png" alt="Retail Admin">
@@ -155,9 +155,10 @@
         methods: {
             notificarMensajes(receptorId, mensaje) {
                 console.log('receptorid', receptorId);
-                connection.invoke("Send", receptorId, mensaje).catch(err => { console.error('Ha ocurrido un error al intentar notificar'); alert('Error intentando modificar'); })
+                connection.invoke("Send", receptorId).catch(err => { console.error('Ha ocurrido un error al intentar notificar'); alert('Error intentando modificar'); })
             },
             getMessages: function (receptorId, nombre) {
+                console.log('obteniendo mensajes de receptor id', receptorId);
                 app_chat.negocio = nombre;
                 app_chat.receptorId = receptorId;
                 axios.get("https://localhost:44386/Mensajes" + "/GetMessages?" + "receptorId=" + receptorId).then(response => {
@@ -180,12 +181,17 @@
             },
 
             getNegocios: function () {
+                let negocioId = parseInt(document.getElementById("negocioId").value);
                 axios.get("https://localhost:44386/Negocios" + "/GetNegocios").then(response => {
                     app_chat.negocios = [];
                     let res = JSON.parse(response.data);
                     console.log('Negocios obtenidos', res);
                     for (let i = 0; i < res.length; i++) {
-                        app_chat.negocios.push(res[i]);
+                        if (i == 0) { app_chat.receptorId = res[i].NegocioID };
+                        if (res[i].NegocioID != negocioId) {
+                            app_chat.negocios.push(res[i]);
+                        }
+
                     }
                     if (app_chat.negocios.length == 1) {
                         app_chat.negocio = app_chat.negocios[0].NombreComercial;
@@ -216,7 +222,7 @@
 
     app_chat.getNegocios();
     app_chat.getMessages();
-   
+
 
 </script>
 
