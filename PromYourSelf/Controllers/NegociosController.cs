@@ -33,6 +33,7 @@ namespace PromYourSelf.Controllers
 			_signInManager = signInManager;
 		}
 		// GET: GetNegocios
+		[Authorize]
 		public async Task<IActionResult> GetNegocios(string filter, string sortExpression = "NombreComercial", int PageSize = 5)
 		{
 			if (!string.IsNullOrWhiteSpace(filter))

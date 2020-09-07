@@ -25,7 +25,6 @@ namespace PromYourSelf.Controllers
         private readonly UserManager<Usuarios> _userManager;
         private readonly IRepoWrapper _Repo;
         public static List<Horarios> Lista;
-        private static IHttpContextAccessor _accesor;
 
         public HorariosController( IRepoWrapper RepoHorario, SignInManager<Usuarios> signInManager,
            UserManager<Usuarios> userManager)

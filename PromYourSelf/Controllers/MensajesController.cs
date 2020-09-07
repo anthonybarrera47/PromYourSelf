@@ -71,19 +71,6 @@ namespace PromYourSelf.Controllers
 			return View();
 		}
 
-		//	public async Task<IViewComponentResult> InvokeAsync(
-		//int usuarioId)
-		//	{
-		//		this.mensajes = await this.db.Mensaje.Where<Mensajes>(x => x.UsuarioID == usuarioId || x.NegocioID == usuarioId).ToListAsync();
-
-		//		List<int> ids = this.mensajes.Select(x => x.NegocioID).Distinct().ToList();
-
-
-		//		this.negocios = this.db.Negocios.Where<Negocios>(c => ids.Any(x => x == c.NegocioID)).ToList();
-
-		//		return View(new ChatViewModel(mensajes, negocios));
-		//	}
-
 		public async Task<JsonResult> GetMessages(int receptorId)
 		{
 			int userId = User.GetUserID().ToInt();
