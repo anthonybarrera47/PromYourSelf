@@ -12,7 +12,7 @@
 }
 
 <div id="app-productos">
-    <form asp-action="Create" method="post" id="registrationForm" enctype="multipart/form-data">
+    <form asp-action="@Action" method="post" id="registrationForm" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="card shadow mb-4">
             <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@cardHeader.Text</h1></div>
@@ -155,7 +155,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Foto</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
