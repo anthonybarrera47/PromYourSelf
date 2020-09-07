@@ -1,6 +1,7 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Validaciones;
@@ -98,7 +99,7 @@ namespace PromYourSelf.ViewModels
             get
             {
                 string Cadena = (SabadoDesde + SabadoHasta).ToString();
-                Cadena = (Cadena == string.Empty ? $"{SABADO} {CERRADO}" : $"{SABADO} {SabadoDesde}-{SabadoHasta}");
+                Cadena = Cadena == string.Empty ? $"{SABADO} {CERRADO}" : $"{SABADO} {SabadoDesde}-{SabadoHasta}";
                 return Cadena;
             }
             set

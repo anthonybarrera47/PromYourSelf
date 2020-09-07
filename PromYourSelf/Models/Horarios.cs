@@ -3,6 +3,7 @@ using PromYourSelf.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -42,13 +43,12 @@ namespace Models
                 DomingoDesde = GetHoraFromString(Domingo, HorariosViewModel.DOMINGO.ToUpperInvariant(), true, false),
                 DomingoHasta = GetHoraFromString(Domingo, HorariosViewModel.DOMINGO.ToUpperInvariant(), false, true)
             };
-
             return Horarios;
         }
         private string GetHoraFromString(string Horario,string Dia,bool EsDesde,bool EsHasta)
         {
             string str = Horario.ToUpper();
-
+            
             str = str.Replace(Dia.ToUpper(), "").Trim();
 
             if (EsDesde)
