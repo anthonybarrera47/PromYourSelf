@@ -1,3 +1,46 @@
 ﻿@model Models.Pagos
 
 <partial name="_CreateOrEditPartialView" model="Model" />
+
+<script>
+    var app_pagos = new Vue({
+        el: '#app_pagos',
+        data: {
+            ListaClasificaciones: [],
+            Default: ' '
+        },
+        methods: {
+            AddClasifi() {
+                axios.get("AddTipoClasificacion/?TipoClasificacion=" + $("#TipoClasificacionInput").val()).then(r => { ToastSweetAlert('success', 'HAY BOBO!!'); app_pagos.GetClasificaciones(); })
+                    .catch(e => { ToastSweetAlert('error', 'NO HAY BOBO!!');console.log(e) } );
+                $('#NuevoTipoClasificacion').modal('toggle');
+            },
+            GetClasificaciones()
+            {
+                axios.get("GetClasificaciones").then(r => {
+
+                    app_pagos.ListaClasificaciones = [];
+                    let res = JSON.parse(r.data);
+
+                    let Lista = res.map(function(x) {
+                        return {
+                            value: x.TipoClasificacionID,
+                            text: x.Descripcion,
+                        }
+                    });
+
+                    for (let i = 0; i < Lista.length; i++) {
+                        app_pagos.ListaClasificaciones.push(Lista[i]);
+                    }
+
+                }).catch(e => { ToastSweetAlert('error', 'NO HAY BOBO!!');console.log('error',e); console.log('Lista', Lista) });
+
+            }
+
+        }
+
+    });
+
+    app_pagos.GetClasificaciones();
+
+</script>
