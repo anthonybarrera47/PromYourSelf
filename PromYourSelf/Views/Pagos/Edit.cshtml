@@ -1,46 +1,71 @@
 ﻿@model Models.Pagos
+    <div id="app_pagos">
 
-<partial name="_CreateOrEditPartialView" model="Model" />
-
-<script>
-    var app_pagos = new Vue({
-        el: '#app_pagos',
-        data: {
-            ListaClasificaciones: [],
-            Default: ' '
-        },
-        methods: {
-            AddClasifi() {
-                axios.get("AddTipoClasificacion/?TipoClasificacion=" + $("#TipoClasificacionInput").val()).then(r => { ToastSweetAlert('success', 'HAY BOBO!!'); app_pagos.GetClasificaciones(); })
-                    .catch(e => { console.log(e) } );
-                $('#NuevoTipoClasificacion').modal('toggle');
+        <partial name="_CreateOrEditPartialView" model="Model" />
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="NuevoTipoClasificacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Registrar Clasificaci&oacute;n</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TipoClasificacionInput">Tipo Clasificaci&oacute;n</label>
+                            <input type="text" class="form-control" id="TipoClasificacionInput" placeholder="Ingrese el tipo de clasificacion">
+                            <small id="emailHelp" class="form-text text-muted">Ingrese el nombre de la clasificaci&oacute;n que desea agregar</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="SaveButton" v-on:click="AddClasifi()" type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app_pagos = new Vue({
+            el: '#app_pagos',
+            data: {
+                ListaClasificaciones: [],
+                Default: ' '
             },
-            GetClasificaciones()
-            {
-                axios.get("https://localhost:44386" + "/Pagos/GetClasificaciones").then(r => {
+            methods: {
+                AddClasifi() {
+                    axios.get("AddTipoClasificacion/?TipoClasificacion=" + $("#TipoClasificacionInput").val()).then(r => { ToastSweetAlert('success', 'HAY BOBO!!'); app_pagos.GetClasificaciones(); })
+                        .catch(e => { console.log(e) });
+                    $('#NuevoTipoClasificacion').modal('toggle');
+                },
+                GetClasificaciones() {
+                    axios.get("https://localhost:44386" + "/Pagos/GetClasificaciones").then(r => {
 
-                    app_pagos.ListaClasificaciones = [];
-                    let res = JSON.parse(r.data);
+                        app_pagos.ListaClasificaciones = [];
+                        let res = JSON.parse(r.data);
 
-                    let Lista = res.map(function(x) {
-                        return {
-                            value: x.TipoClasificacionID,
-                            text: x.Descripcion,
+                        let Lista = res.map(function (x) {
+                            return {
+                                value: x.TipoClasificacionID,
+                                text: x.Descripcion,
+                            }
+                        });
+
+                        for (let i = 0; i < Lista.length; i++) {
+                            app_pagos.ListaClasificaciones.push(Lista[i]);
                         }
-                    });
 
-                    for (let i = 0; i < Lista.length; i++) {
-                        app_pagos.ListaClasificaciones.push(Lista[i]);
-                    }
+                    }).catch(e => { console.log('error', e); console.log('Lista', Lista) });
 
-                }).catch(e => { console.log('error',e); console.log('Lista', Lista) });
+                }
 
             }
 
-        }
+        });
 
-    });
+        app_pagos.GetClasificaciones();
 
-    app_pagos.GetClasificaciones();
-
-</script>
+    </script>
