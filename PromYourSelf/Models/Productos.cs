@@ -1,6 +1,7 @@
 ﻿using PromYourSelf.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Models
         [Required(ErrorMessage ="Este campo es requerido")]
         public string Nombre { get; set; }
         [StringLength(255,
-            ErrorMessage = "La descripción no debe de tener mas de 255 caracteres.")]
+            ErrorMessage = "La descripción no debe de tener mas de 255 caracteres."), DisplayName("Descripción")]
         public string Descripcion { get; set; }
         [Required(ErrorMessage = "Este campo es requerido")]
         public string Unidad { get; set; }

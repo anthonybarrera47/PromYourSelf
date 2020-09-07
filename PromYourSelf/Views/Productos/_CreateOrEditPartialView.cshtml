@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-xl-6 col-md-6 col-sm-3 ">
                                 <label asp-for="TipoProductos" class="control-label"></label>
                                 <select asp-for="TipoProductos" class="form-control">
                                     <option value="1">Servicio</option>
@@ -87,11 +87,11 @@
                                 <span asp-validation-for="TipoProductos" class="text-danger"></span>
                             </div>
 
-                            <div class=" col-6">
+                            <div class="form-group col-xl-6 col-md-6 col-sm-3">
                                 <label for="select2etiquetas" class="control-label">Agregar Etiquetas</label>
                                 <div class="input-group">
                                     <select id="select2etiquetas" multiple="multiple" class="select2 form-control"
-                                            style="width:95%;height:auto"
+                                            style="width:95%;"
                                             onchange="app_productos.onChange(this)">
                                         <option v-for="c in etiquetas_select" v-bind:value="c.value">{{c.text}}</option>
                                     </select>
