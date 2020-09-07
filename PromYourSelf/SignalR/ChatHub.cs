@@ -62,7 +62,7 @@ namespace SignalRChat
 		}		
 		public override Task OnDisconnectedAsync(Exception ex)
 		{
-			string name = Context.User.Identity.Name;
+			string name = User.GetUserID().ToString();
 
 			_connections.Remove(name, Context.ConnectionId);
 
