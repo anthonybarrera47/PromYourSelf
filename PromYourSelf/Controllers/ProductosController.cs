@@ -102,7 +102,7 @@ namespace PromYourSelf.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Productos());
         }
 
         // POST: Productos/Create

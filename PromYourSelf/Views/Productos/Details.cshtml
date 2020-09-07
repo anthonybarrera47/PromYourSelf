@@ -1,92 +1,79 @@
 ﻿@model Models.Productos
 
 @{
-    ViewData["Title"] = "Details";
+    ButtonsCardFooter Button = new ButtonsCardFooter();
+    Button.ActionButtonSaveOrEdit = "Edit";
+    Button.TextButtonSaveOrEdit = "Editar";
+    Button.ShowButtonReset = false;
+    ValuesCardHeader cardHeader = new ValuesCardHeader();
+    cardHeader.Text = "Información de Producto";
+    ViewData["Title"] = cardHeader.Text;
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Productos</h4>
-    <hr />
-    <div class="row">
-        @{
-            foreach (EtiquetasDetails etiqueta in Model.Etiquetas)
-            {
-                <span class="ml-1 badge badge-info">@etiqueta.Etiqueta.Nombre</span>
-            }
-        }
+    <div class="card shadow mb-4">
+        <partial name="_CardHeaderPartialView" model="cardHeader" />
+        <div class="card-body">
+            <div class="row">
+                @{
+                    foreach (EtiquetasDetails etiqueta in Model.Etiquetas)
+                    {
+                        <span class="ml-1 badge badge-info">@etiqueta.Etiqueta.Nombre</span>
+                    }
+                }
+            </div> <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Nombre)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Descripcion)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Unidad)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Unidad)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Stock)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Stock)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Precio)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Precio)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PrecioOferta)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PrecioOferta)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TipoProductos)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TipoProductos)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <div class="text-center">
+                <div class="form-group col-12 " display: inline-block>
+                    <a class="btn btn-lg btn-success pull-right" asp-action="Edit" asp-route-id="@Model.ProductoID">Editar</a>
+                    <a class="btn btn-lg btn-warning" asp-action="Index">Volver a la lista</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Unidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Unidad)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Stock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Stock)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrecioOferta)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrecioOferta)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoProductos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoProductos)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCreacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCreacion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModificadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModificadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaModificacion)
-        </dd>
-    </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ProductoID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

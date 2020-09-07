@@ -4,7 +4,10 @@
     <div class="text-center">
         <div class="form-group col-12 " display: inline-block>
             <button class="btn btn-lg btn-success pull-right" value="@Model.ActionButtonSaveOrEdit" type="submit"><i class="@Model.CssButtonSaveOrEdit"></i> @Model.TextButtonSaveOrEdit</button>
-            <button class="btn btn-lg btn-info" type="@Model.ActionButtonReset"><i class="fas fa-redo-alt"></i> @Model.TextButtonReset</button>
+            @if (Model.ShowButtonReset)
+            {
+                <button class="btn btn-lg btn-info" type="@Model.ActionButtonReset"><i class="fas fa-redo-alt"></i> @Model.TextButtonReset</button>
+            }
             @if (Model.ShowButtonBackToList)
             {
                 <button class="btn btn-lg btn-warning" asp-action="@Model.ActionButtonBackToList"><i class="fas fa-arrow-left"></i> @Model.TextButtonBackToList</button>

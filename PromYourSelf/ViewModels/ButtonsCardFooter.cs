@@ -15,6 +15,7 @@ namespace PromYourSelf.ViewModels
         public string ActionButtonBackToList { get; set; } = "Index";
         public string TextButtonBackToList { get; set; } = "Volver a la Lista";
         public bool ShowButtonBackToList { get; set; } = true;
+        public bool ShowButtonReset { get; set; } = true;
         public string CssButtonSaveOrEdit { get; set; } = "fas fa-save";
     }
 }

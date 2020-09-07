@@ -15,7 +15,7 @@
     <form asp-action="Create" method="post" id="registrationForm" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="card shadow mb-4">
-            <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@cardHeader.Text;</h1></div>
+            <div class="card-header"><h1 class="m-0 font-weight-bold text-primary">@cardHeader.Text</h1></div>
 
             <div class="card-body">
 
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-12">
+                            <div class="form-group col-6">
                                 <label asp-for="TipoProductos" class="control-label"></label>
                                 <select asp-for="TipoProductos" class="form-control">
                                     <option value="1">Servicio</option>
@@ -87,26 +87,29 @@
                                 <span asp-validation-for="TipoProductos" class="text-danger"></span>
                             </div>
 
+                            <div class=" col-6">
+                                <label for="select2etiquetas" class="control-label">Agregar Etiquetas</label>
+                                <div class="input-group">
+                                    <select id="select2etiquetas" multiple="multiple" class="select2 form-control"
+                                            style="width:95%;height:auto"
+                                            onchange="app_productos.onChange(this)">
+                                        <option v-for="c in etiquetas_select" v-bind:value="c.value">{{c.text}}</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button data-toggle="modal" data-target="#modal_agregar_etiqueta" class="btn btn-sm btn-success">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
 
-                        </div>
+                                <div id="inputs_hidden">
 
-                        <div class="input-group form-group">
-                            <label class="control-label">Etiquetas</label>
-                            <select id="select2etiquetas" multiple="multiple" class="form-control select2" onchange="app_productos.onChange(this)">
-                                <option v-for="c in etiquetas_select" v-bind:value="c.value">{{c.text}}</option>
-                            </select>
-                            <div class="input-group-append">
-                                <a data-toggle="modal" data-target="#modal_agregar_etiqueta" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                                    <input v-for="(etiqueta, index) in etiquetas_inputs" type="hidden" :name="'Etiquetas[' + index + '].EtiquetaID'" v-bind:value="etiqueta" />
+                                </div>
                             </div>
                         </div>
 
-                        <div id="inputs_hidden">
 
-                            <input v-for="(etiqueta, index) in etiquetas_inputs" type="hidden" :name="'Etiquetas[' + index + '].EtiquetaID'" v-bind:value="etiqueta" />
-
-
-
-                        </div>
                         @*================== MODAL PARA AGREGAR ETIQUETA ====================*@
                         <div id="div_modal_agregar_etiqueta">
                             <div class="modal" id="modal_agregar_etiqueta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
