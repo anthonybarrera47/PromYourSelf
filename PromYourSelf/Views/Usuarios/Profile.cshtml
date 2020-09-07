@@ -66,14 +66,16 @@
                     <div class="form-row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label asp-for="UserName" class="control-label">Nombre de Usuario</label>
-                                <label asp-for="UserName" type="text" class="form-control" name="UserName" id="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario."></label>
+                                <label asp-for="UserName">Nombre de Usuario</label>
+                                <input asp-for="UserName" disabled  type="text" class="form-control" name="UserName" placeholder="Nombre de usuario" title="Ingrese su Nombre de usuario.">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label asp-for="Email" class="control-label">Correo Electr&oacute;nico</label>
-                                <label asp-for="Email" type="email" name="Email" class="form-control" />
+                                <label asp-for="Email">Correo Electr&oacute;nico</label>
+                                <input asp-for="Email" disabled type="email" name="Email" class="form-control">
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                         </div>
                     </div>

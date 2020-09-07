@@ -51,7 +51,11 @@ namespace PromYourSelf.BLL
         {
             return _userManager.FindByEmailAsync(email);
         }
-        public async Task<string> GetUserNmaeById(int Id)
+        public Task<Usuarios> GetUserInfoById(int Id)
+        {
+            return _userManager.FindByIdAsync(Id.ToString());
+        }
+        public async Task<string> GetUserNameById(int Id)
         {
             var Usuario = await _context.Usuarios.FindAsync(Id);
             return Usuario.Nombres;

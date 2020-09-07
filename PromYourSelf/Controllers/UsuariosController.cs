@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models;
+using PromYourSelf.BLL;
 using PromYourSelf.BLL.Interfaces;
 using PromYourSelf.Models;
 using PromYourSelf.Models.Configuraciones;
@@ -198,11 +199,11 @@ namespace PromYourSelf.Controllers
         public async Task<IActionResult> Profile([Bind("Id, Nombres,Apellidos,Genero,UserName, Email, Foto,Confirmado")] ProfileViewModel modelo, IFormFile logo, bool removeLogo)
         {
             //Valida que si se cambia el correo no exista otro usuario con el mismo asignado.
-            var u = await _Repo.Usuarios.GetUserInfoByEmail(modelo.Email); //No se puede registrar el mismo correo en el sistema dos veces
+            var u = await _Repo.Usuarios.GetUserInfoById(modelo.Id); //No se puede registrar el mismo correo en el sistema dos veces
             if (u != null && u.Id != modelo.Id)
                 ModelState.AddModelError("", $"El correo {modelo.Email} ya está registrado.");
 
-            if (!modelo.Email.IsValidEmail()) //Esta es una extension que valida el email valido o invalido.
+            if (!u.Email.IsValidEmail()) //Esta es una extension que valida el email valido o invalido.
                 ModelState.AddModelError("", $"El Email {modelo.Email} no es correcto.");
 
             ModelState.Remove("Apellidos");
@@ -250,7 +251,6 @@ namespace PromYourSelf.Controllers
                     }
                     user.Nombres = modelo.Nombres;
                     user.Apellidos = modelo.Apellidos;
-                    user.Email = modelo.Email;
                     user.PhoneNumber = modelo.Telefono;
                     user.ModificadoPor = User.GetUserID().ToInt();
                     user.FechaModificacion = DateTime.Now;
@@ -308,13 +308,13 @@ namespace PromYourSelf.Controllers
         {
 
             var user = await _userManager.FindByIdAsync(this.User.GetUserID());
-            var checkPassResult = await _userManager.CheckPasswordAsync(user, modelo.PasswordActual);
+            var checkPassResult = await _userManager.CheckPasswordAsync(user, RepositorioUsuario.SHA1(modelo.PasswordActual));
             if (!checkPassResult)
             {
                 ModelState.AddModelError("", "Contraseña actual incorrecta.");
             }
 
-            if (!modelo.Password.Equals(modelo.ConfirmarPassword))
+            if (!RepositorioUsuario.SHA1(modelo.Password).Equals(RepositorioUsuario.SHA1(modelo.ConfirmarPassword)))
             {
                 ModelState.AddModelError("", "Las contraseñas con coinciden.");
             }
@@ -323,7 +323,7 @@ namespace PromYourSelf.Controllers
             {
                 //TODO: Cambiar Password: 2 - Validar el modelo , usar el userManager para resetear el password en el POST de CambiarPassword
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, modelo.Password);
+                var result = await _userManager.ResetPasswordAsync(user, token, RepositorioUsuario.SHA1(modelo.Password));
                 if (result.Succeeded)
                 {
                     SweetAlert(TitleType.OperacionExitosa, MessageType.RegistroGuardado, IconType.success);
