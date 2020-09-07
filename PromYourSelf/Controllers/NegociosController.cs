@@ -32,8 +32,7 @@ namespace PromYourSelf.Controllers
 			_userManager = userManager;
 			_signInManager = signInManager;
 		}
-		// GET: GetNegocios
-		[Authorize]
+		// GET: GetNegocios	
 		public async Task<IActionResult> GetNegocios(string filter, string sortExpression = "NombreComercial", int PageSize = 5)
 		{
 			if (!string.IsNullOrWhiteSpace(filter))
@@ -43,7 +42,15 @@ namespace PromYourSelf.Controllers
 
 			return new JsonResult(JsonConvert.SerializeObject(Lista));
 		}
-		
+
+
+		public async Task<IActionResult> GetUsuarios()
+		{			
+				Lista = await _Repo.Usuarios.GetListAsync(x => true);
+
+			return new JsonResult(JsonConvert.SerializeObject(Lista));
+		}
+
 
 		public async Task<IActionResult> GetProductosByNegocio(int negocioId, int page = 1, string sortExpression = "NombreComercial", int PageSize = 5)
 		{

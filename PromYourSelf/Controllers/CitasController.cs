@@ -70,8 +70,7 @@ namespace PromYourSelf.Controllers
 			return View(model);
 		}
 
-		// GET: GetCitas
-		[Authorize]
+		// GET: GetCitas	
 		public async Task<IActionResult> GetCitas()
 		{
 			List<object> lista_anonima = new List<object>();
