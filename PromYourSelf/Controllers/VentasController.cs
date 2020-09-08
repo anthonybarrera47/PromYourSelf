@@ -68,7 +68,10 @@ namespace PromYourSelf.Controllers
 
         // GET: Ventas/Create
         public async Task< IActionResult> Create(int citaId)
-        {       
+        {
+            if (User.GetPosicion() != Posicion.Administrador.ToString("G"))
+                return RedirectToAction("Index","Negocio");
+
             ViewBag.Clientes = await _Repo.Usuarios.GetListAsync(x => true);
             ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
 			Ventas venta = new Ventas();			
