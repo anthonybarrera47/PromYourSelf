@@ -18,8 +18,8 @@
                 </div>
             </div>
 
-            <input type="hidden" id="_usuarioId" value="@User.GetUserID().ToInt()"/>
-            <input type="hidden" id="_empresaId" value="@User.GetEmpresaID().ToInt()"/>
+            <input type="hidden" id="_usuarioId" value="@User.GetUserID().ToInt()" />
+            <input type="hidden" id="_empresaId" value="@User.GetEmpresaID().ToInt()" />
         </form>
     </div>
     <br />
@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                         <tr v-for="item in citas">
                             <td>
                                 {{item.cita.FechaInicio.replace('T', ' ')}}
@@ -71,14 +71,15 @@
                             </td>
                             <td>
                                 @if (User.GetPosicion() == Models.Posicion.Administrador.GetDescription())
-                                {<a  v-if="empresaId == item.cita.NegocioID && item.cita.Estado == 0" v-on:click="aceptarCita(item.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 2 && empresaId==item.cita.NegocioID" v-on:click="aceptarCita(item.cita.CitaID, 3)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 1 && empresaId==item.cita.NegocioID" v-on:click="aceptarCita(item.cita.CitaID, 2)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>}
+                                {<a v-if="empresaId == item.cita.NegocioID && item.cita.Estado == 0" v-on:click="aceptarCita(item.cita.CitaID)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 2 && empresaId==item.cita.NegocioID" v-on:click="aceptarCita(item.cita.CitaID, 3)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a> <a v-if="item.cita.Estado == 1 && empresaId==item.cita.NegocioID" v-on:click="aceptarCita(item.cita.CitaID, 2)" class="btn btn-sm btn-success text-white"><i class="fas fa-check"></i></a>}
                                 &nbsp;
                                 <a v-if="item.cita.Estado != 3 && item.cita.Estado != 4 && item.cita.Estado != 5" v-on:click="aceptarCita(item.cita.CitaID, 4)" class="btn btn-sm btn-danger text-white"><i class="fas fa-window-close"></i></a><a v-if="item.cita.Estado == 3 && item.cita.Estado != 5" v-bind:href="'/Ventas/Create?citaId='+ item.cita.CitaID" class="btn btn-sm btn-success text-white"><i class="fas fa-file-invoice-dollar"></i></a>
+                                <a v-bind:href="'/Citas/Details/'+ item.cita.CitaID" class="btn btn-sm btn-primary text-white"><i class="fas fa-eye"></i></a>
                             </td>
 
 
                         </tr>
-                        
+
                     </tbody>
                 </table>
                 <partial name="_PaginationPartialView" model="this.Model" />
@@ -138,5 +139,5 @@
         console.log("Empresa :", app_historial.empresaId);
         console.log("usuario :", app_historial.usuarioId);
     });
-    app_historial.getCitas();    
+    app_historial.getCitas();
 </script>
