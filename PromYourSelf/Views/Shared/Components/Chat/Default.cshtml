@@ -225,9 +225,10 @@
                     ReceptorID: app_chat.usuario.UsuarioID,
                     Contenido: app_chat.mensaje
                 }).then(response => {
+                    console.log('usuario luego de enviar', app_chat.usuario);
                     app_chat.notificarMensajes(app_chat.usuario.UsuarioID, app_chat.mensaje);
                     app_chat.getUsuariosMensajes();
-                    app_chat.getMessages(app_chat.usuario.UsuarioID, app_chat.negocio);
+                    app_chat.getMessages(app_chat.usuario);
                     app_chat.mensaje = "";                    
 
                 }).catch(err => { console.log('ha ocurrido un error enviando el mensaje', err); alert('Error enviando mensaje'); });

@@ -274,6 +274,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-envelope fa-fw"></i>
                                     <!-- Counter - Messages -->
+                                    <span class="badge badge-danger badge-counter">{{mensajes.length}}</span>
                                     @*<span class="badge badge-danger badge-counter">7</span>*@
                                 </a>
                                 <!-- Dropdown - Messages -->
@@ -535,6 +536,9 @@
                 connection.on("newNotification", (mensaje) => {
                     console.log('nueva notificacion');
                     app_topbar.getCitas();
+                });
+                connection.on("newMessage", (mensaje) => {               
+                    app_topbar.getMensajes();
                 });
             }
         });
