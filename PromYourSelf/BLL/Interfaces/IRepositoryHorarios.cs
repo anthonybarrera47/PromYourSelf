@@ -9,6 +9,6 @@ namespace PromYourSelf.BLL.Interfaces
 {
     public interface IRepositoryHorarios : IRepository<Horarios>
     {
-
+        Task<Horarios> FindAsyncByNegocio(int? id);
     }
 }

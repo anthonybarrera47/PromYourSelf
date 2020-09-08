@@ -119,7 +119,7 @@ WHERE m.UsuarioID = {0} OR m.ReceptorID = {0}";
 			{
 				return NotFound();
 			}
-			negocios.Horarios = await _Repo.Horarios.FindAsync(negocios.NegocioID);
+			negocios.Horarios = await _Repo.Horarios.FindAsyncByNegocio(negocios.NegocioID);
 			return View(negocios);
 		}
 
@@ -127,7 +127,7 @@ WHERE m.UsuarioID = {0} OR m.ReceptorID = {0}";
 		public async Task<IActionResult> MiNegocio(int? id)
 		{
 			Negocios negocio = (await _Repo.Negocios.GetListAsync(m => m.UsuarioID == id)).FirstOrDefault();
-			negocio.Horarios = await _Repo.Horarios.FindAsync(negocio.NegocioID);
+			negocio.Horarios = await _Repo.Horarios.FindAsyncByNegocio(negocio.NegocioID);
 
 			if (negocio == null)
 			{
