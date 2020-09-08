@@ -26,17 +26,22 @@ namespace PromYourSelf.BLL
             Productos entity;
             try
             {
-                entity = await _context.Productos.Where(x => x.ProductoID == id).Include(x => x.Etiquetas).Include(x => x.Fotos).FirstOrDefaultAsync();
-                entity.Etiquetas = (from item in entity.Etiquetas
-                                    select new EtiquetasDetails
-                                    {
-                                        ID = item.ID,
-                                        EtiquetaID = item.EtiquetaID,
-                                        ProductoID = item.ProductoID,
-                                        Etiqueta = _context.Etiquetas.Find(item.EtiquetaID)
+                entity = await _context.Productos.Where(x => x.ProductoID == id).Include(x => x.Fotos).Include(x => x.Etiquetas).FirstOrDefaultAsync();
+                if (entity != null && entity.Etiquetas != null)
+                {
+                    entity.Etiquetas = (from item in entity.Etiquetas
+                                        select new EtiquetasDetails
+                                        {
+                                            ID = item.ID,
+                                            EtiquetaID = item.EtiquetaID,
+                                            ProductoID = item.ProductoID,
+                                            Etiqueta = _context.Etiquetas.Find(item.EtiquetaID)
 
-                                    }
-                              ).ToList();
+                                        }
+                                                  ).ToList();
+                }
+
+
                 if (entity != null)
                 {
                     if (entity.GetType().BaseType == typeof(CamposEstandar))
@@ -50,6 +55,37 @@ namespace PromYourSelf.BLL
             { throw; }
             return entity;
         }
+        public override async Task<Productos> FindAsync(Expression<Func<Productos, bool>> expression)
+        {
+            Productos entity;
+            try
+            {
+                entity = await _context.Productos.Where(expression).Include(x => x.Fotos).Include(x => x.Etiquetas).FirstOrDefaultAsync();
+                entity.Etiquetas = (from item in entity.Etiquetas
+                                    select new EtiquetasDetails
+                                    {
+                                        ID = item.ID,
+                                        EtiquetaID = item.EtiquetaID,
+                                        ProductoID = item.ProductoID,
+                                        Etiqueta = _context.Etiquetas.Find(item.EtiquetaID)
+
+                                    }
+                              ).ToList();
+
+                if (entity != null)
+                {
+                    if (entity.GetType().BaseType == typeof(CamposEstandar))
+                    {
+                        if ((entity as CamposEstandar).EsNulo)
+                            entity = null;
+                    }
+                }
+            }
+            catch (Exception)
+            { throw; }
+            return entity;
+        }
+
         public async Task<Productos> FindAsyncWithoutTracking(int? id)
         {
             Productos entity;

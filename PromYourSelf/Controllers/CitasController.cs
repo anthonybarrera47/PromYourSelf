@@ -133,6 +133,7 @@ namespace PromYourSelf.Controllers
 			{
 				return NotFound();
 			}
+			cvm.FotosProductos = producto.Fotos;
 			return View(cvm);
 		}
 
@@ -167,10 +168,11 @@ namespace PromYourSelf.Controllers
 		// GET: Citas/Create
 		public async Task<IActionResult> Create(int servicio)
 		{
-			Productos producto = await _Repo.Productos.FindAsync(x => x.ProductoID == servicio);
+			Productos producto = await _Repo.Productos.FindAsync(servicio);
 			Negocios negocio = await _Repo.Negocios.FindAsync(x => x.NegocioID == producto.NegocioID);
 			Citas cita = new Citas() { NegocioID = negocio.NegocioID, ProductoID = producto.ProductoID };
-			CitasViewModel model = new CitasViewModel(producto.Nombre, producto.Precio, producto.Descripcion, producto.Etiquetas, negocio.NombreComercial, negocio.NegocioID, producto.ProductoID);
+			CitasViewModel model = new CitasViewModel(producto.Nombre, producto.Precio, producto.Descripcion, negocio.NombreComercial, negocio.NegocioID, producto.ProductoID);
+			model.FotosProductos = producto.Fotos;
 			return View(model);
 		}
 

@@ -52,7 +52,6 @@ namespace BLL
 			{ throw; }
 			return entity;
 		}
-
 		public void Dispose()
 		{
 			db.Dispose();
@@ -154,7 +153,7 @@ namespace BLL
 			throw new NotImplementedException();
 		}
 
-        public async Task<T> FindAsync(Expression<Func<T, bool>> expression)
+        public virtual async Task<T> FindAsync(Expression<Func<T, bool>> expression)
         {
 			T entity;
 			try

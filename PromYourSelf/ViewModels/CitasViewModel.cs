@@ -24,9 +24,10 @@ namespace PromYourSelf.ViewModels
 		public int ProductoID { get; set; }
 		public int CitaID { get; set; }
 		public DateTime CreatedAt { get; set; }		
+		public List<FotosProductos> FotosProductos { get; set; }
 
 
-		public CitasViewModel(string nombre, decimal precio, string descripcion, List<EtiquetasDetails> etiquetas, string nombre_comercial, int negocioId, int productoId)
+		public CitasViewModel(string nombre, decimal precio, string descripcion, string nombre_comercial, int negocioId, int productoId)
 		{
 			this.Nombre = nombre;
 			this.Precio = precio;
