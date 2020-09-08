@@ -4,10 +4,9 @@
     ButtonsCardFooter Button = new ButtonsCardFooter();
     Button.ActionButtonSaveOrEdit = "Create";
     Button.TextButtonSaveOrEdit = "Guardar";
+    Button.ShowButtonBackToList = false;
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
 
 <h4>Citas</h4>
 <hr />
@@ -102,7 +101,7 @@
 
 
         </div>
-        <partial name="_ButtonsCardFooterPartialView" model="Button" />
+        <partial name="_ButtonsCardFooterPartialView" model="Button"  />
     </div>
 </form>
 

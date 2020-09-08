@@ -33,7 +33,7 @@ namespace PromYourSelf.ViewModels
 			this.Descripcion = descripcion;
 			this.NombreComercial = nombre_comercial;			
 			this.NegocioID = negocioId;
-			this.FechaInicio = new DateTime();
+			this.FechaInicio = DateTime.Now;
 			this.CodigoComprobacion = "";
 			this.Notas = "";
 			this.ProductoID = productoId;			
