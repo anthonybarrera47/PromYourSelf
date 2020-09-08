@@ -6,6 +6,7 @@
     string Texto = (Model.Id == 0) ? "Guardar" : "Editar";
     Button.ActionButtonSaveOrEdit = Action;
     Button.TextButtonSaveOrEdit = Texto;
+    Button.ShowButtonBackToList = false;
     cardHeader.Text = (Model.Id == 0) ? "Crear Horarios" : "Modificar Horarios";
     ViewData["Title"] = cardHeader.Text;
 }
