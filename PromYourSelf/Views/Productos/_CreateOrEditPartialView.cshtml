@@ -20,7 +20,7 @@
             <div class="card-body">
 
                 <ul class="nav nav-tabs">
-                    <li class="nav-item "><a class="nav-link active" data-toggle="tab" href="#home">Datos</a></li>
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Datos</a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Fotos">Fotos</a></li>
                 </ul>
                 <div class="tab-content">
@@ -142,8 +142,14 @@
                         <hr />
                         <small>Haga doble click en la imagen para eliminar!</small>
                         <hr />
-                        <div id="fotosPreview"></div>
-                        <div id="fotosHidden"></div>
+                        <div id="fotosPreview">
+                            @foreach (var foto in Model.Fotos)
+                            {
+                                <img src="@foto.Foto" ondblclick="remove_ondbclick(this)" class="m-1" style="max-width:300px;" />
+                            }
+                        </div>
+                        <div id="fotosHidden">                          
+                        </div>
                     </div>
                 </div>
             </div>

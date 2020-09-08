@@ -144,7 +144,7 @@ namespace PromYourSelf.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Productos productos)
-        {
+        {			
             if (id != productos.ProductoID)
             {
                 return NotFound();
@@ -152,6 +152,7 @@ namespace PromYourSelf.Controllers
 
             if (ModelState.IsValid)
             {
+				productos.Fotos.RemoveAll(x => !x.Foto.StartsWith("data"));
 				productos.NegocioID = User.GetEmpresaID().ToInt();
 				productos.UsuarioID = User.GetUserID().ToInt();
 				try

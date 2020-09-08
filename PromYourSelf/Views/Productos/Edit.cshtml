@@ -88,6 +88,11 @@
         return false;
     }
 
+    function remove_ondbclick(image) {
+        remove(image);
+        updateHiddenInputs();
+    }
+
     function preview_image(files) {
         let div = document.getElementById('fotosPreview');
 
@@ -142,6 +147,7 @@
         var element = el;
         element.remove();
     }
+    setTimeout(() => {updateHiddenInputs() }, 100)
 </script>
 
 @section Scripts {
