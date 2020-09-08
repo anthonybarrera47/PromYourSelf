@@ -265,7 +265,7 @@
             onChangeCita: function (event) {
                 app_ventas.citaId = event.value;
             },
-            verCitaId() { console.log("citaId", app_ventas.citaId); ,
+            verCitaId() { console.log("citaId", app_ventas.citaId); },
             getCitasPendientes: function () {
                 axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
                     app_ventas.citas_pendientes = [];
