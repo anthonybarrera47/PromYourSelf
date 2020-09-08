@@ -1,150 +1,235 @@
 ﻿<div id="app-ventas">
     <partial name="_CreateOrEditPartialView" model="Model" />
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.select2').select2({ width: 'resolve', theme: "bootstrap" });
-    });
-</script>
+
 <script>
-    var app_productos = new Vue({
-        el: '#app-productos',
+    var list = [];
+    var num = 0;
+
+    function eliminar(e) {
+        e.preventDefault();
+        var row = e.srcElement.parentNode.parentNode;
+        let id = parseInt(row.cells[0].textContent);
+        list.splice(list.indexOf(el => el.id == id), 1);
+        calcularTotal();
+        row.parentNode.removeChild(row);
+        return false;
+    }
+
+    function calcularTotal() {
+        console.log('lista', list);
+        let total = list.reduce((a, b) => a + b.cantidad * b.precio, 0);
+        $('#total').html(total.toString());
+        document.getElementById("Monto").value = total.toString();
+    }
+    function AgregaConcepto() {
+        let Cantidad = document.getElementById("Cantidad").value;
+        let Precio = document.getElementById("Precio").value;
+        //let Producto = document.getElementById("Producto").val();
+        let Producto = $('#Producto :selected').text();
+        let id = $('#Producto :selected').val();
+        let itemExists = list.find(el => el.id == parseInt(id));
+        if (!itemExists) {
+            list.push({ id: id, Producto: Producto, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
+        } else {
+            //mostrar mensaje de error
+            ToastSweetAlert('info','Este producto ya esta agregado.');
+            return false;
+        }
+        console.log('Precio de items: ', list);
+        console.log('lista de items: ', list);
+        calcularTotal();
+
+        //agregamos tabla
+        let Tabla = document.getElementById("tablaConceptos");
+        let TR = document.createElement("tr");
+        let TDCantidad = document.createElement("td");
+        let TDProducto = document.createElement("td");
+        let TDPrecio = document.createElement("td");
+        let TDTotal = document.createElement("td");
+        let TDEliminar = document.createElement("td");
+        let btnEliminar = document.createElement('button');
+        btnEliminar.className = "btn btn-danger";
+        btnEliminar.innerHTML = "Eliminar";
+        btnEliminar.addEventListener("click", eliminar);
+        TDEliminar.appendChild(btnEliminar);
+        TR.appendChild(TDCantidad);
+        TR.appendChild(TDProducto);
+        TR.appendChild(TDPrecio);
+        TR.appendChild(TDTotal);
+        TR.appendChild(TDEliminar);
+        TDCantidad.innerHTML = Cantidad;
+        TDProducto.innerHTML = Producto;
+        TDPrecio.innerHTML = Precio;
+        TDTotal.innerHTML = parseFloat(Cantidad) * parseFloat(Precio);
+        Tabla.appendChild(TR);
+
+        //agregamos hiddens
+        let DivProductos = document.getElementById("divProductos");
+        let HiddenIndex = document.createElement("input");
+        let HiddenCantidad = document.createElement("input");
+        let HiddenProducto = document.createElement("input");
+        let HiddenPrecio = document.createElement("input");
+        let HiddenProductoId = document.createElement("input");
+        console.log('el id es', parseInt(id));
+        HiddenProductoId.name = "Details[" + num + "].ProductoID";
+        HiddenProductoId.value = parseInt(id);
+        HiddenProductoId.type = "hidden";
+        HiddenIndex.name = "Details.Index";
+        HiddenIndex.value = num;
+        HiddenIndex.type = "hidden";
+        HiddenCantidad.name = "Details[" + num + "].Cantidad";
+        HiddenCantidad.value = Cantidad;
+        HiddenCantidad.type = "hidden";
+        HiddenProducto.name = "Details[" + num + "].Producto";
+        HiddenProducto.value = Producto;
+        HiddenProducto.type = "hidden";
+        HiddenPrecio.name = "Details[" + num + "].Precio";
+        HiddenPrecio.value = Precio;
+        HiddenPrecio.type = "hidden";
+        DivProductos.appendChild(HiddenIndex);
+        DivProductos.appendChild(HiddenCantidad);
+        DivProductos.appendChild(HiddenProducto);
+        DivProductos.appendChild(HiddenPrecio);
+        DivProductos.appendChild(HiddenProductoId);
+
+        //document.getElementById("Cantidad").value = "";
+        //document.getElementById("Precio").value = "";
+
+        num++;
+    }
+</script>
+
+<script>
+    var app_ventas = new Vue({
+        el: '#app-ventas',
         data: {
-            etiquetas_select: [],
-            etiquetas_inputs: [],
-            etiquetas: [],
-            etiqueta_nombre: ""
+            citas_pendientes: [],
+            default_value: "",
+            mensajes: [],
+            citaId: 0,
+            productos_select: [],
+            productos: [],
+            productos_detalle: [],
+            productoId: 0,
+            precio: 0,
+            cantidad: 0,
+            total: 0
 
         },
         methods: {
-            onChange: function (event) {
-                console.log('etiqueta id en change', event);
-                let etiquetas = $("#select2etiquetas").select2('val');
-                console.log(etiquetas);
-                app_productos.etiquetas_inputs = etiquetas.map(x => parseInt(x));
+            selectChange(e) {
+                console.log('cambio', e);
             },
-            agregar_etiqueta() {
-                console.log("nombre de la etiqueta", app_productos.etiqueta_nombre);
-                if (app_productos.etiqueta_nombre.length <= 3) {
-                    //mostrar mensaje de error
-                    app_productos.etiqueta_nombre = "";
-                    ToastSweetAlert('danger', 'Introduzca un nombre valido!');
-                    return;
+            calcular_total() {
+                app_ventas.total = app_ventas.productos_detalle.reduce((a, b) => a + b.Cantidad * b.Precio, 0);
+            },
+            agregar_detalle() {
+                console.log('productoid en agregar detalle', app_ventas.productoId);
+                let index = app_ventas.productos_detalle.findIndex(x => x.ProductoID == app_ventas.productoId);
+                if (index >= 0) {
+                    app_ventas.productos_detalle[index].Cantidad += parseInt(app_ventas.cantidad);
+                } else {
+                    let producto = app_ventas.productos.filter(x => x.ProductoID == app_ventas.productoId)[0];
+                    producto.Total = parseFloat(app_ventas.precio) * parseInt(app_ventas.cantidad);
+                    producto.Cantidad = app_ventas.cantidad;
+                    app_ventas.productos_detalle.push(producto);
                 }
+                app_ventas.calcular_total();
 
-                axios.get("/Productos/AgregarEtiqueta?nombre=" + app_productos.etiqueta_nombre).then(response => {
-                    console.log('response', response);
-                    if (response.data == true || response.data == "true") {
-                        app_productos.getEtiquetas();
-                        ToastSweetAlert('success', 'Etiqueta Agregada!');
-                    } else {
-                        ToastSweetAlert('danger', 'Ya existe una etiqueta con este nombre!');
-                    }
-                }).catch(err => {
-                    console.log('ha ocurrido un error', err);
-                    alert('Ha ocurrido un error');
-                });
-                app_productos.etiqueta_nombre = "";
             },
-
-            getEtiquetas: function () {
-                axios.get("/Productos/GetEtiquetas").then(response => {
-                    app_productos.etiquetas = [];
-                    app_productos.etiquetas_select = [];
+            eliminar_detalle(producto) {
+                console.log('Eliminando producto detalle', producto);
+                app_ventas.productos_detalle.splice(app_ventas.productos_detalle.indexOf(el => el.ProductoID == producto.ProductoID), 1);
+                app_ventas.calcular_total();
+            },
+            onChange: function (event) {
+                console.log('producto id en change', event.value, "mode id", app_ventas.productoId);
+                app_ventas.precio = app_ventas.productos.filter(x => x.ProductoID == parseInt(event.value))[0].Precio;
+                app_ventas.cantidad = 1;
+                app_ventas.productoId = event.value;
+            },
+            onChangeCita: function (event) {
+                app_ventas.citaId = event.value;
+            },
+            verCitaId() { console.log("citaId", app_ventas.citaId); ,
+            getCitasPendientes: function () {
+                axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
+                    app_ventas.citas_pendientes = [];
                     let res = JSON.parse(response.data);
-                    console.log('res etiquetas', res);
-                    let Lista = res.map(function (x) {
+                    const queryString = window.location.search;
+                    console.log('Query string', queryString);
+                    const urlParams = new URLSearchParams(queryString);
+                    const citaId = urlParams.get('citaId')
+                    if (citaId && citaId > 0) {
+                        res = res.filter(x => x.cita.CitaID == citaId);
+                    }
+                    let Lista = res.filter(x => x.cita.Estado == 3).map(function (x) {
                         return {
-                            value: x.ID,
-                            text: x.Nombre
+                            value: x.cita.CitaID,
+                            text: x.usuario.Nombres + " - " + x.producto.Nombre + " - " + x.cita.FechaInicio.split('T')[0],
                         }
 
                     });
-                    console.log('res Lista', Lista);
                     for (let i = 0; i < Lista.length; i++) {
-                        app_productos.etiquetas.push(res[i]);
-                        app_productos.etiquetas_select.push(Lista[i]);
+                        //if (i == 0) app_ventas.citaId = Lista[i].value;
+                        app_ventas.citas_pendientes.push(Lista[i]);
                     }
-                    console.log('res Lista Etiquetas', app_productos.etiquetas_select);
+                    console.log('res Lista', Lista);
                 }).catch(err => {
                     console.log('ha ocurrido un error', err);
-                    alert('Ha ocurrido un error');
+                    
+                })
+
+            },
+            getProductos: function () {
+                axios.get("https://localhost:44386" + "/Productos/GetProductos").then(response => {
+                    app_ventas.productos = [];
+                    app_ventas.productos_select = [];
+                    let res = JSON.parse(response.data);
+                    let Lista = res.map(function (x) {
+                        return {
+                            value: x.ProductoID,
+                            text: x.Nombre,
+                        }
+
+                    });
+                    for (let i = 0; i < Lista.length; i++) {
+                        if (i == 0) {
+                            app_ventas.productoId = Lista[i].value;
+                            app_ventas.cantidad = 1;
+                            app_ventas.precio = res[i].Precio;
+                        }
+                        app_ventas.productos_select.push(Lista[i]);
+                        app_ventas.productos.push(res[i]);
+                    }
+                    console.log('res Lista Productos', Lista);
+                }).catch(err => {
+                    console.log('ha ocurrido un error', err);
+                   
                 })
 
             }
 
         }
     });
-    app_productos.getEtiquetas();
+    app_ventas.getCitasPendientes();
+    app_ventas.getProductos();
 
 </script>
 
 
-<script>
-    function guardarFoto() {
-        console.log('guardando archivos');
-        let el = document.getElementById('fotosProducto');
-        preview_image(el.files);
-        el.value = "";
-        return false;
-    }
 
-    function preview_image(files) {
-        let div = document.getElementById('fotosPreview');
-
-        for (let i = 0; i < files.length; i++) {
-            let reader = new FileReader();
-
-            reader.onload = function () {
-                let image = document.createElement("img");
-                image.ondblclick = (el, ev) => {
-                    remove(image);
-                    updateHiddenInputs();
-                }
-                image.src = reader.result;
-                image.style = "max-width:300px;"
-                image.className = "m-1";
-                div.appendChild(image);
-            }
-            reader.readAsDataURL(files[i]);
-            setTimeout(() => {
-                updateHiddenInputs();
-
-            }, 600)
-        }
-    }
-
-    function createHiddenInput(propertyName, value) {
-        let input = document.createElement('input');
-        input.name = propertyName;
-        input.value = value;
-        input.type = "hidden";
-        return input;
-    }
-    function updateHiddenInputs() {
-
-        let div = document.getElementById('fotosPreview');
-        //una vez agregadas las imagenes recorremos las imagenes almacenadas
-        let fotosHidden = document.getElementById('fotosHidden');
-        //borramos todos los hidden
-        while (fotosHidden.firstChild) {
-            fotosHidden.firstChild.remove();
-        }
-        //volvemos a agregar los hidden
-        div.childNodes.forEach((val, idx, parent) => {
-            console.log('foto', val);
-            let input = createHiddenInput("Fotos[" + idx + "].Foto", val.src);
-            fotosHidden.appendChild(input);
-        });
-    }
-
-    function remove(el) {
-        console.log('el', el)
-        var element = el;
-        element.remove();
-    }
-</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="~/vendor/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="~/vendor/select2-bootstrap/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <script src="~/vendor/select2/js/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select2').select2({ width: 'resolve', theme: "classic" });
+        });
+    </script>
 }

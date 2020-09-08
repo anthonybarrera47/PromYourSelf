@@ -481,7 +481,7 @@
                         app_topbar.citas = app_topbar.citas.filter(x => x.cita.Estado == 0);
                     }).catch(err => {
                         console.log('ha ocurrido un error', err);
-                        alert('Ha ocurrido un error');
+                       
                     })
                 },
                 getMensajes: function () {
@@ -497,7 +497,7 @@
 
                     }).catch(err => {
                         console.log('ha ocurrido un error', err);
-                        alert('Ha ocurrido un error');
+                        
                     })
                 },
                 aceptarCita(citaId, estado = -1) {
@@ -516,7 +516,7 @@
 
                     }).catch(err => {
                         console.log('ha ocurrido un error', err);
-                        alert('Ha ocurrido un error');
+                        
                     })
                 }
 

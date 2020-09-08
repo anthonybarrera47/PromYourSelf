@@ -24,7 +24,7 @@ namespace PromYourSelf.Controllers
         private readonly IRepoWrapper _Repo;
         private readonly IHttpContextAccessor _accesor;
         public static List<VentasIndexViewModel> Lista;
-        public VentasController(Contexto context, IRepoWrapper RepoVenta,IHttpContextAccessor accessor)
+        public VentasController(Contexto context, IRepoWrapper RepoVenta, IHttpContextAccessor accessor)
         {
             db = context;
             _Repo = RepoVenta;
@@ -67,14 +67,14 @@ namespace PromYourSelf.Controllers
         }
 
         // GET: Ventas/Create
-        public async Task< IActionResult> Create(int citaId)
+        public async Task<IActionResult> Create(int citaId)
         {
             if (User.GetPosicion() != Posicion.Administrador.ToString("G"))
-                return RedirectToAction("Index","Negocio");
+                return RedirectToAction("Index", "Negocio");
 
             ViewBag.Clientes = await _Repo.Usuarios.GetListAsync(x => true);
             ViewBag.Productos = await _Repo.Productos.GetListAsync(x => true);
-			Ventas venta = new Ventas();			
+            Ventas venta = new Ventas();
             return View(venta);
         }
 
@@ -88,17 +88,26 @@ namespace PromYourSelf.Controllers
             //buscar producto
             //calcular
             //guardar
+            if (ventas.Details.Count <= 0 && ventas.CitaID <= 0)
+                ModelState.AddModelError("Details", "Debe agregar algun producto");
+
+            
+
+
             if (ModelState.IsValid)
-            {			
-				ventas.UsuarioID = User.GetUserID().ToInt();
-				ventas.NegocioID = User.GetEmpresaID().ToInt();
-				ventas.Monto = ventas.Details.Sum(x => x.Precio * x.Cantidad);
-				if (ventas.CitaID > 0)
-				{
-					Citas cita = await _Repo.Citas.FindAsync(ventas.CitaID);
-					cita.Estado = EstadoCita.Facturado;
-					await _Repo.Citas.ModifiedAsync(cita);
-				}
+            {
+                ventas.UsuarioID = User.GetUserID().ToInt();
+                ventas.NegocioID = User.GetEmpresaID().ToInt();
+                ventas.Monto = ventas.Details.Sum(x => x.Precio * x.Cantidad);
+
+                if (ventas.CitaID > 0)
+                {
+                    Citas cita = await _Repo.Citas.FindAsync(ventas.CitaID);
+                    cita.Estado = EstadoCita.Facturado;
+                    var Producto = await _Repo.Productos.FindAsync(cita.ProductoID);
+                    ventas.Monto += Producto.Precio;
+                    await _Repo.Citas.ModifiedAsync(cita);
+                }
 
                 await _Repo.Ventas.SaveAsync(ventas);
                 return RedirectToAction(nameof(Index));
@@ -137,11 +146,11 @@ namespace PromYourSelf.Controllers
             }
 
             if (ModelState.IsValid)
-            {				
-				ventas.UsuarioID = User.GetUserID().ToInt();
-				ventas.NegocioID = User.GetEmpresaID().ToInt();
-				ventas.Monto = ventas.Details.Sum(x => x.Precio * x.Cantidad);
-				try
+            {
+                ventas.UsuarioID = User.GetUserID().ToInt();
+                ventas.NegocioID = User.GetEmpresaID().ToInt();
+                ventas.Monto = ventas.Details.Sum(x => x.Precio * x.Cantidad);
+                try
                 {
                     await _Repo.Ventas.ModifiedAsync(ventas);
                 }

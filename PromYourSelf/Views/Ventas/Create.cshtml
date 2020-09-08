@@ -19,7 +19,6 @@
     }
 
     function calcularTotal() {
-        console.log('lista', list);
         let total = list.reduce((a, b) => a + b.cantidad * b.precio, 0);
         $('#total').html(total.toString());
         document.getElementById("Monto").value = total.toString();
@@ -35,11 +34,10 @@
             list.push({ id: id, Producto: Producto, cantidad: parseInt(Cantidad), precio: parseFloat(Precio) });
         } else {
             //mostrar mensaje de error
-            alert("Este producto ya esta agregado.");
+            ToastSweetAlert('success','Este producto ya esta agregado.');
             return false;
         }
-        console.log('Precio de items: ', list);
-        console.log('lista de items: ', list);
+        
         calcularTotal();
 
         //agregamos tabla
@@ -127,7 +125,6 @@
                 app_ventas.total = app_ventas.productos_detalle.reduce((a, b) => a + b.Cantidad * b.Precio, 0);
             },
             agregar_detalle() {
-                console.log('productoid en agregar detalle', app_ventas.productoId);
                 let index = app_ventas.productos_detalle.findIndex(x => x.ProductoID == app_ventas.productoId);
                 if (index >= 0) {
                     app_ventas.productos_detalle[index].Cantidad += parseInt(app_ventas.cantidad);
@@ -141,12 +138,11 @@
 
             },
             eliminar_detalle(producto) {
-                console.log('Eliminando producto detalle', producto);
                 app_ventas.productos_detalle.splice(app_ventas.productos_detalle.indexOf(el => el.ProductoID == producto.ProductoID), 1);
                 app_ventas.calcular_total();
             },
             onChange: function (event) {
-                console.log('producto id en change', event.value, "mode id", app_ventas.productoId);
+                c
                 app_ventas.precio = app_ventas.productos.filter(x => x.ProductoID == parseInt(event.value))[0].Precio;
                 app_ventas.cantidad = 1;
                 app_ventas.productoId = event.value;
@@ -154,13 +150,13 @@
             onChangeCita: function (event) {
                 app_ventas.citaId = event.value;
             },
-            verCitaId() { console.log("citaId", app_ventas.citaId); alert('valor de citaid: ' + app_ventas.citaId); },
+            verCitaId() { console.log("citaId", app_ventas.citaId); ,
             getCitasPendientes: function () {
                 axios.get("https://localhost:44386" + "/Citas/GetCitas").then(response => {
                     app_ventas.citas_pendientes = [];
                     let res = JSON.parse(response.data);
                     const queryString = window.location.search;
-                    console.log('Query string', queryString);
+                    
                     const urlParams = new URLSearchParams(queryString);
                     const citaId = urlParams.get('citaId')
                     if (citaId && citaId > 0) {
@@ -177,10 +173,9 @@
                         //if (i == 0) app_ventas.citaId = Lista[i].value;
                         app_ventas.citas_pendientes.push(Lista[i]);
                     }
-                    console.log('res Lista', Lista);
+                    
                 }).catch(err => {
                     console.log('ha ocurrido un error', err);
-                    alert('Ha ocurrido un error');
                 })
 
             },
@@ -208,7 +203,6 @@
                     console.log('res Lista Productos', Lista);
                 }).catch(err => {
                     console.log('ha ocurrido un error', err);
-                    alert('Ha ocurrido un error');
                 })
 
             }
