@@ -61,13 +61,7 @@ namespace PromYourSelf.BLL
 					ID = item.ID					
 				 }
 							  ).ToList();
-				//entity = await _context.Ventas
-				//.Include(i => i.Details.Select(s => s.Producto))				
-				//.FirstOrDefaultAsync(x => x.VentaID == id);
-				//			entity = await _context.Ventas
-				//.Include(b => b.Details)
-				//	.ThenInclude(p => p.Producto)
-				//.FirstOrDefaultAsync();
+				
 				if (entity != null)
 				{
 					if (entity.GetType().BaseType == typeof(CamposEstandar))
