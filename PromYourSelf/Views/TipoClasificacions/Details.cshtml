@@ -10,51 +10,21 @@
     <h4>TipoClasificacion</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Descripcion)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Descripcion)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UsuarioID)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UsuarioID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EsNulo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EsNulo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCreacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCreacion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModificadoPor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModificadoPor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaModificacion)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.TipoClasificacionID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-lg btn-success pull-right" asp-action="Edit" asp-route-id="@Model.TipoClasificacionID">Edit</a> |
+    <a class="btn btn-lg btn-warning" asp-action="Index">Back to List</a>
 </div>
