@@ -1,12 +1,9 @@
 ﻿@model Models.Mensajes
 @using PromYourSelf.Views.Shared.Components.Chat
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Chat";
 }
 
-<h1>
-    Mensajes
-</h1>
 @await Component.InvokeAsync("Chat", new { usuarioId =  User.GetUserID().ToInt()})
 
 <div>
