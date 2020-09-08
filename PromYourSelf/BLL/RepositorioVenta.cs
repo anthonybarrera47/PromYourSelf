@@ -75,5 +75,27 @@ namespace PromYourSelf.BLL
 			{ throw; }
 			return entity;
 		}
+        public async override Task<bool> SaveAsync(Ventas entity)
+        {
+			bool paso = false;
+			try
+			{
+				await _context.Ventas.AddAsync(entity);
+
+				paso = await _context.SaveChangesAsync() > 0;
+
+				if (entity != null)
+				{
+					if (entity.GetType().BaseType == typeof(CamposEstandar))
+					{
+						if ((entity as CamposEstandar).EsNulo)
+							entity = null;
+					}
+				}
+			}
+			catch (Exception)
+			{ throw; }
+			return paso;
+		}
 	}
 }

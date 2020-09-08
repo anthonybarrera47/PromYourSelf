@@ -9,6 +9,6 @@ namespace PromYourSelf.BLL.Interfaces
 {
     public interface IRepositoryProductos : IRepository<Productos>
     {
-
+        Task<Productos> FindAsyncWithoutTracking(int? id);
     }
 }

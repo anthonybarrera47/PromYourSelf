@@ -104,7 +104,7 @@ namespace PromYourSelf.Controllers
                 {
                     Citas cita = await _Repo.Citas.FindAsync(ventas.CitaID);
                     cita.Estado = EstadoCita.Facturado;
-                    var Producto = await _Repo.Productos.FindAsync(cita.ProductoID);
+                    var Producto = await _Repo.Productos.FindAsyncWithoutTracking(cita.ProductoID);
                     ventas.Monto += Producto.Precio;
                     await _Repo.Citas.ModifiedAsync(cita);
                 }
