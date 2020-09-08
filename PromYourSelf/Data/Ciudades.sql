@@ -15695,3 +15695,21 @@ VALUES
  ('Ambarchik', 'Ambarchik', '69.6510', '162.3336', 'Russia', 'RU', 'RUS', 'Sakha (Yakutiya)', ''),
  ('Nordvik', 'Nordvik', '74.0165', '111.5100', 'Russia', 'RU', 'RUS', 'Krasnoyarskiy Kray', ''),
  ('Ennadai', 'Ennadai', '61.1333', '-100.8833', 'Canada', 'CA', 'CAN', 'Nunavut', '')
+GO
+INSERT INTO EtiquetasDetails VALUES(1,9);
+INSERT INTO EtiquetasDetails VALUES(1,6);
+INSERT INTO EtiquetasDetails VALUES(2,2);
+INSERT INTO EtiquetasDetails VALUES(2,3);
+INSERT INTO EtiquetasDetails VALUES(3,1);
+INSERT INTO EtiquetasDetails VALUES(3,8);
+INSERT INTO EtiquetasDetails VALUES(4,1);
+INSERT INTO EtiquetasDetails VALUES(4,4);
+INSERT INTO EtiquetasDetails VALUES(5,7);
+INSERT INTO EtiquetasDetails VALUES(6,7);
+INSERT INTO EtiquetasDetails VALUES(7,4);
+INSERT INTO EtiquetasDetails VALUES(8,4);
+INSERT INTO EtiquetasDetails VALUES(9,8);
+INSERT INTO EtiquetasDetails VALUES(9,1);
+INSERT INTO EtiquetasDetails VALUES(10,2);
+INSERT INTO EtiquetasDetails VALUES(11,7);
+INSERT INTO EtiquetasDetails VALUES(12,10);

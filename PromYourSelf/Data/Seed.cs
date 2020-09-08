@@ -26,11 +26,11 @@ namespace PromYourSelf.Data
 			{
 				var poweruser = new Usuarios
 				{
-					UserName = "root",
-					Email = "root@nose.com",
+					UserName = "root@gmail.com",
+					Email = "root@gmail.com",
 					Nombres = "Root",
 					Password = RepositorioUsuario.SHA1("1234"),
-					Apellidos = "Root ",
+					Apellidos = "Administrador",
 					NormalizedUserName = "root",
 					LockoutEnabled = false,
 					ModificadoPor = 0,
@@ -42,8 +42,8 @@ namespace PromYourSelf.Data
 				};
 				var demouser = new Usuarios
 				{
-					UserName = "demo",
-					Email = "demo@nose.com",
+					UserName = "demo@gmail.com",
+					Email = "demo@gmail.com",
 					Nombres = "Demo",
 					Password = RepositorioUsuario.SHA1("1234"),
 					Apellidos = "Demo ",
@@ -56,7 +56,7 @@ namespace PromYourSelf.Data
 					FechaModificacion = DateTime.Now,
 					FechaCreacion = DateTime.Now
 				};
-				var Usuario1 = new Usuarios
+				var Usuario3 = new Usuarios
 				{
 					Nombres = "Luis Felipe",
 					NormalizedEmail = "ApasLabs@gmail.com".ToUpper(),
@@ -68,57 +68,147 @@ namespace PromYourSelf.Data
 					Password = RepositorioUsuario.SHA1("1234"),
 					Confirmado = true,
 					ConcurrencyStamp = DateTime.Now.ToString(),
-					UserName = "ApasLabs",
+					UserName = "ApasLabs@gmail.com",
 					EsNulo = false
 				};
-				var Usuario2 = new Usuarios
+				var Usuario4 = new Usuarios
 				{
-					NormalizedEmail = "williamelnene@gmail.com".ToUpper(),
+					NormalizedEmail = "williambh98@gmail.com".ToUpper(),
 					NormalizedUserName = "williambh98".ToUpper(),
 					Nombres = "William",
 					Apellidos = "Burgos Hernandez",
 					LockoutEnabled = false,
-					Email = "williamelnene@gmail.com",
+					Email = "williambh98@gmail.com",
 					Posicion = Posicion.Administrador.GetDescription(),
 					Password = RepositorioUsuario.SHA1("1234"),
 					Confirmado = true,
 					ConcurrencyStamp = DateTime.Now.ToString(),
-					UserName = "williambh98",
+					UserName = "williambh98@gmail.com",
 					EsNulo = false
 				};
-				var Usuario3 = new Usuarios
+				var Usuario5 = new Usuarios
 				{
-					NormalizedEmail = "usuarionoimai@gmail.com".ToUpper(),
+					NormalizedEmail = "Usuario5@gmail.com".ToUpper(),
 					NormalizedUserName = "usuario".ToUpper(),
-					Nombres = "Usuario",
+					Nombres = "Usuario 5",
 					Apellidos = "Normal",
 					LockoutEnabled = false,
-					Email = "usuarionoimai@gmail.com",
+					Email = "Usuario5@gmail.com",
 					Posicion = Posicion.Normal.GetDescription(),
 					Password = RepositorioUsuario.SHA1("1234"),
 					Confirmado = true,
 					ConcurrencyStamp = DateTime.Now.ToString(),
-					UserName = "usuario",
+					UserName = "Usuario5@gmail.com",
 					EsNulo = false
 				};
-
+				var Usuario6 = new Usuarios
+				{
+					NormalizedEmail = "Usuario6@gmail.com".ToUpper(),
+					NormalizedUserName = "usuario".ToUpper(),
+					Nombres = "Usuario 6",
+					Apellidos = "Normal",
+					LockoutEnabled = false,
+					Email = "Usuario6@gmail.com",
+					Posicion = Posicion.Normal.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "Usuario6@gmail.com",
+					EsNulo = false
+				}; 
+				var Usuario7 = new Usuarios
+				{
+					NormalizedEmail = "Usuario7@gmail.com".ToUpper(),
+					NormalizedUserName = "usuario".ToUpper(),
+					Nombres = "Usuario 7",
+					Apellidos = "Normal",
+					LockoutEnabled = false,
+					Email = "Usuario7@gmail.com",
+					Posicion = Posicion.Normal.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "Usuario7@gmail.com",
+					EsNulo = false
+				};
+				var Usuario8 = new Usuarios
+				{
+					NormalizedEmail = "Usuario8@gmail.com".ToUpper(),
+					NormalizedUserName = "usuario".ToUpper(),
+					Nombres = "Usuario 8",
+					Apellidos = "Empresa",
+					LockoutEnabled = false,
+					Email = "Usuario8@gmail.com",
+					Posicion = Posicion.Normal.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "Usuario8@gmail.com",
+					EsNulo = false
+				};
+				var Usuario9 = new Usuarios
+				{
+					NormalizedEmail = "Usuario9@gmail.com".ToUpper(),
+					NormalizedUserName = "usuario".ToUpper(),
+					Nombres = "Usuario 9",
+					Apellidos = "Empresa",
+					LockoutEnabled = false,
+					Email = "Usuario9@gmail.com",
+					Posicion = Posicion.Normal.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "Usuario9@gmail.com",
+					EsNulo = false
+				};
+				var Usuario10 = new Usuarios
+				{
+					NormalizedEmail = "Usuario10@gmail.com".ToUpper(),
+					NormalizedUserName = "usuario".ToUpper(),
+					Nombres = "Usuario 10",
+					Apellidos = "Empresa",
+					LockoutEnabled = false,
+					Email = "Usuario10@gmail.com",
+					Posicion = Posicion.Normal.GetDescription(),
+					Password = RepositorioUsuario.SHA1("1234"),
+					Confirmado = true,
+					ConcurrencyStamp = DateTime.Now.ToString(),
+					UserName = "Usuario10@gmail.com",
+					EsNulo = false
+				};
 				var _userAdminExists = await userManager.FindByNameAsync(poweruser.UserName);
 				var _userDemoExists = await userManager.FindByNameAsync(demouser.UserName);
-				var _Usuario1Exists = await userManager.FindByNameAsync(Usuario1.UserName);
-				var _Usuario2Exists = await userManager.FindByNameAsync(Usuario2.UserName);
 				var _Usuario3Exists = await userManager.FindByNameAsync(Usuario3.UserName);
+				var _Usuario4Exists = await userManager.FindByNameAsync(Usuario4.UserName);
+				var _Usuario5Exists = await userManager.FindByNameAsync(Usuario5.UserName);
+				var _Usuario6Exists = await userManager.FindByNameAsync(Usuario6.UserName);
+				var _Usuario7Exists = await userManager.FindByNameAsync(Usuario7.UserName);
+				var _Usuario8Exists = await userManager.FindByNameAsync(Usuario8.UserName);
+				var _Usuario9Exists = await userManager.FindByNameAsync(Usuario9.UserName);
+				var _Usuario10Exists = await userManager.FindByNameAsync(Usuario10.UserName);
 
 				if (_userAdminExists == null)
 					await Utils.Utils.SaveUser(userManager, rolManager, poweruser);
 				if(_userDemoExists == null)
 					await Utils.Utils.SaveUser(userManager, rolManager, demouser);
-				if (_Usuario1Exists == null)
-					await Utils.Utils.SaveUser(userManager, rolManager, Usuario1);
-				if (_Usuario2Exists == null)
-					await Utils.Utils.SaveUser(userManager, rolManager, Usuario2);
+				
 				if (_Usuario3Exists == null)
 					await Utils.Utils.SaveUser(userManager, rolManager, Usuario3);
-
+				if (_Usuario4Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario4);
+				if (_Usuario5Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario5);
+				if (_Usuario6Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario6);
+				if (_Usuario7Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario7);
+				if (_Usuario8Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario8);
+				if (_Usuario9Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario9);
+				if (_Usuario10Exists == null)
+					await Utils.Utils.SaveUser(userManager, rolManager, Usuario10);
+				
 			}
 			catch (Exception ex)
 			{

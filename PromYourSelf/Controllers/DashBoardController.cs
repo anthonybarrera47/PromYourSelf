@@ -37,6 +37,9 @@ namespace PromYourSelf.Controllers
 		[Authorize]
 		public async Task<ActionResult> DashBoard()
         {
+			if (User.GetPosicion() != Posicion.Administrador.ToString("G"))
+				return RedirectToAction("index", "negocios");
+
 			decimal totalVentas = (await _repo.Ventas.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Sum(x => x.Monto);
 			decimal totalPagos = (await _repo.Pagos.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt())).Sum(x => x.Monto);
 			List<Citas> citas = await _repo.Citas.GetListAsync(x => x.EsNulo == false && x.NegocioID == User.GetEmpresaID().ToInt());
